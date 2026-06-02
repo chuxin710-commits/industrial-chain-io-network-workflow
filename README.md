@@ -2,7 +2,7 @@
 
 # A General Empirical Workflow for Industrial-Chain Resilience and Vulnerability Analysis via Input–Output Networks
 
-> **作者 / Authors**：周宇翔 Zhou Yuxiang、吕得蓉 Lü Derong
+> **作者 / Author**：储信 Chu Xin
 >
 > **指导教师 / Advisor**：韩爱华 Han Aihua
 >
