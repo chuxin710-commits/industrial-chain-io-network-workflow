@@ -1,0 +1,27 @@
+# 原始数据（体积大 / 许可限制，不入库）/ Raw data (large / licensed — not committed)
+data/非竞争型/
+data/*.csv
+*.xlsx
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# 运行产物 / Run outputs
+*.png
+*.pdf
+稳健性检验/
+维度组合图/
+产业网络指标_原始数据.csv
+综合韧性指数.csv
+熵权法权重.csv
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
