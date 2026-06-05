@@ -411,11 +411,11 @@ def hybrid_criticality(scale, struct, alpha=0.5):
 
 ### 7.1 模型逻辑 / Model Logic
 
-**中文**：以 §6 识别的结构关键节点为**冲击源**，模拟其国内产能下降 $s\in\{10\%,30\%,50\%\}$，通过 Ghosh 逆矩阵 $G=(I-B)^{-1}$ 前向传导，量化国民经济总产出与各部门的损失。这实现了"**结构脆弱性识别 → 供给冲击效应**"的研究闭环——因为结构关键性正是在供给侧分配网络（$B$）中定义的。
+**中文**：以 §6 识别的结构关键节点为**冲击源**，模拟其国内产能下降比例 $s$（分别取 10%、30%、50%），通过 Ghosh 逆矩阵 $G=(I-B)^{-1}$ 前向传导，量化国民经济总产出与各部门的损失。这实现了"**结构脆弱性识别 → 供给冲击效应**"的研究闭环——因为结构关键性正是在供给侧分配网络 $B$ 中定义的。
 
-**English**: Using the structurally critical nodes from §6 as **shock sources**, simulate a domestic capacity drop $s\in\{10\%,30\%,50\%\}$ and propagate it forward through the Ghosh inverse $G=(I-B)^{-1}$, quantifying losses in aggregate and sectoral output. This closes the loop from **identification → impact**, since structural criticality is itself defined on the supply-side allocation network $B$.
+**English**: Using the structurally critical nodes from §6 as **shock sources**, simulate a domestic capacity drop of ratio $s$ (10%, 30%, or 50%) and propagate it forward through the Ghosh inverse $G=(I-B)^{-1}$, quantifying losses in aggregate and sectoral output. This closes the loop from **identification → impact**, since structural criticality is itself defined on the supply-side allocation network $B$.
 
-$$\Delta x = G^{\top}\,\Delta f, \qquad \Delta f_i = -s \cdot x_i \ \text{(冲击部门 / shocked sector)}$$
+$$\Delta x = G^{\top} \Delta f, \qquad \Delta f_i = -s \cdot x_i \quad (\text{shocked sector } i)$$
 
 ```python
 def simulate_supply_shock(G_inv, x, shocked, shock_ratio):
