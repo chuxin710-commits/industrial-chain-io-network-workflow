@@ -14,6 +14,10 @@
 
 > **参考文献 / References**：Leontief (1936), Ghosh (1958), Acemoglu et al. (2012), Carvalho & Tahbaz-Salehi (2019), Serrano et al. (2009), Grover & Leskovec (2016), Fagiolo (2007), Newman (2006), Martin (2012), Miller & Blair (2022).
 
+> 🤖 **配套对话 Agent / Companion agent**：本仓库附带「**链析 ChainLens**」——一个只回答产业链领域问题、并能在你提供投入产出表时直接生成适配建网与分析代码的专家 agent。用法见 [`agent/`](agent/README.md)（可部署为 Claude.ai 项目 / Claude Code 子代理 / API）。
+>
+> A companion expert agent that answers only industrial-chain questions and emits tailored network-building & analysis code from your IO table — see [`agent/`](agent/README.md).
+
 -----
 
 ## 目录 / Table of Contents
