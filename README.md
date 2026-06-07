@@ -14,9 +14,11 @@
 
 > **参考文献 / References**：Leontief (1936), Ghosh (1958), Acemoglu et al. (2012), Carvalho & Tahbaz-Salehi (2019), Serrano et al. (2009), Grover & Leskovec (2016), Fagiolo (2007), Newman (2006), Martin (2012), Miller & Blair (2022).
 
-> 🤖 **配套对话 Agent / Companion agent**：本仓库附带「**链析 ChainLens**」——一个只回答产业链领域问题、并能在你提供投入产出表时直接生成适配建网与分析代码的专家 agent。用法见 [`agent/`](agent/README.md)（可部署为 Claude.ai 项目 / Claude Code 子代理 / API）。
+> 🧩 **配套 Skill / Companion skill**：本仓库附带 Agent Skill「**链析 ChainLens**」（[`​.claude/skills/industrial-chain-analysis/`](.claude/skills/industrial-chain-analysis/SKILL.md)）——一个只回答产业链领域问题、并能在你提供投入产出表时审查结构并直接生成适配建网与分析代码的专家技能。域外问题一律回复「抱歉，我只会回答产业链领域相关问题」。
 >
-> A companion expert agent that answers only industrial-chain questions and emits tailored network-building & analysis code from your IO table — see [`agent/`](agent/README.md).
+> **部署 / Deploy**：①**Claude Code** —— 克隆本仓库即自动启用（项目级 `.claude/skills/`），或把 `industrial-chain-analysis/` 复制到 `~/.claude/skills/` 全局启用；②**Claude.ai** —— 将该文件夹打包为 zip 上传至 Settings → Capabilities → Skills；③**API** —— 通过 Skills 机制加载。
+>
+> A bundled Agent Skill: answers only industrial-chain questions and reviews your IO table to emit tailored network-building & analysis code. Deploy by dropping `industrial-chain-analysis/` into `.claude/skills/`, zipping it into Claude.ai, or loading it via the API Skills mechanism.
 
 -----
 
