@@ -1,0 +1,45 @@
+name: Bug / 科学或程序问题
+description: 用可公开的最小示例报告程序错误、公式歧义或结果回归。
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请勿上传受限投入产出表、可还原原表的派生结果、凭据、个人路径或未授权论文。
+        数据问题可先提供合成示例、字段说明与错误摘要。
+  - type: textarea
+    id: expected_actual
+    attributes:
+      label: 预期行为与实际行为
+      description: 区分数值错误、经济约束不成立、接口错误和解释歧义。
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 最小复现
+      description: 给出可公开的合成数据或构造步骤、准确命令、参数和精简错误输出。
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境与版本
+      description: Python、系统、依赖版本、commit 或代码指纹；未确认项目请写未知。
+    validations:
+      required: true
+  - type: textarea
+    id: scientific_boundary
+    attributes:
+      label: 方法与科研影响
+      description: 使用的公式/模型、方向/单位、影响指标或论文结果、独立参考值；不适用请说明。
+    validations:
+      required: true
+  - type: checkboxes
+    id: safe_report
+    attributes:
+      label: 提交边界
+      options:
+        - label: 我确认示例和日志不含未授权数据、敏感信息或个人路径。
+          required: true

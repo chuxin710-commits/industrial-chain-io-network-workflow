@@ -2,6 +2,38 @@
 
 # A General Empirical Workflow for Industrial-Chain Resilience and Vulnerability Analysis via Input–Output Networks
 
+## 可复用核心开发入口
+
+仓库正按[敏捷建设规划](docs/AGILE_PLAN.md)从论文脚本演进为课题组共享的Python库。
+当前新增核心为 `0.1.0.dev0`：支持验证后的IO对象、完整A/L、有向Z/A/L网络及可追溯的合成实验。
+它尚不提供级联、真实经济损失、恢复或GNN；下文原论文Workflow和 `code/` 保留为历史研究入口，不应直接import作为核心包。
+
+Python需要3.10或以上。在独立虚拟环境中安装和验证：
+
+```powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -e ".[dev]"
+.venv/Scripts/python.exe -m pytest
+.venv/Scripts/python.exe -m ionet run --config examples/synthetic_config.yaml --output outputs/demo-01
+```
+
+Linux/macOS使用 `.venv/bin/python`。普通核心安装使用 `pip install -e .`；旧 `requirements.txt` 服务历史脚本，不是核心依赖。
+样例数据为人工合成，不是中国真实投入产出观测。结果目录禁止覆盖，图权重和距离分开记录，未知单位或行业名不猜测。
+核心方法示例：
+
+```python
+from ionet import IOSystem, structural_metrics
+
+io = IOSystem(Z=[[2, 1], [1, 2]], x=[10, 10], sectors=["S01", "S02"], y=[7, 7])
+net = io.to_network(matrix="A", threshold=0.0)
+print(io.L)
+print(structural_metrics(net))
+```
+
+[任务清单](docs/BACKLOG.md) · [本轮验证记录](docs/ITERATION_01.md) · [协作与复审要求](CONTRIBUTING.md)
+
+## 原论文Workflow
+
 > **作者 / Author**：储信 Chu Xin
 >
 > **指导教师 / Advisor**：韩爱华 Han Aihua

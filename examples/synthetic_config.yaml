@@ -1,0 +1,18 @@
+schema_version: 1
+dataset:
+  kind: synthetic_inline
+  name: synthetic_three_sector
+  unit: synthetic_unit
+  price_basis: synthetic_not_observed_prices
+  sectors: [S01, S02, S03]
+  Z:
+    - [10, 20, 0]
+    - [5, 10, 15]
+    - [0, 5, 5]
+  x: [100, 80, 60]
+  y: [70, 50, 50]
+network:
+  matrix: A
+  threshold: 0.0
+seed: 42
+

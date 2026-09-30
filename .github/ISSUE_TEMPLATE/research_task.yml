@@ -1,0 +1,51 @@
+name: Research task / 小切片任务
+description: 明确接口、科学边界、测试与独立复审的敏捷任务。
+title: "[Task] "
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: 分区
+      options:
+        - 数据与复现
+        - 投入产出核心
+        - 网络与关键性
+        - 冲击与韧性
+        - 工程、验证与文档
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 单个可验收成果与非目标
+      description: 说明本任务可运行的小切片，以及本次明确不做什么；不要用代码行数验收。
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: 数据、接口与方法契约
+      description: 输入输出、维度、行业顺序、方向、单位、异常语义、公式和模型适用边界；未知元数据显式说明。
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收用例与证据
+      description: 具体命令、手算/独立基准、容差、正常/失败/科学边界用例、预期产物。
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: 依赖、所有权与独立复审
+      description: 可并行工作、共享文件所有者、待确认依赖、另一角色的复审安排；不要虚构成员权限。
+    validations:
+      required: true
+  - type: textarea
+    id: research_change
+    attributes:
+      label: 科研结果与授权风险
+      description: 是否改变既有指标/论文结论/快照；数据与派生结果的可公开边界、回退和后续任务。
+    validations:
+      required: true

@@ -25,3 +25,15 @@ env/
 Thumbs.db
 .idea/
 .vscode/
+
+# Reusable package and local-only research artifacts
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage*
+htmlcov/
+outputs/
+data/raw/
+data/private/
+artifacts/local/
