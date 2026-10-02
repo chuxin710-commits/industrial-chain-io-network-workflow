@@ -19,6 +19,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "pytest-cov>=5,<8", "build>=1,<2"]
+research = ["pandas>=2.2,<3", "statsmodels>=0.14,<0.15"]
 
 [project.scripts]
 ionet = "ionet.__main__:main"

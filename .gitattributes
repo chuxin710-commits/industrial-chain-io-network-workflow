@@ -1,0 +1,2 @@
+# Research snapshot manifests hash exact bytes across Windows/Linux checkouts.
+research/** -text whitespace=cr-at-eol

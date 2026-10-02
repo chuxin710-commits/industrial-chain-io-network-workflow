@@ -1,0 +1,41 @@
+{
+  "case": "critical_sectors",
+  "scope": "selected non-monetary summaries; not full input data",
+  "run_started_utc": "2026-10-01T11:41:36.633133+00:00",
+  "dependencies": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "networkx": "3.7",
+    "pandas": "2.3.3",
+    "statsmodels": "0.14.6"
+  },
+  "code_sha256": {
+    "run_case.py": "ce39d30f5a95aa1d06e2d1d2e1c9e79e2a64d6fb41938357c40527c2b3d50b3b",
+    "critical_sectors/demo.py": "4e1fd39ba74610d94d4fc1de04963c390fe6ef74826e140023974fa18b131d44",
+    "critical_sectors/extend_analysis.py": "f6c98945ba44c19d420d7a78e342f6d7c77c8dee410a2d7624183381c99f463a",
+    "critical_sectors/legacy_sir.py": "ba7f40695decc72645784b10ede8e6589b17af50f466db8a0e96116255f30f07",
+    "critical_sectors/model.py": "23746dfca0e3925d5773f8d35edc729515c55fa2991b3e2ec0c6f7b6f01d847e",
+    "critical_sectors/run_experiments.py": "0d5d4e546334a7b42a741c1331c243d6fd4558fa93a2f5d16616893eaf27780e",
+    "critical_sectors/test_model.py": "2ff4765104467cb3b2cd045b840e09457adc13140124805ea7148b56ea01f04f"
+  },
+  "files_sha256": {
+    "annual.csv": "e5eb6900999a6c195b4e1caada823ba85506c42e33e1184e34529bc072c114fd",
+    "config.json": "de4ab13cf516f877b848de70831d36d4c3bf3528ab9e74f7b4014ba9fe5dbfa4",
+    "dynamic_sensitivity.csv": "acf8ab040733dcd67499f6836ca331955da77634777d2e5aa152255bbdd93b41",
+    "policy_summary.csv": "11e5a00e1cb53da6e463f799a07a479de62e7323db2c13c543436944ab730cbc",
+    "predictor_comparison.csv": "3a89899c9df95c84772547acbd2a54c4b5236fdd1f2fdecc1a057aa56dd105df",
+    "random_policy_summary.csv": "aef81555b0551bd40f4bc784ba51e11ce85c8165d431978349eb73aba0befb9e",
+    "ranking_comparison.csv": "aef435f5a01cf65173f1ee4db3dd923dd9c7ab503b191c8a8e2b2ceff60b71ce",
+    "ranking_sensitivity.csv": "b21896170407c3438498700638540549132b861c7f02b4bd95783d29d6b12b86",
+    "tie_audit.csv": "3772cfddfd0abd1c8fc78e9c143568e6f4f0280cab6d1ad24e87d04fd4874ef0"
+  },
+  "excluded": [
+    "raw inputs",
+    "aggregated Z/X",
+    "node panels",
+    "monetary shock amounts",
+    "full validation logs",
+    "absolute local paths",
+    "unpublished Word manuscripts"
+  ]
+}

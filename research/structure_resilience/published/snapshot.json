@@ -1,0 +1,41 @@
+{
+  "case": "structure_resilience",
+  "scope": "selected non-monetary summaries; not full input data",
+  "run_started_utc": "2026-10-01T11:37:49.537556+00:00",
+  "dependencies": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "networkx": "3.7",
+    "pandas": "2.3.3",
+    "statsmodels": "0.14.6"
+  },
+  "code_sha256": {
+    "run_case.py": "ce39d30f5a95aa1d06e2d1d2e1c9e79e2a64d6fb41938357c40527c2b3d50b3b",
+    "structure_resilience/demo.py": "9b075427d473d66a4b4aef5b024da877e761d85deda36619c978439a771df6d3",
+    "structure_resilience/extend_sensitivity.py": "10e1335a972b569480ee0b9c46e7aff683dc2da57754c75e4e5b58ef17656f6e",
+    "structure_resilience/model.py": "3b300d0bd19f1a5f6e342d3671b86109b64ce250685269a4db0e16fe36f5d55b",
+    "structure_resilience/run_experiments.py": "3162f03c0bc1b520bce0c5c988297be901696c7610390fa7484ad4a1f7879a52",
+    "structure_resilience/test_model.py": "53481ff7bc775dfbb7edd72fcb526084a0c19d8b3a6ed16160a32f71361f10ea",
+    "structure_resilience/validate_results.py": "29d5421e7316eb3f59d123ebc372be4fbb0565e437ac8bd27d1627872834bba4"
+  },
+  "files_sha256": {
+    "annual_metrics.csv": "2ce2fea1700d58a25fcaa460e6a407279ade22b6ef50ef575b747856fc68b3ed",
+    "cascades.csv": "e6d2923ef88785e47424f90f2b112dc3af9e8b9e79e0246b41dfd664978960ec",
+    "config.json": "af32ec9c5b40ca7ea1689990b28b7e25e3b665359a0ba85c30897aa4f8f6ee5c",
+    "entropy_weights.csv": "6095478afbb16aa500dd35aeb82f88de340ee690154364e20b1baaf990f0a642",
+    "ode_sensitivity.csv": "85c9fca887add27956e5b7d04fdd4a0daf06de763344c108d57836ba89360dee",
+    "paired_comparison.csv": "b29eb7bbc1306d89648c1c33b458cdb672e86d303c168e22810f043f3a66884a",
+    "regression_core.csv": "fcba8aa8f438b8c59c3ede966c7719cfe082314bc78f3d6814e23d41aeb051c7",
+    "robustness_summary.csv": "bdf8fce30e5e6ad6ba49ff251c4c85c5eca5aa03fa3a65a73b21cf1bfe1d92d2",
+    "threshold_sensitivity.csv": "6997e4564183c7398e78ffef6e3cd3488f1370f6477a86e51c3167b9fa81820a"
+  },
+  "excluded": [
+    "raw inputs",
+    "aggregated Z/X",
+    "node panels",
+    "monetary shock amounts",
+    "full validation logs",
+    "absolute local paths",
+    "unpublished Word manuscripts"
+  ]
+}

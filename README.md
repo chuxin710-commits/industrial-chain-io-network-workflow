@@ -32,6 +32,25 @@ print(structural_metrics(net))
 
 [任务清单](docs/BACKLOG.md) · [本轮验证记录](docs/ITERATION_01.md) · [协作与复审要求](CONTRIBUTING.md)
 
+## 新增论文研究案例
+
+本轮补充两篇论文的介绍、理论公式、参数、可复算程序和无金额结果摘要，独立于 `ionet` 核心层：
+
+| 研究案例 | 研究重点 | 入口 |
+| --- | --- | --- |
+| 产业链网络结构视角下我国产业韧性研究 | L 网络、互惠动力学、结构诊断与容量级联 | [介绍与代码](research/structure_resilience/) · [理论方法](research/structure_resilience/METHODS.md) · [结果](research/structure_resilience/RESULTS.md) |
+| 投入产出网络中关键行业识别与产业链韧性提升：基于结构诊断和冲击模拟 | A 网络、同尺度冲击、滞后目标与有约束恢复 | [介绍与代码](research/critical_sectors/) · [理论方法](research/critical_sectors/METHODS.md) · [结果](research/critical_sectors/RESULTS.md) |
+
+```sh
+python -m pip install -e ".[research]"
+python research/run_case.py structure_resilience --synthetic --output outputs/structure-demo-01
+python research/run_case.py critical_sectors --synthetic --output outputs/critical-demo-01
+```
+
+新案例使用 **2009–2023 年、31 省 × 42 行业汇总**，不是下文历史 Workflow 的 OECD/NBS 样本。论文程序是独立研究案例，不表示核心包已实现所有动态模型。公开示例是合成数据，真实复算需本地有权使用的工作表；原始及聚合投入产出表不上传。
+
+[完整研究导航](research/README.md) · [数据契约](research/DATA_CONTRACT.md) · [验证与迁移记录](docs/RESEARCH_CASES_V1.md)
+
 ## 原论文Workflow
 
 > **作者 / Author**：储信 Chu Xin

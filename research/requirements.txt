@@ -1,0 +1,6 @@
+# Standalone source bundles; the repository uses pip install -e ".[research]".
+numpy>=1.24,<3
+scipy>=1.10,<2
+networkx>=3.2,<4
+pandas>=2.2,<3
+statsmodels>=0.14,<0.15

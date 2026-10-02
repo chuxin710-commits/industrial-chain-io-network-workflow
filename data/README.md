@@ -1,5 +1,11 @@
 # 数据说明 / Data Guide
 
+## 新增 MRIO 研究案例
+
+`research/` 两案的输入规则见 [MRIO 数据契约](../research/DATA_CONTRACT.md)：2009–2023 年、31 省 × 42 行业，按年度 Z/X 等 CSV 读取，通过 `--data-root` 指向本地私有目录。不要把这些文件放进受版本控制的目录。金额单位、价格口径和 2D-LQ 来源仍待补齐。
+
+**下方 OECD/NBS 来源及格式属于历史 Workflow，不是新增 MRIO 案例的来源说明，也不能据此推定新数据已获得同样的来源或口径认证。**
+
 本目录用于存放投入产出原始数据。受体积与数据许可限制，原始 IO 表**未随仓库分发**；下方说明数据来源、格式与放置方式，便于复现。
 
 This directory holds the raw input–output data. Due to size and licensing, the raw IO tables are **not distributed with the repository**. Below are the sources, formats, and placement instructions for reproduction.

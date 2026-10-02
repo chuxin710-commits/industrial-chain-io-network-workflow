@@ -37,3 +37,7 @@ outputs/
 data/raw/
 data/private/
 artifacts/local/
+
+# Research runs may contain private MRIO aggregates; publish only curated summaries.
+research/*/results/
+!research/critical_sectors/figures/*.png
