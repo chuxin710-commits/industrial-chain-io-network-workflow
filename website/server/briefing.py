@@ -32,6 +32,10 @@ def relevant(title, source, topic):
         return False
     if re.search(r'market (size|forecast)|price target|stocks? to buy|看盤|看盘|飆股|飙股', title, re.I):
         return False
+    if re.search(r'\b(estimates|financials|stock price|stock quote|earnings forecast)\s*[-–—]\s*(NASDAQ|NYSE|OTC|LSE|HKEX|TSX)\b', title, re.I):
+        return False
+    if re.search(r'\b(crystal meth|cocaine|heroin)\b|贩毒|販毒', title, re.I):
+        return False
     if topic == 'ai':
         return bool(re.search(r'model|research|breakthrough|launch|release|benchmark|training|reasoning|robot|模型|研究|突破|發布|发布|開源|开源|推理|訓練|训练|机器人|機器人', title, re.I))
     return True
@@ -112,7 +116,8 @@ def update(root=ROOT):
     previous = []
     if (root / 'latest.json').exists():
         previous = json.loads((root / 'latest.json').read_text(encoding='utf-8')).get('items', [])
-        previous = [item for item in previous if now - timedelta(hours=72) <= datetime.fromisoformat(item['published_at']) <= now]
+        previous = [item for item in previous if now - timedelta(hours=72) <= datetime.fromisoformat(item['published_at']) <= now
+                    and any(relevant(item['title'], item['source'], topic) for topic in item['topics'])]
     items = merge(articles + previous)
     result = {**status, 'generated_at': now.isoformat(), 'window_hours': 72, 'items': items,
               'coverage': 'Google News 英美、印度及中文版本的公开订阅检索；面向全球议题，不代表全球全量覆盖。',
@@ -121,12 +126,32 @@ def update(root=ROOT):
     atomic(root / (now.astimezone(timezone(timedelta(hours=8))).strftime('%Y-%m-%d') + '.json'), result)
     print(json.dumps({'items': len(items), 'successful_feeds': successes, 'total_feeds': len(feeds)}))
 
-def read_briefing(root=ROOT):
-    if not (root / 'latest.json').exists():
+def editions(root=ROOT):
+    return sorted([p.stem for p in root.glob('????-??-??.json')
+                   if re.fullmatch(r'\d{4}-\d{2}-\d{2}', p.stem) and p.is_file()], reverse=True)[:366]
+
+
+def read_briefing(root=ROOT, edition=None):
+    if edition is not None:
+        if not isinstance(edition, str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}', edition):
+            raise ValueError('Invalid edition date')
+        datetime.strptime(edition, '%Y-%m-%d')
+    path = root / (edition + '.json' if edition else 'latest.json')
+    if not path.exists():
+        if edition:
+            raise FileNotFoundError('Edition not available')
         return {'items': [], 'status': 'pending', 'message': '首期早报正在采集，请稍后再来。'}
-    data = json.loads((root / 'latest.json').read_text(encoding='utf-8'))
+    data = json.loads(path.read_text(encoding='utf-8'))
     now = now_utc()
-    data['items'] = [item for item in data['items'] if now - timedelta(hours=72) <= datetime.fromisoformat(item['published_at']) <= now]
+    reference = datetime.fromisoformat(data['generated_at']) if edition else now
+    data['items'] = [item for item in data['items'] if reference - timedelta(hours=72) <= datetime.fromisoformat(item['published_at']) <= reference]
+    data['edition'] = edition
+    data['window_end'] = reference.isoformat()
+    data['window_start'] = (reference - timedelta(hours=72)).isoformat()
+    if edition:
+        data.update(status='archive', last_attempt={k: data.get(k) for k in ('feeds', 'successful_feeds', 'total_feeds', 'attempted_at')}, viewed_at=now.isoformat())
+        return data
+    data['items'] = [item for item in data['items'] if any(relevant(item['title'], item['source'], topic) for topic in item['topics'])]
     age = (now - datetime.fromisoformat(data['generated_at'])).total_seconds()
     attempt = json.loads((root / 'status.json').read_text(encoding='utf-8')) if (root / 'status.json').exists() else data
     data['status'] = 'stale' if age > 26 * 3600 or not attempt['successful_feeds'] else 'partial' if attempt['successful_feeds'] < attempt['total_feeds'] else 'ready'

@@ -31,9 +31,21 @@ class Handler(BaseHTTPRequestHandler):
         self.response_started = False
         try:
             parsed = urlsplit(self.path)
-            if parsed.path == '/api/briefing':
-                from briefing import read_briefing
-                self.json_response(200, read_briefing())
+            if parsed.path in ('/api/briefing', '/api/briefing/editions'):
+                from briefing import read_briefing, editions
+                if len(parsed.query) > 100:
+                    raise QueryError('早报参数过长')
+                values = parse_qs(parsed.query, keep_blank_values=True, max_num_fields=2)
+                if set(values) - {'date'} or any(len(v) != 1 for v in values.values()) or (parsed.path.endswith('/editions') and values):
+                    raise QueryError('早报参数无效')
+                try:
+                    result = {'editions': editions()} if parsed.path.endswith('/editions') else read_briefing(edition=values.get('date', [None])[0])
+                except ValueError:
+                    raise QueryError('请选择有效的期刊日期') from None
+                except FileNotFoundError:
+                    self.json_response(404, {'error': '该期早报尚未存档'})
+                    return
+                self.json_response(200, result)
                 return
             if parsed.path.startswith('/api/library/'):
                 from library_http import handle_library
