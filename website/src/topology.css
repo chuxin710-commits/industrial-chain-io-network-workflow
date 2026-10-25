@@ -1,0 +1,585 @@
+.topo-parameters {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
+  margin-top: 25px;
+}
+.topo-year-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  margin-bottom: 13px;
+}
+.topo-year-heading > span {
+  color: var(--muted);
+}
+.topo-year-heading > div {
+  margin-left: auto;
+  display: flex;
+  gap: 18px;
+}
+.topo-years {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 7px;
+  border: 0;
+  padding: 0;
+  margin: 0 0 20px;
+  min-width: 0;
+}
+.topo-years label {
+  position: relative;
+  cursor: pointer;
+  min-height: 33px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+.topo-years input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+.topo-years span {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid #dce4de;
+  border-radius: 3px;
+  color: #65776b;
+}
+.topo-years input:checked + span {
+  background: #e0ecd7;
+  color: #174a3c;
+  border-color: #a5bd93;
+  font-weight: 600;
+}
+.topo-years input:focus-visible + span {
+  outline: 2px solid #2b8d71;
+  outline-offset: 2px;
+}
+.topo-options {
+  display: flex;
+  align-items: end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.topo-options .field {
+  flex: 1;
+  min-width: 135px;
+}
+.topo-options .field:first-child {
+  flex: 1.4;
+}
+.topo-options input {
+  width: 100%;
+  height: 35px;
+  border: 1px solid #d7e0d9;
+  border-radius: 3px;
+  padding: 0 10px;
+  background: #fff;
+  font-size: 12px;
+  color: #174a3c;
+}
+.topo-options .button {
+  height: 35px;
+}
+.topo-status {
+  font-size: 12px;
+  color: #6d8072;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  line-height: 1.6;
+}
+.topo-status.is-error {
+  color: #a5483a;
+}
+.topo-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: 22px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 0;
+  margin-bottom: 20px;
+}
+.topo-metrics > div {
+  padding: 0 20px;
+  border-left: 1px solid var(--line);
+}
+.topo-metrics > div:nth-child(3n + 1) {
+  border: 0;
+  padding-left: 0;
+}
+.topo-metrics span {
+  display: block;
+  font-size: 12px;
+  color: #7b887f;
+  margin-bottom: 8px;
+}
+.topo-metrics strong {
+  font-size: 23px;
+  font-weight: 500;
+  color: #224b3e;
+  font-variant-numeric: tabular-nums;
+}
+.topo-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 6px 0 14px;
+}
+.topo-toolbar > div:first-child {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.topo-toolbar h2,
+.topo-evidence h2 {
+  font-size: 15px;
+  margin: 0;
+  color: #284c3e;
+}
+.topo-toolbar span {
+  font-size: 12px;
+  color: #819087;
+}
+.topo-tools {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.topo-tools input {
+  width: 135px;
+  min-width: 0;
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 8px;
+}
+.topo-tools .icon-button {
+  width: 32px;
+  height: 32px;
+}
+.topo-stage {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  width: 100%;
+  height: 600px;
+  background: #fcfdfc;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.topo-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+}
+.topo-stage canvas:active {
+  cursor: grabbing;
+}
+.topo-canvas-legend {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  pointer-events: none;
+  font-size: 10px;
+  color: #728579;
+}
+.topo-canvas-legend > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.topo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #236f61;
+}
+.topo-dot.important {
+  background: #bf7961;
+}
+.topo-tooltip {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  background: #fff;
+  box-shadow: 0 3px 16px #153e3020;
+  border: 1px solid #c9d7cd;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.8;
+  width: 176px;
+}
+.topo-tooltip span,
+.topo-tooltip strong {
+  display: block;
+}
+.topo-tooltip strong {
+  color: #174a3c;
+  margin-bottom: 5px;
+}
+.topo-player {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+.topo-player-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.topo-player .icon-button {
+  width: 32px;
+  height: 32px;
+}
+.topo-player strong {
+  font-size: 17px;
+  color: #204d3c;
+  white-space: nowrap;
+  margin-left: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.topo-player > input {
+  flex: 1;
+  min-width: 50px;
+  accent-color: #246d54;
+}
+.topo-player > select {
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 12px;
+  border-radius: 3px;
+  padding: 7px;
+  color: #567264;
+}
+.topo-year-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+.topo-year-tabs button {
+  font-size: 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  padding: 7px 10px;
+  color: #7d8e83;
+}
+.topo-year-tabs button[aria-pressed='true'] {
+  border-color: #267252;
+  color: #174a3c;
+  font-weight: 600;
+}
+.topo-boundary {
+  font-size: 11px;
+  color: #8a7464;
+  line-height: 1.8;
+  margin: 12px 0 25px;
+}
+.topo-evidence {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 35px;
+}
+.topo-evidence > section {
+  min-width: 0;
+}
+.topo-evidence h2 {
+  padding: 0 0 15px;
+}
+.topo-evidence p {
+  font-size: 11px;
+  color: #819087;
+  margin: -6px 0 12px;
+}
+.topo-table-scroll {
+  max-height: 380px;
+  overflow: auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.topo-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.topo-table th {
+  font-weight: 400;
+  text-align: left;
+}
+.topo-table th,
+.topo-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid #edf0ec;
+}
+.topo-table thead {
+  position: sticky;
+  top: 0;
+  background: #eef3ed;
+  color: #6b7f70;
+}
+.topo-table td {
+  text-align: right;
+}
+.topo-table thead th:not(:first-child) {
+  text-align: right;
+}
+.topo-table button {
+  font-size: 12px;
+  border: 0;
+  background: none;
+  color: #286c56;
+  cursor: pointer;
+  padding: 0;
+}
+.topo-table tr.is-current {
+  background: #edf3e4;
+}
+.topo-source {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: #849388;
+  font-size: 10px;
+  border-top: 1px solid var(--line);
+  padding: 20px 0;
+  margin-top: 25px;
+}
+.topo-inspector {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 18px 0 22px;
+  margin: 16px 0 20px;
+}
+.topo-inspector-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+}
+.topo-inspector h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #174a3c;
+}
+.topo-inspector p {
+  font-size: 12px;
+  color: #768b7c;
+  line-height: 1.8;
+}
+.topo-neighbor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.topo-neighbor-grid > div {
+  min-width: 0;
+}
+.topo-neighbor-grid h3 {
+  font-size: 12px;
+  font-weight: 500;
+  color: #587669;
+  margin: 12px 0;
+}
+.topo-neighbor-grid .topo-table-scroll {
+  max-height: 230px;
+}
+.topo-definitions {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  font-size: 12px;
+  line-height: 1.9;
+  gap: 14px;
+  margin: 20px 0;
+}
+.topo-definitions dt {
+  color: #718576;
+}
+.topo-definitions dd {
+  margin: 0;
+}
+.topo-method-dialog pre {
+  background: #f3f6f2;
+  padding: 14px;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+.topo-method-dialog h3 {
+  font-size: 14px;
+  margin-top: 25px;
+}
+.topo-method-dialog p {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.topo-hash {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 10px;
+  color: #7a887f;
+  margin: 6px 0 15px;
+}
+@media (min-width: 1600px) {
+  .topo-stage {
+    height: 650px;
+  }
+}
+@media (max-width: 1050px) {
+  .topo-years {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  .topo-tools input {
+    width: 110px;
+  }
+  .topo-stage {
+    height: 560px;
+  }
+  .topo-evidence {
+    gap: 20px;
+  }
+  .topo-metrics strong {
+    font-size: 21px;
+  }
+}
+@media (max-width: 650px) {
+  .topo-neighbor-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .topo-years {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .topo-year-heading {
+    gap: 8px;
+    font-size: 11px;
+  }
+  .topo-year-heading > div {
+    gap: 12px;
+  }
+  .topo-options {
+    gap: 12px;
+  }
+  .topo-options .field,
+  .topo-options .field:first-child {
+    flex: 1;
+    min-width: calc(50% - 8px);
+  }
+  .topo-options .button {
+    flex: 1;
+  }
+  .topo-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .topo-metrics > div:nth-child(odd) {
+    border: 0;
+    padding-left: 0;
+  }
+  .topo-metrics > div:nth-child(even) {
+    border-left: 1px solid var(--line);
+    padding-left: 20px;
+  }
+  .topo-metrics > div {
+    padding-right: 0;
+  }
+  .topo-metrics strong {
+    font-size: 21px;
+  }
+  .topo-toolbar {
+    gap: 13px;
+  }
+  .topo-tools {
+    width: 100%;
+    justify-content: space-between;
+    gap: 3px;
+  }
+  .topo-tools input {
+    flex: 1;
+    width: 80px;
+  }
+  .topo-stage {
+    height: 470px;
+  }
+  .topo-canvas-legend {
+    font-size: 9px;
+    gap: 8px;
+    left: 12px;
+    right: 12px;
+  }
+  .topo-player {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .topo-player > input {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .topo-player > select {
+    margin-left: auto;
+    max-width: 110px;
+  }
+  .topo-player strong {
+    font-size: 15px;
+    margin-left: 4px;
+  }
+  .topo-evidence {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .topo-table th,
+  .topo-table td {
+    padding: 10px 9px;
+  }
+  .topo-year-tabs {
+    gap: 0;
+  }
+  .topo-year-tabs button {
+    padding: 7px 8px;
+  }
+  .topo-definitions {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .topo-definitions dd {
+    margin-bottom: 10px;
+  }
+  .topo-source {
+    font-size: 9px;
+  }
+  .topo-boundary {
+    font-size: 11px;
+  }
+}

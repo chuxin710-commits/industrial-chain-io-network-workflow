@@ -1,0 +1,22 @@
+{
+  "title": "The Chain of Discovery",
+  "composition": "Original programmed electronic instrumental",
+  "duration": 32,
+  "sampleRate": 48000,
+  "channels": 2,
+  "bpm": 120,
+  "key": "D minor",
+  "progression": "Dm / Bb / F / C",
+  "seed": 20261008,
+  "voices": [
+    "warm synth pads",
+    "plucked arpeggio",
+    "sub bass",
+    "synthesized kick",
+    "noise snare and hats"
+  ],
+  "samplesUsed": false,
+  "vocals": false,
+  "peakAmplitude": 0.88,
+  "rmsDb": -16.270185383592317
+}

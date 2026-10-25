@@ -1,0 +1,752 @@
+import sources from './method-sources.json' with { type: 'json' };
+
+const raw = String.raw;
+const formula = (label, tex, note) => ({ label, tex, note });
+const critical = sources.critical,
+  structure = sources.structure;
+export { sources };
+export const stages = [
+  {
+    id: 'data',
+    title: '数据口径',
+    question: '研究对象是否可比？',
+    output: '同序、可追溯的 Z 与 x',
+    color: '#507c99',
+  },
+  {
+    id: 'network',
+    title: '网络构建',
+    question: '连接意味着什么？',
+    output: '方向与阈值明确的 W',
+    color: '#287d6e',
+  },
+  {
+    id: 'structure',
+    title: '结构诊断',
+    question: '谁重要，依据是什么？',
+    output: '指标、排序及效率',
+    color: '#ab7837',
+  },
+  {
+    id: 'shock',
+    title: '冲击与恢复',
+    question: '在什么假设下受损与修复？',
+    output: '损失、预算与条件轨迹',
+    color: '#ad6d65',
+  },
+  {
+    id: 'verify',
+    title: '结果核验',
+    question: '结论可以怎样被复核？',
+    output: '敏感性、边界与复现记录',
+    color: '#7c769a',
+  },
+];
+const nx =
+  'https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.';
+export const methods = [
+  {
+    id: 'contract',
+    stage: 'data',
+    title: '数据契约与聚合',
+    status: '网站已接入',
+    purpose: '先统一节点、年份、账户和聚合口径，再讨论产业联系。',
+    input: '省级中间交易 Zᴾ、总产出 xᴾ、地区行业标签',
+    output: '全国行业 Zᴺ、xᴺ；来源与标签核验记录',
+    formulas: [
+      formula(
+        '先汇总交易与产出',
+        raw`Z^{N}=G^{\mathsf T}Z^{P}G,\qquad x^{N}=G^{\mathsf T}x^{P}`,
+        '每个原始节点只属于一个全国行业；不能对省级 A 直接平均。',
+      ),
+      formula(
+        '聚合守恒',
+        raw`\sum_{i,j}Z^{N}_{ij}=\sum_{u,v}Z^{P}_{uv},\qquad \sum_i x^{N}_i=\sum_u x^{P}_u`,
+        '相同覆盖范围下核对交易与产出总量，不能据此宣称全部核算账户已经平衡。',
+      ),
+    ],
+    symbols: [
+      [raw`G\in\{0,1\}^{1302\times42}`, '行业归属矩阵，每行恰好一个 1'],
+      [raw`Z^P_{uv}`, '原始地区行业 u 向 v 提供的中间投入'],
+      [raw`x^P_u`, '原始地区行业 u 的总产出'],
+      [raw`t,\ N`, 't 为数据年份；N 为当前层级节点数，案例全国行业 N=42'],
+    ],
+    parameters: [
+      ['网站查询范围', '2000–2023，31 地区 × 42 行业'],
+      ['两篇离线案例', '2009–2023，全国 42 行业'],
+      ['标签校验', '唯一、行列同序、跨年同序'],
+      ['金额单位 / 价格基期', '待核实；不自动换算'],
+      ['行业名称', 'S01–S42 对照未核实，保留代码'],
+    ],
+    steps: [
+      '核对年份、账户类型、标签及来源哈希。',
+      '拒绝构网所需 Z/x 中的非有限值和负值，不用零填补缺失。',
+      '依分组矩阵分别汇总 Z 与 x，再进入系数计算。',
+    ],
+    boundaries: [
+      '目录中的“2D-LQ”是数据标注，不是来源认证；不能称为官方逐年实测表。',
+      '2005–2007 年跨年可比性待核实。哈希只区分文件版本，不证明数据真实或具有再分发许可。',
+    ],
+    source: ['research/DATA_CONTRACT.md', 'website/server/topology.py'],
+    links: [['数据库', '#database']],
+    demo: 'matrix',
+  },
+  {
+    id: 'direct',
+    stage: 'network',
+    title: '直接投入网络 A',
+    status: '网站已接入',
+    purpose: '把交易额换成按使用部门总产出标准化的投入系数。',
+    input: '同序 Z 与 x',
+    output: '完整 A；去自环的有向网络 W',
+    formulas: [
+      formula(
+        '按列标准化',
+        raw`A=Z\,\operatorname{diag}(x)^{-1},\qquad a_{ij}=\frac{z_{ij}}{x_j}`,
+        '分母是购买者 j 的总产出，不是供给者 i 的总产出。',
+      ),
+      formula(
+        '网站构网规则',
+        raw`W_{ij}=a_{ij}\,\mathbf1(a_{ij}>0)\,\mathbf1(a_{ij}\geq\tau)\,\mathbf1(i\ne j)`,
+        '网站使用大于等于阈值，先计算全部阈值关系，再决定图上展示哪些边。',
+      ),
+    ],
+    symbols: [
+      [raw`z_{ij}`, '供给方 i → 使用方 j 的中间交易额'],
+      [raw`x_j`, '使用方 j 的总产出'],
+      [raw`a_{ij}`, '每单位 j 产出对应的 i 中间投入；无量纲'],
+      [raw`\tau,\ \mathbf1(\cdot)`, '非负阈值与示性函数'],
+    ],
+    parameters: [
+      ['网站默认阈值', '0.005，可调；不等于论文案例阈值'],
+      ['网站支持矩阵', '独立网络拓扑模块支持 A 或 Z'],
+      ['自环', '完整 A 保留；绘图与结构网络去除'],
+      ['零产出', '原始零产出行列交易须全零；A 的对应使用列定义为零并保留节点'],
+    ],
+    steps: [
+      '先检查原始零产出行列，再进行聚合。',
+      '用完整矩阵计算 A，按阈值构建有向网络。',
+      '完整邻接关系用于查询；稀疏图只承担展示，不替代完整计算。',
+    ],
+    boundaries: [
+      'A 不是交易概率或冲击概率。交易联系不等于具体企业供货关系。',
+      'Z 跨年金额不可在单位和价格口径未知时直接解释为实际增长。',
+    ],
+    source: ['website/server/topology.py', 'research/DATA_CONTRACT.md'],
+    links: [
+      ['网络拓扑', '#topology'],
+      ['知识图谱', '#knowledge'],
+    ],
+    demo: 'matrix',
+  },
+  {
+    id: 'leontief',
+    stage: 'network',
+    title: '完全需求网络 L',
+    status: '仓库离线方法',
+    purpose: '刻画直接与间接需求联系，与直接交易网络分开使用。',
+    input: '完整 A，含自身投入',
+    output: 'L、谱半径与求解残差',
+    formulas: [
+      formula(
+        'Leontief 逆',
+        raw`L=(I_N-A)^{-1}=I_N+A+A^2+\cdots,\qquad \rho(A)<1`,
+        '当前实现用线性方程求解 L，保留 A 的对角项；仅在构图时去掉 L 自环。',
+      ),
+      formula(
+        '条件需求响应',
+        raw`x=Ax+f,\qquad \Delta x=L\Delta f`,
+        '仅在相同封闭账户、固定系数和相应均衡假设下成立；不是供给约束冲击模型。',
+      ),
+      formula(
+        '数值核验',
+        raw`r_L=\max_{i,j}\left|[(I_N-A)L-I_N]_{ij}\right|`,
+        '报告谱半径与残差，而不只给出一张看似平滑的网络图。',
+      ),
+    ],
+    symbols: [
+      [raw`I_N`, 'N 阶单位矩阵，不是 SIR 中的受影响比例 I'],
+      [raw`L_{ij}`, '满足 j 最终需求所需的 i 完全产出联系'],
+      [raw`\rho(A)`, 'A 的特征值模的最大值'],
+      [raw`f,\ \Delta f`, '与模型账户口径一致的最终需求向量及其变化'],
+    ],
+    parameters: [
+      ['样本', '2009–2023，42 行业'],
+      ['前提', 'Z 非负、聚合 x 严格为正，ρ(A)<1'],
+      ['L 网络阈值', String(structure.threshold)],
+      ['阈值来源', '2009 年 L 非对角均值，跨年固定，严格大于'],
+    ],
+    steps: [
+      '检查 ρ(A)<1 后求解 (I−A)L=I。',
+      '核验逆矩阵残差，再对 L 非对角元素取严格阈值。',
+      '与 A 网络结果分别报告，不混用阈值与排名。',
+    ],
+    boundaries: [
+      'L 是模型推导的完全需求联系，不是原表观测的直接交易。',
+      '网站尚未开放 L 网络在线生成；此处是仓库方法说明。',
+    ],
+    source: ['research/structure_resilience/model.py', 'research/structure_resilience/METHODS.md'],
+  },
+  {
+    id: 'support',
+    stage: 'network',
+    title: '阈值与固定支持集',
+    status: '口径对照',
+    purpose: '分清科学网络的筛边规则和可视化的边数限制。',
+    input: 'A 或 L，基准年份及阈值',
+    output: '科学支持集 M 与展示子集',
+    formulas: [
+      formula(
+        '论文案例的固定阈值',
+        raw`\tau_Q=\frac{1}{N(N-1)}\sum_{i\ne j}Q_{ij,2009},\qquad Q\in\{A,L\}`,
+        'A 案例与 L 案例分别校准，不能共用数值。',
+      ),
+      formula(
+        '年度支持集与反事实',
+        raw`M_{ij,t}=\mathbf1(a_{ij,t}>\tau_A)\mathbf1(i\ne j),\qquad W^{\mathrm{scenario}}_t=A^{\mathrm{scenario}}_t\odot M_t`,
+        'A 案例同年冲击与恢复冻结未冲击支持集，避免把连续削减混同于重新筛边。',
+      ),
+      formula(
+        '展示覆盖',
+        raw`q_V=\frac{|V_{\mathrm{shown}}\cap V_{\mathrm{active}}|}{|V_{\mathrm{active}}|}`,
+        'active 为阈值网络中有边的节点；无 active 节点时网站约定覆盖率为 1。',
+      ),
+    ],
+    symbols: [
+      [raw`Q,\ M_t`, '用于构网的矩阵与该年未冲击二元支持集'],
+      [raw`\odot`, '逐元素乘积'],
+      [
+        raw`V_{\mathrm{shown}}, V_{\mathrm{active}}`,
+        '展示边的端点集合与完整阈值网络的非孤立节点集合',
+      ],
+    ],
+    parameters: [
+      ['网站阈值比较', '正权且 ≥ τ；用户可改'],
+      ['A 案例比较', `严格 > ${critical.threshold}`],
+      ['L 案例比较', `严格 > ${structure.threshold}`],
+      ['展示规则', '全局最强边 / 局部重要连接；只是显示筛选'],
+      ['敏感性', '阈值倍率 0 / 0.5 / 1 / 2；0 表示全部正权边'],
+    ],
+    boundaries: [
+      '每个新阈值实验重新生成基准 M，再在该组冲击和恢复中冻结。',
+      '节点覆盖提升不等于模型更准确；必须同时保留被隐藏的关系数量与完整网络统计。',
+    ],
+    source: ['website/server/topology.py', 'research/critical_sectors/METHODS.md'],
+    demo: 'network',
+  },
+  {
+    id: 'centrality',
+    stage: 'structure',
+    title: '四项结构指标',
+    status: '仓库离线方法',
+    purpose: '分别回答连接广度、外向可达性、通道位置和局部闭合程度。',
+    input: '有向二元邻接矩阵 B',
+    output: '四项正向指标；尚非冲击损失或恢复排序',
+    formulas: [
+      formula(
+        '度与向外接近',
+        raw`D_i=\frac{k_i^{\mathrm{in}}+k_i^{\mathrm{out}}}{2(N-1)},\qquad C_i^{\mathrm{out}}=\frac{r_i}{N-1}\frac{r_i}{\sum_{j\in\mathcal R_i}d_{ij}^{\mathrm{hop}}}`,
+        '路径按二元跳数。无可达节点时接近中心性为零；NetworkX 对反向图调用 closeness 得到向外口径。',
+      ),
+      formula(
+        '标准化有向介数',
+        raw`B_i^{\mathrm{cen}}=\frac{1}{(N-1)(N-2)}\sum_{s\ne i}\sum_{\substack{t\ne i\\t\ne s}}\frac{\sigma_{st}(i)}{\sigma_{st}}`,
+        '有向有序配对；不可达配对贡献零，不计端点。N<3 时取零。',
+      ),
+      formula(
+        '二元有向聚类',
+        raw`C_i^{\mathrm{clu}}=\frac{[(B+B^{\mathsf T})^3]_{ii}}{2\left[k_i^{\mathrm{tot}}(k_i^{\mathrm{tot}}-1)-2k_i^{\leftrightarrow}\right]}`,
+        '采用 Fagiolo 型有向三角形口径；分母为零时取零，B 无自环。',
+      ),
+    ],
+    symbols: [
+      [raw`B_{ij}=\mathbf1(W_{ij}>0)`, '二元邻接矩阵，与介数 Bᶜᵉⁿ 不同'],
+      [raw`k_i^{\mathrm{in}},k_i^{\mathrm{out}}`, '入度、出度；总度 kᵗᵒᵗ 为两者之和'],
+      [raw`\mathcal R_i,r_i,d_{ij}^{\mathrm{hop}}`, '从 i 可达的其他节点集合、数量及最短跳数'],
+      [raw`\sigma_{st},\sigma_{st}(i)`, 's→t 最短路径总数及经过 i 的数量'],
+      [raw`k_i^{\leftrightarrow}=\sum_j B_{ij}B_{ji}`, '与 i 双向相连的邻居数'],
+    ],
+    parameters: [
+      ['权重口径', '结构四指标使用二元图，weight=None'],
+      ['方向', '供给方 → 使用方；接近中心性向外'],
+      ['指标方向', '四项均按正向指标进入案例 TOPSIS'],
+    ],
+    boundaries: [
+      '交易额越大不代表距离越长；不能将交易权重直接当作最短路成本。',
+      '结构重要性、冲击重要性和恢复优先级是三个不同概念。',
+    ],
+    source: ['research/critical_sectors/model.py', 'research/structure_resilience/model.py'],
+    refs: [
+      ['向外接近中心性', nx + 'centrality.closeness_centrality.html'],
+      ['有向介数', nx + 'centrality.betweenness_centrality.html'],
+      ['有向聚类', nx + 'cluster.clustering.html'],
+    ],
+  },
+  {
+    id: 'topsis',
+    stage: 'structure',
+    title: '熵权 TOPSIS',
+    status: '仓库离线方法',
+    purpose: '在同一年度整合四项结构指标，同时明确常数列与并列边界。',
+    input: 'N×4 正向指标矩阵 Y',
+    output: '熵权 ω、结构得分 s 与并列诊断',
+    formulas: [
+      formula(
+        '标准化与比重',
+        raw`u_{im}=\frac{Y_{im}-\min_iY_{im}}{\max_iY_{im}-\min_iY_{im}},\qquad p_{im}=\frac{u_{im}}{\sum_i u_{im}}`,
+        '极差不超过 10⁻¹² 的列置零并退出有效指标集。',
+      ),
+      formula(
+        '信息量与权重',
+        raw`e_m=-\frac{\sum_i p_{im}\log p_{im}}{\log N},\quad \omega_m=\frac{1-e_m}{\sum_{q\in\mathcal V}(1-e_q)},\quad v_{im}=\omega_m u_{im}`,
+        '约定 0 log 0=0；仅非常数列构成有效集合 𝒱。',
+      ),
+      formula(
+        '到理想点的距离',
+        raw`d_i^{\pm}=\sqrt{\sum_m(v_{im}-v_m^{\pm})^2},\qquad s_i=\frac{d_i^-}{d_i^++d_i^-}`,
+        '正理想点逐列取最大，负理想点逐列取最小；用加权坐标的欧氏距离。',
+      ),
+    ],
+    symbols: [
+      [raw`Y_{im}, u_{im}, p_{im}`, '节点 i 的第 m 项原始指标、标准化值与列内比重'],
+      [raw`e_m,\omega_m,\mathcal V`, '信息熵、熵权与有效指标集合'],
+      [raw`v_m^+=\max_i v_{im},\ v_m^-=\min_i v_{im}`, '正、负理想点'],
+      [raw`s_i\in[0,1]`, '结构综合得分，越大越靠近正理想点'],
+    ],
+    parameters: [
+      ['有效列阈值', '极差 > 10⁻¹²'],
+      ['全部无信息', '所有得分统一为 0.5，权重为零'],
+      ['排序', '稳定索引仅为复现展示，必须同时报告并列'],
+      ['同分恢复策略', '滞后结构得分全同则取消结构优先，回退按损失比例恢复'],
+    ],
+    boundaries: [
+      '按年标准化与赋权；得分变化并不是固定标尺下的绝对改善。',
+      '高聚类被设为正向是案例选择，需用去聚类与等权方案检验，不能视为普遍经济定律。',
+    ],
+    source: ['research/critical_sectors/model.py', 'research/structure_resilience/model.py'],
+  },
+  {
+    id: 'efficiency',
+    stage: 'structure',
+    title: '强度、效率与重要性',
+    status: '网站统计 / 离线效率',
+    purpose: '区分边数、连接强度与路径效率，固定失效实验的比较分母。',
+    input: '有向正权 W；基准节点数 N',
+    output: '强度、密度、效率 C 与删除重要性 p',
+    formulas: [
+      formula(
+        '强度与密度',
+        raw`s_i^{\mathrm{in}}=\sum_jW_{ji},\quad s_i^{\mathrm{out}}=\sum_jW_{ij},\quad \delta=\frac{\sum_{i\ne j}\mathbf1(W_{ij}>0)}{N(N-1)}`,
+        '网站在展示稀疏化之前计算强度和密度；强度不是 TOPSIS 得分。',
+      ),
+      formula(
+        '加权路径效率',
+        raw`c_{ij}=W_{ij}^{-1},\quad d_{ij}^{w}=\min_{P:i\leadsto j}\sum_{(u,v)\in P}c_{uv},\quad C(W)=\frac{1}{N(N-1)}\sum_{i\ne j}\frac{1}{d_{ij}^{w}}`,
+        '边成本只定义于正权边；不可达距离为无穷，倒数贡献零。空图 C=0。',
+      ),
+      formula(
+        '删除重要性',
+        raw`\ell_i=\max\left(0,1-\frac{C_{\mathrm{fixed}}(W_{-i})}{C(W)}\right),\qquad p_i=\frac{\ell_i}{\sum_j\ell_j}`,
+        '删除后效率仍除以原 N(N−1)。全无差异或基准 C=0 时重要性回退为 pᵢ=1/N。',
+      ),
+    ],
+    symbols: [
+      [raw`c_{ij},d^w_{ij}`, '正权边倒数成本、成本累加的有向最短路'],
+      [raw`C_{\mathrm{fixed}}`, '保留原节点配对分母的效率'],
+      [raw`\ell_i,p_i`, '删除相对损失及其非负归一重要性'],
+    ],
+    parameters: [
+      ['A 案例效率', '加权距离 1/W；固定 N=42'],
+      ['L 案例随机删除效率', '二元跳数距离；同样固定原 N=42'],
+      ['未到达节点对', '贡献零，不从分母移除'],
+    ],
+    boundaries: [
+      '两案例效率距离口径不同，不能直接比较数值。',
+      'C 与相对损失不是货币产出或 GDP 损失；C=0 时相对损失比值应报告不可定义。',
+    ],
+    source: [
+      'website/server/topology.py',
+      'research/critical_sectors/legacy_sir.py',
+      'research/structure_resilience/model.py',
+    ],
+    demo: 'network',
+  },
+  {
+    id: 'shock',
+    stage: 'shock',
+    title: '同比例与同金额冲击',
+    status: '仓库离线方法',
+    purpose: '把同样的削减比例与同样的削减金额作为不同实验，而不是混成一种排名。',
+    input: 'Z、固定 x、基准支持集 M、受冲击行业 i',
+    output: '受损交易 Z′、受损网络与相对效率损失',
+    formulas: [
+      formula(
+        '关联交易规模',
+        raw`Q_i=\sum_jz_{ij}+\sum_jz_{ji}-2z_{ii}`,
+        '只计算行业 i 非对角行、列的并集；每条交易只削减一次。',
+      ),
+      formula(
+        '两类削减深度',
+        raw`\rho_i^{\mathrm{prop}}=0.5,\qquad B_{\mathrm{shock}}=0.5\min_iQ_i,\qquad \rho_i^{\mathrm{amount}}=\frac{B_{\mathrm{shock}}}{Q_i}`,
+        '同金额设定要求所有 Qᵢ>0。',
+      ),
+      formula(
+        '冲击矩阵',
+        raw`z'_{jk}=\begin{cases}(1-\rho_i)z_{jk},&(j=i\ \lor\ k=i),\ j\ne k\\z_{jk},&\text{otherwise}\end{cases}`,
+        '保留自身投入，x 不变；由 A′ 与同年冻结的 M 构造 W′。',
+      ),
+      formula(
+        '效率损失',
+        raw`\mathcal L_i=1-\frac{C(W'_i)}{C(W)},\qquad C(W)>0`,
+        '这是相对网络效率损失，不是实际产出损失。',
+      ),
+    ],
+    symbols: [
+      [raw`Q_i,B_{\mathrm{shock}}`, '行业关联交易规模、该年共同削减金额'],
+      [raw`\rho_i`, '削减比例，不是谱半径'],
+      [raw`Z',W'_i,\mathcal L_i`, '受损交易、行业 i 冲击后的网络与效率损失'],
+    ],
+    parameters: [
+      ['主削减比例', String(critical.shock_fraction)],
+      ['同金额预算', '0.5 × 当年最小正 Qᵢ'],
+      ['样本范围', '2009–2023，15×42×2 个主情景'],
+      ['支持集', '同年基准 M 固定；x 固定'],
+    ],
+    boundaries: [
+      '同金额控制绝对削减额，不是完全排除规模效应；相对削减深度仍依赖 Qᵢ。',
+      '固定 x 的反事实 Z′ 不是重新实现核算平衡的投入产出表。',
+    ],
+    source: ['research/critical_sectors/model.py', 'research/critical_sectors/METHODS.md'],
+    demo: 'recovery',
+  },
+  {
+    id: 'restore',
+    stage: 'shock',
+    title: '有预算约束的恢复',
+    status: '仓库离线方法',
+    purpose: '在共同预算与交易上限下比较策略，避免无限增边带来的虚假改进。',
+    input: '基准 Z、受损 Z′、预算比例 η、t−1 年优先集合',
+    output: '可行恢复 H 与效率修复表现',
+    formulas: [
+      formula(
+        '可行域',
+        raw`D=Z-Z',\quad b=\eta\sum_{ij}D_{ij},\quad 0\le H_{ij}\le D_{ij},\quad\sum_{ij}H_{ij}=b`,
+        '恢复后的 Zʳᵉᶜ=Z′+H 不得超过基准 Z。',
+      ),
+      formula(
+        '逐轮封顶分配',
+        raw`\Delta H_{ij}=\min\left\{R_{ij},\ \frac{b_{\mathrm{left}}m_{ij}R_{ij}}{\sum_{uv}m_{uv}R_{uv}}\right\}`,
+        'R 为剩余可恢复额；m 为优先倍率。封顶后更新剩余额与预算，迭代至预算耗尽。',
+      ),
+      formula(
+        '效果口径',
+        raw`g_C=100\frac{C(W^{\mathrm{rec}})-C(W')}{C(W)},\qquad r_C=\frac{C(W^{\mathrm{rec}})-C(W')}{C(W)-C(W')}`,
+        'g 是相对基准效率的百分点；r 是损失修复比例。分母为零时不报告比值。',
+      ),
+    ],
+    symbols: [
+      [raw`D,H,R`, '损失矩阵、累计恢复矩阵、剩余可恢复矩阵'],
+      [raw`\eta,b,b_{\mathrm{left}}`, '恢复比例、总预算与剩余预算'],
+      [raw`m_{ij}`, '优先边为 4，其他为 1；均匀方案全为 1'],
+    ],
+    parameters: [
+      ['恢复年份', critical.intervention_years.join('、')],
+      ['可恢复预算比例', critical.restoration_budget_shares.join(' / ')],
+      ['优先信息', 't−1 年结构前五、冲击前五或每供应者最多五条最弱保留边'],
+      ['优先倍率', String(critical.priority_multiplier)],
+      ['均匀恢复', '按各边损失比例，不是每边相同金额'],
+    ],
+    boundaries: [
+      '预算单位是可恢复交易流，不是财政费用。没有真实恢复成本、供给替代及再平衡约束。',
+      '无受损优先边时退化为按损失比例分配；不能将模型策略称为现实最优产业政策。',
+    ],
+    source: ['research/critical_sectors/model.py', 'research/critical_sectors/METHODS.md'],
+    demo: 'recovery',
+  },
+  {
+    id: 'sir',
+    stage: 'shock',
+    title: '辅助齐次 SIR',
+    status: '仓库离线方法',
+    purpose: '把网络压缩成总体速率，再比较条件动力学；不是逐节点传播模型。',
+    input: '加权效率 C、删除重要性 p、平均出边权重',
+    output: '总体 S/I/R、恢复时间、峰值、累计影响与负担',
+    formulas: [
+      formula(
+        '暴露与速率映射',
+        raw`q_i=\sum_j\mathbf1(W_{ij}>0),\quad \bar w_i=\frac{\sum_jW_{ij}}{q_i},\quad E=\sum_i p_i\bar w_i`,
+        'qᵢ=0 时平均出边权重取零；p 来自固定分母的节点删除重要性。',
+      ),
+      formula(
+        '基年校准',
+        raw`\beta=\frac{E}{E+k_\beta},\quad\gamma=\frac{C}{C+k_\gamma},\quad k_\beta=\frac{E_0(1-\beta_0)}{\beta_0},\quad k_\gamma=\frac{C_0(1-\gamma_0)}{\gamma_0}`,
+        '基准 2009 年；k 跨年及冲击恢复固定。两总体速率是参数映射，不是从真实灾损估计。',
+      ),
+      formula(
+        '三状态系统',
+        raw`\dot S=-\beta SI,\qquad\dot I=\beta SI-\gamma I,\qquad\dot R=\gamma I`,
+        'S+I+R=1；时间单位为模拟单位。',
+      ),
+      formula(
+        '终点与风险',
+        raw`T=\inf\{s>0:I(s)\downarrow\varepsilon\},\quad I_{\mathrm{peak}}=\max_{0\le s\le T}I(s)`,
+        '终点按向下穿越事件定位；未达到终点则 T 缺失并标记截尾。',
+      ),
+      formula(
+        '累计量与辅助指标',
+        raw`F_I=I_0+S_0-S(T),\quad B_I=\int_0^T I(s)\,ds,\quad \mathrm{ICV}=1/C,\quad \mathrm{ICRC}=1/T,\quad \mathrm{ICR}=C/T`,
+        '累计影响不包括初始已恢复 R₀。截尾时累计量仅计算至模拟截止点；倒数须满足正分母。',
+      ),
+    ],
+    symbols: [
+      [raw`S,I,R`, '易受影响、受影响、已恢复的总体比例'],
+      [raw`E,C,p_i`, '网络暴露、加权效率、删除重要性'],
+      [raw`\beta,\gamma,k_\beta,k_\gamma`, '模拟传播/恢复速率及固定映射常数'],
+      [raw`\varepsilon,T,B_I`, '恢复阈值、首次向下到达时间、累计受影响负担'],
+    ],
+    parameters: [
+      ['初值 (S,I,R)', critical.initial.join(' / ')],
+      ['基年 β₀ / γ₀', '0.3 / 0.1'],
+      ['kβ / kγ', `${critical.calibration.k_beta} / ${critical.calibration.k_gamma}`],
+      ['恢复阈值 / 上限', '10⁻⁴ / 5000 模拟时间'],
+      ['求解器 / 容差', 'RK45；rtol=10⁻⁸，atol=10⁻¹⁰'],
+      ['峰值定位', 'βS−γ=0 的向下事件；单调下降时取 I₀'],
+    ],
+    boundaries: [
+      '不是 42 个行业逐边传播的网络 SIR，也不具有真实自然日含义。',
+      '恢复联系可能提高效率与暴露；不能只凭 C/T 上升宣称全部风险改善。',
+    ],
+    source: ['research/critical_sectors/legacy_sir.py', 'research/critical_sectors/METHODS.md'],
+    refs: [
+      [
+        'SciPy 事件求解',
+        'https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html',
+      ],
+    ],
+  },
+  {
+    id: 'mutualism',
+    stage: 'shock',
+    title: '互惠动力学与终点一致性',
+    status: '仓库离线方法',
+    purpose: '在明确的参数映射下比较扰动轨迹，不把终点接近直接等同于经济韧性。',
+    input: '阈值 L 网络 W、无量纲活动与六类参数',
+    output: '轨迹、终点一致性、活动水平、低活动占比',
+    formulas: [
+      formula('无量纲活动', raw`u_{it}=X_{it}/X_{i,2009}`, '数据年份 t 与模拟时间 s 是两种索引。'),
+      formula(
+        '互惠方程',
+        raw`\begin{aligned}\frac{du_i}{ds}={}&b_i+u_i\left(1-\frac{u_i}{k_i}\right)\left(\frac{u_i}{c_i}-1\right)\\&+\sum_{j\ne i}W_{ji}\frac{u_i u_j}{d_i+e_i u_i+h_i u_j}\end{aligned}`,
+        '输入邻居 j 对 i 的作用使用 Wⱼᵢ；主分母包含 eᵢuᵢ，字面旧式 eᵢ 仅作敏感性对照。',
+      ),
+      formula(
+        '跨初值终点一致性',
+        raw`R_i^{\mathrm{term}}(T)=\frac{\min_r u_i^{(r)}(T)}{\max_r u_i^{(r)}(T)}`,
+        '分母≤10⁻¹² 时取零。必须同时报告平均活动值与 uᵢ/kᵢ<0.1 的轨迹比例。',
+      ),
+    ],
+    symbols: [
+      [raw`u_i,s,r`, '节点活动、模拟时间、扰动轨迹编号'],
+      [raw`W_{ji}`, 'j→i 的完全需求网络权重'],
+      [raw`b_i=\sum_{j\ne i}a_{ji}`, '当年 A 非对角列和；不是估计的外生投入'],
+      [
+        raw`k_i=\max_t u_{it},\quad c_i=\operatorname{mean}_t u_{it}`,
+        '2009–2023 全样本最大值与均值',
+      ],
+      [raw`d_i=\max(D_i,10^{-8})`, '总度中心性映射及数值下限'],
+      [
+        raw`e_i=(\sum_{j\in\mathcal R_i}d_{ij}^{\mathrm{hop}}+(41-r_i)42)/41`,
+        'N=42；不可达距离记 42 的向外平均跳数',
+      ],
+      [raw`h_i=C_i^{\mathrm{clu}}`, '二元有向聚类映射'],
+    ],
+    parameters: [
+      ['初值', 'uᵢₜ × (1+U[−0.2,0.2])，独立扰动'],
+      ['轨迹数 / 种子', `${structure.trials} / ${structure.seed}`],
+      ['主终点 / 敏感性', 'T=10；T=5、20'],
+      ['求解器 / 容差', 'DOP853；rtol=10⁻⁷，atol=10⁻⁹'],
+      ['其他敏感性', '幅度 0.1/0.3、另一种子、共同初值 1、d/e/h 置一、字面分母、更严容差'],
+    ],
+    boundaries: [
+      'k/c 使用全样本窗口，不具备事前预测含义；部分参数和解释指标共享网络结构。',
+      '终点一致也可能是一致低活动；有限 T 不能自动证明渐近稳定。',
+      '借鉴互惠方程形式，不运行原文 ResInf 学习模型；中国 IO 参数映射是本案例设定。',
+    ],
+    source: [
+      'research/structure_resilience/model.py',
+      'research/structure_resilience/run_experiments.py',
+      'research/structure_resilience/METHODS.md',
+    ],
+    refs: [['Liu 等，2024：原文', 'https://doi.org/10.1038/s41467-024-53303-4']],
+  },
+  {
+    id: 'cascade',
+    stage: 'shock',
+    title: '容量级联',
+    status: '仓库离线方法',
+    purpose: '用同步失效轮次比较承载冗余，不把网络失效称为真实企业破产。',
+    input: '二元有向网络、初始失效集合、容量冗余 α',
+    output: '失效序列、幸存网络与丢弃负载',
+    formulas: [
+      formula(
+        '初始负载与容量',
+        raw`\ell_i(0)=k_i^{\mathrm{in}}+k_i^{\mathrm{out}},\qquad K_i=(1+\alpha)\ell_i(0)`,
+        'K 表示容量，避免与网络效率 C 混淆。',
+      ),
+      formula(
+        '失效负载重分配',
+        raw`\Delta\ell_j=\sum_{i\in\mathcal F_s}\mathbf1(j\in\mathcal N_i^{\mathrm{live}})\,\ell_i(s)\frac{K_j}{\sum_{v\in\mathcal N_i^{\mathrm{live}}}K_v}`,
+        '按尚存入/出邻居的总容量比例分配，不是剩余容量；本轮失效集合同时移除。',
+      ),
+      formula(
+        '下一轮失效与守恒',
+        raw`\mathcal F_{s+1}=\{j\notin\mathcal F_{\le s}:\ell_j(s+1)>K_j+10^{-10}\}`,
+        '无可分配容量时记录丢弃负载；终局存留负载加累计丢弃量等于初始总负载。',
+      ),
+    ],
+    symbols: [
+      [raw`K_i,\alpha,\ell_i`, '固定容量、冗余比例、节点负载'],
+      [raw`\mathcal F_s,\mathcal F_{\le s}`, '第 s 轮新失效节点与累计失效节点'],
+      [raw`\mathcal N_i^{\mathrm{live}}`, '已剔除全部失效节点的入/出邻居并集'],
+    ],
+    parameters: [
+      ['主冗余 α', String(structure.cascade_tolerance)],
+      ['扫描 α', '0 / 0.05 / 0.1 / 0.2 / 0.5 / 1'],
+      ['初始种子', '2023 年结构 TOPSIS 前三名，分别单点失效'],
+      ['更新方式', '同步轮次；过载容差 10⁻¹⁰'],
+    ],
+    boundaries: [
+      '负载由二元度映射，并非观测生产能力或实际货物流。',
+      '失效后的幸存者 ODE 保留原参数、断开失效节点入出边；失效节点不计入幸存者均值。',
+    ],
+    source: ['research/structure_resilience/model.py', 'research/structure_resilience/METHODS.md'],
+  },
+  {
+    id: 'robustness',
+    stage: 'verify',
+    title: '排名比较与敏感性',
+    status: '仓库离线方法',
+    purpose: '检验结构排名是否预测模型冲击损失，而不是用同一指标循环证明自己。',
+    input: '结构得分、冲击损失、排名集合与参数网格',
+    output: '秩相关、前五重合、随机参照与稳健性结果',
+    formulas: [
+      formula(
+        '秩相关与集合重合',
+        raw`\rho_S=\operatorname{corr}(\operatorname{rank}(s),\operatorname{rank}(\mathcal L)),\qquad J(\mathcal P,\mathcal Q)=\frac{|\mathcal P\cap\mathcal Q|}{|\mathcal P\cup\mathcal Q|}`,
+        '秩采用并列平均秩；一列为常数时相关不可定义。前五重合数也单独报告。',
+      ),
+      formula(
+        '剔除规模秩的描述性对照',
+        raw`r_s=\operatorname{rank}(s)-\widehat{\operatorname{rank}(s)}_{[1,\operatorname{rank}(Q)]},\quad \rho_{\mathrm{partial}}=\operatorname{corr}(r_s,r_{\mathcal L})`,
+        '分别以 Q 的秩和截距做线性残差化；不是识别出因果效应。',
+      ),
+    ],
+    symbols: [
+      [raw`\mathcal P,\mathcal Q`, '结构排名与冲击排名的前五集合；交易规模另记 Qᵢ'],
+      [raw`r_s,r_{\mathcal L}`, '结构得分秩与损失秩的规模残差'],
+    ],
+    parameters: [
+      ['结构排名参照', '2000 个均匀不放回随机前五集合'],
+      ['恢复随机参照', '100 个共同前五集合；每集合跨 42 个冲击先求均值'],
+      ['主排名敏感性', '4 年 × 4 阈值倍率 × 3 削减深度 × 2 口径 = 96 组'],
+      ['随机种子', String(critical.seed)],
+      ['SIR 敏感性', '两 k 同时乘 0.5/1/2；ε=10⁻³/10⁻⁴/10⁻⁵；固定 β/γ 对照'],
+    ],
+    boundaries: [
+      '随机集合跨行业共享时，不能将所有情景行当作相互独立样本做显著性检验。',
+      'SIR 两个 k 同时缩放不是独立全因子检验。结构并列时不能把代码先后解释为优先次序。',
+    ],
+    source: ['research/critical_sectors/METHODS.md', 'research/critical_sectors/model.py'],
+  },
+  {
+    id: 'statistics',
+    stage: 'verify',
+    title: '配对比较与描述性回归',
+    status: '仓库离线方法',
+    purpose: '把统计关联与模型生成机制一起报告，不用显著性替代因果识别。',
+    input: '42 行业 × 15 年模型结果；同业配对结构指标',
+    output: '配对差异、固定效应系数、行业聚类标准误、Holm 校正',
+    formulas: [
+      formula(
+        '行业配对 t 统计量',
+        raw`t_{\mathrm{pair}}=\frac{\bar\Delta}{s_\Delta/\sqrt N},\qquad\Delta_i=M_{i,2023}-M_{i,2020}`,
+        '同一行业前后配对；sΔ 为样本标准差，退化情形不能强行计算有限统计量。',
+      ),
+      formula(
+        '逐指标双向固定效应',
+        raw`R^{\mathrm{term}}_{it}=\alpha_i+\lambda_t+\beta_m M^{(m)}_{it}+\theta^{\mathsf T}\mathbf c_{it}+\epsilon_{it}`,
+        '四个结构指标分别估计，不是全部同时放入同一式。',
+      ),
+      formula(
+        'Holm 多重检验校正',
+        raw`p^{\mathrm{Holm}}_{(k)}=\min\!\left(1,\max_{j\le k}(m-j+1)p_{(j)}\right)`,
+        'p 按升序排列后校正并还原原始顺序；每组四个核心检验 m=4。',
+      ),
+    ],
+    symbols: [
+      [raw`\alpha_i,\lambda_t`, '行业与年份固定效应'],
+      [raw`M^{(m)}_{it}`, '第 m 项结构指标'],
+      [raw`\mathbf c_{it}`, '工资、生产税净额、营业盈余及城镇消费分别占总产出的份额'],
+      [raw`\epsilon_{it},p_{(j)}`, '回归误差与排序后的原始 p 值'],
+    ],
+    parameters: [
+      ['样本', '2009–2023：630 行业年'],
+      ['标准误', '按 42 个行业聚类，小样本修正与 t 分布'],
+      ['无效估计', '秩亏或因变量近常数时跳过并标记状态'],
+      ['对照', '行业固定效应、无控制、二元线性概率及动力学敏感性'],
+    ],
+    boundaries: [
+      '因变量由模型生成，部分动力学参数也由结构生成，存在机械关联。',
+      'k/c 使用全样本信息，回归不能解释为结构对真实产业韧性的因果影响。',
+    ],
+    source: [
+      'research/structure_resilience/run_experiments.py',
+      'research/structure_resilience/METHODS.md',
+    ],
+  },
+  {
+    id: 'audit',
+    stage: 'verify',
+    title: '核验与复现记录',
+    status: '方法检查规范',
+    purpose: '让每个结果对应输入、公式、参数与执行记录，而不是靠文档自证正确。',
+    input: '原表、实验配置、代码版本、运行输出',
+    output: '带来源与状态的核验报告',
+    formulas: [
+      formula(
+        '数值与预算不变量',
+        raw`\max_s|S(s)+I(s)+R(s)-1|\approx0,\quad 0\le H\le D,\quad\left|\sum_{ij}H_{ij}-b\right|\approx0`,
+        '容差应取自求解器或分配器实现；近似为零不是要求浮点精确相等。',
+      ),
+      formula(
+        '损失分母与源数据守恒',
+        raw`N_{\mathrm{denominator}}=N_{\mathrm{baseline}},\qquad \ell_{\mathrm{live}}+\ell_{\mathrm{dropped}}=\ell_{\mathrm{initial}}`,
+        '删除节点不缩小效率比较分母；级联必须记录丢弃负载。',
+      ),
+    ],
+    symbols: [
+      [raw`H,D,b`, '累计恢复、损失矩阵与共同预算'],
+      [raw`\ell_{\mathrm{live}},\ell_{\mathrm{dropped}}`, '最终存留的总负载与累计丢弃总负载'],
+    ],
+    parameters: [
+      ['记录内容', '源文件 SHA-256、代码哈希、依赖版本、参数、随机种子、求解状态'],
+      ['独立核对', '原始标签求和；NetworkX 与 SciPy 最短路对照'],
+      ['数据层', '维度、标签、零产出、缺失、聚合守恒与可比性'],
+      ['模型层', '逆残差、状态守恒、预算上下界、失效负载核算'],
+      ['结论层', '阈值、排名并列、随机参照、截尾和因果边界'],
+    ],
+    boundaries: [
+      '本页列的是方法与核验规范，不代表打开页面就执行了完整实证实验。',
+      '“已上线”“仓库离线方法”“合成演算示例”必须分开；案例参数不是所有数据的推荐常数。',
+    ],
+    source: [
+      'research/DATA_CONTRACT.md',
+      'research/critical_sectors/METHODS.md',
+      'research/structure_resilience/METHODS.md',
+    ],
+    links: [
+      ['研究核验', '#verification'],
+      ['科研项目', '#projects'],
+    ],
+  },
+];

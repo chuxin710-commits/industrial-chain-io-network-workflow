@@ -1,0 +1,27 @@
+[Unit]
+Description=CHAINLAB research API and private shared library
+After=network.target
+
+[Service]
+User=chainlab
+Group=chainlab
+WorkingDirectory=/opt/chainlab/current/server
+ExecStart=/opt/chainlab/current/runtime/bin/python /opt/chainlab/current/server/app.py --db /opt/chainlab/current/data/mrio.sqlite3 --host 127.0.0.1 --port 8787
+Restart=on-failure
+RestartSec=3
+Environment=PYTHONUNBUFFERED=1
+Environment=OPENBLAS_NUM_THREADS=1
+Environment=CHAINLAB_LIBRARY_ROOT=/var/lib/chainlab/library
+EnvironmentFile=-/etc/chainlab/deepseek.env
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/opt/chainlab
+ReadWritePaths=/var/lib/chainlab/library
+MemoryMax=512M
+TasksMax=64
+LimitNOFILE=2048
+
+[Install]
+WantedBy=multi-user.target

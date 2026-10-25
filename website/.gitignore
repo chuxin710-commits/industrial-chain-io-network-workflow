@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.artifacts/
+*.log
+.npm-cache/
+public/media/*.rendering.mp4
+var/
+public/pdfjs/

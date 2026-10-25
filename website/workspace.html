@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#133d33" />
+    <meta
+      name="description"
+      content="链研 CHAINLAB 科研工作台：年度投入产出表查询、方法文档与可追溯研究记录。"
+    />
+    <title>投入产出数据库 | 链研 CHAINLAB</title>
+    <link rel="icon" href="/mark.svg" />
+  </head>
+  <body class="workbench">
+    <a class="skip-link" href="#workspace-content">跳至主要内容</a>
+    <div class="sidebar-backdrop" hidden></div>
+    <aside class="workspace-sidebar" id="workspace-sidebar" aria-label="工作台导航">
+      <a class="workspace-brand" href="/" aria-label="链研 CHAINLAB 首页"
+        ><span class="workspace-mark"><i data-lucide="network"></i></span
+        ><span>链研 <b>CHAINLAB</b><small>产业链科研工作台</small></span></a
+      >
+      <button
+        class="icon-button sidebar-close"
+        type="button"
+        aria-label="关闭导航"
+        title="关闭导航"
+      >
+        <i data-lucide="x"></i>
+      </button>
+      <p class="nav-section-label">研究空间 <span>WORKSPACE</span></p>
+      <nav class="workspace-nav">
+        <a href="#overview" data-panel="overview"
+          ><i data-lucide="layout-dashboard"></i><span>数据总览</span></a
+        >
+        <a href="#database" data-panel="database" class="is-active" aria-current="page"
+          ><i data-lucide="database"></i><span>投入产出数据库</span><span class="nav-dot"></span
+        ></a>
+        <a href="#methods" data-panel="methods"
+          ><i data-lucide="workflow"></i><span>方法体系</span></a
+        >
+        <a href="#topology" data-panel="topology"
+          ><i data-lucide="network"></i><span>网络拓扑</span></a
+        >
+        <a href="#projects" data-panel="projects"
+          ><i data-lucide="folder-open"></i><span>科研项目</span></a
+        >
+        <a href="#knowledge" data-panel="knowledge"
+          ><i data-lucide="share-2"></i><span>产业链知识图谱</span></a
+        >
+        <a href="#literature" data-panel="literature"
+          ><i data-lucide="library-big"></i><span>团队文献</span></a
+        >
+        <a href="#verification" data-panel="verification"
+          ><i data-lucide="file-check-2"></i><span>研究核验</span></a
+        >
+      </nav>
+      <div class="sidebar-bottom">
+        <a
+          href="https://github.com/chuxin710-commits/industrial-chain-io-network-workflow"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><i data-lucide="github"></i><span>科研代码仓库</span><i data-lucide="arrow-up-right"></i
+        ></a>
+        <a href="/"><i data-lucide="arrow-left"></i><span>返回概念首页</span></a>
+        <div class="workspace-version"><span class="status-dot"></span>CHAINLAB / 研究预览版</div>
+      </div>
+    </aside>
+    <div class="workspace-shell">
+      <header class="workspace-topbar">
+        <div class="topbar-path">
+          <button
+            class="icon-button menu-button"
+            type="button"
+            aria-label="打开导航"
+            aria-controls="workspace-sidebar"
+            aria-expanded="false"
+            title="打开导航"
+          >
+            <i data-lucide="menu"></i></button
+          ><span>科研工作台</span><i data-lucide="chevron-right"></i
+          ><strong id="breadcrumb-current">投入产出数据库</strong>
+        </div>
+        <div class="topbar-right">
+          <span class="service-status" id="service-status" role="status"
+            ><span class="status-dot"></span><span>正在连接数据服务</span></span
+          ><button
+            class="icon-button"
+            type="button"
+            data-open-provenance
+            aria-label="数据来源与使用边界"
+            title="数据来源与使用边界"
+          >
+            <i data-lucide="info"></i>
+          </button>
+        </div>
+      </header>
+      <main id="workspace-content" class="workspace-content" tabindex="-1">
+        <section
+          class="workspace-panel"
+          id="panel-database"
+          data-workspace-panel="database"
+          aria-labelledby="database-title"
+        >
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">DATA EXPLORER <span>01</span></p>
+              <h1 id="database-title">投入产出数据库</h1>
+              <p class="page-description">
+                中国省级多区域投入产出表 <span class="heading-separator">/</span>
+                <span id="dataset-period">2000-2023</span>
+              </p>
+            </div>
+            <button class="button button-primary" type="button" id="export-csv" disabled>
+              <i data-lucide="download"></i><span>导出查询 CSV</span>
+            </button>
+          </div>
+          <div class="dataset-meta">
+            <span
+              ><i data-lucide="calendar-range"></i><strong id="catalog-count">待载入</strong
+              ><span>年度数据</span></span
+            ><span
+              ><i data-lucide="map-pinned"></i><strong id="province-count">待载入</strong
+              ><span>个地区</span></span
+            ><span
+              ><i data-lucide="grid-2x2"></i><strong id="sector-count">待载入</strong
+              ><span>个行业</span></span
+            ><button type="button" class="inline-button" data-open-provenance>
+              来源与口径 <i data-lucide="arrow-up-right"></i>
+            </button>
+          </div>
+          <form id="database-filters" class="database-filters" aria-label="投入产出表查询条件">
+            <div class="filter-grid">
+              <label class="field"
+                ><span>数据年份</span
+                ><select id="filter-year" name="year" disabled>
+                  <option value="2023">2023 年</option>
+                </select></label
+              >
+              <label class="field"
+                ><span>数据分块</span
+                ><select id="filter-view" name="view" disabled>
+                  <option value="z">中间投入 Z</option>
+                </select></label
+              >
+              <label class="field"
+                ><span>行地区</span
+                ><select id="filter-row-province" name="row_province" disabled>
+                  <option value="all">全部地区</option>
+                </select></label
+              >
+              <label class="field"
+                ><span>行行业</span
+                ><select id="filter-row-sector" name="row_sector" disabled>
+                  <option value="all">全部行业</option>
+                </select></label
+              >
+              <label class="field"
+                ><span>列地区</span
+                ><select id="filter-col-province" name="col_province" disabled>
+                  <option value="all">全部地区</option>
+                </select></label
+              >
+              <label class="field"
+                ><span>列行业</span
+                ><select id="filter-col-sector" name="col_sector" disabled>
+                  <option value="all">全部行业</option>
+                </select></label
+              >
+            </div>
+            <div class="filter-bottom">
+              <span class="filter-context"
+                ><i data-lucide="list-filter"></i
+                ><span id="filter-context">按行供给、按列使用</span></span
+              >
+              <div class="filter-actions">
+                <button class="button button-quiet" id="reset-filters" type="button" disabled>
+                  <i data-lucide="rotate-ccw"></i>重置</button
+                ><button class="button button-dark" id="query-submit" type="submit" disabled>
+                  <i data-lucide="search"></i>查询数据
+                </button>
+              </div>
+            </div>
+          </form>
+          <section class="matrix-section" aria-labelledby="matrix-title">
+            <div class="matrix-toolbar">
+              <div class="matrix-heading">
+                <span class="matrix-symbol">Z</span>
+                <div>
+                  <h2 id="matrix-title">中间投入矩阵</h2>
+                  <p id="matrix-subtitle">正在载入年度目录</p>
+                </div>
+              </div>
+              <div class="matrix-controls">
+                <label class="compact-select"
+                  ><span>显示精度</span
+                  ><select id="number-format" aria-label="数值显示精度">
+                    <option value="2">2 位小数</option>
+                    <option value="4">4 位小数</option>
+                    <option value="scientific">科学计数</option>
+                  </select></label
+                ><label class="heatmap-control"
+                  ><input id="heatmap-toggle" type="checkbox" checked /><span
+                    class="toggle-track"
+                    aria-hidden="true"
+                  ></span
+                  ><span>热力着色</span></label
+                >
+              </div>
+            </div>
+            <div class="matrix-context">
+              <span id="matrix-direction"
+                ><i data-lucide="arrow-down-right"></i>行：供给部门
+                <span class="context-divider">/</span> 列：使用部门</span
+              ><span id="unit-label">金额单位：待核实</span>
+            </div>
+            <div class="table-container" id="table-container" aria-busy="true">
+              <div class="table-state" id="table-state" role="status">
+                <span class="loading-spinner" aria-hidden="true"></span>
+                <h3>正在读取数据目录</h3>
+                <p>连接年度投入产出数据服务</p>
+              </div>
+              <table class="io-table" id="io-table" hidden>
+                <caption class="sr-only" id="table-caption">
+                  投入产出矩阵
+                </caption>
+                <thead id="table-head"></thead>
+                <tbody id="table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div class="table-legend">
+                <span class="legend-scale" aria-hidden="true"></span
+                ><span>本页绝对值：低 <span class="legend-arrow">→</span> 高</span>
+              </div>
+              <span id="table-footnote">显示精度不影响原始数值与 CSV 导出</span>
+            </div>
+            <div class="pagination-row">
+              <div class="pagination-group">
+                <span class="pagination-axis">行</span><span id="row-range">0 / 0</span
+                ><label class="compact-select"
+                  ><select id="row-limit" aria-label="每页行数">
+                    <option value="20">20 行 / 页</option>
+                    <option value="40">40 行 / 页</option>
+                    <option value="60">60 行 / 页</option>
+                  </select></label
+                >
+                <div class="pagination-buttons">
+                  <button
+                    class="icon-button"
+                    type="button"
+                    id="row-prev"
+                    disabled
+                    aria-label="上一页行"
+                    title="上一页行"
+                  >
+                    <i data-lucide="chevron-left"></i></button
+                  ><button
+                    class="icon-button"
+                    type="button"
+                    id="row-next"
+                    disabled
+                    aria-label="下一页行"
+                    title="下一页行"
+                  >
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="pagination-group">
+                <span class="pagination-axis">列</span><span id="col-range">0 / 0</span
+                ><label class="compact-select"
+                  ><select id="col-limit" aria-label="每页列数">
+                    <option value="8">8 列 / 页</option>
+                    <option value="12">12 列 / 页</option>
+                    <option value="20">20 列 / 页</option>
+                  </select></label
+                >
+                <div class="pagination-buttons">
+                  <button
+                    class="icon-button"
+                    type="button"
+                    id="col-prev"
+                    disabled
+                    aria-label="上一页列"
+                    title="上一页列"
+                  >
+                    <i data-lucide="chevron-left"></i></button
+                  ><button
+                    class="icon-button"
+                    type="button"
+                    id="col-next"
+                    disabled
+                    aria-label="下一页列"
+                    title="下一页列"
+                  >
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="query-source">
+            <span
+              ><i data-lucide="file-spreadsheet"></i
+              ><span id="query-source">数据源尚未载入</span></span
+            ><button class="inline-button" type="button" data-open-provenance>
+              查看数据说明 <i data-lucide="arrow-up-right"></i>
+            </button>
+          </div>
+          <p class="sr-only" id="query-announcement" aria-live="polite"></p>
+        </section>
+        <div id="framework-panels"></div>
+        <footer class="workspace-footer">
+          <span>链研 CHAINLAB</span><span>数据 · 方法 · 证据</span
+          ><a
+            href="https://github.com/chuxin710-commits/industrial-chain-io-network-workflow"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub <i data-lucide="arrow-up-right"></i
+          ></a>
+        </footer>
+      </main>
+    </div>
+    <dialog class="workspace-dialog" id="provenance-dialog" aria-labelledby="provenance-title">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">DATA PROVENANCE</p>
+          <h2 id="provenance-title">数据来源与使用边界</h2>
+        </div>
+        <button
+          class="icon-button"
+          type="button"
+          data-close-dialog
+          aria-label="关闭数据说明"
+          title="关闭"
+        >
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="dialog-body">
+        <dl class="metadata-list" id="provenance-metadata"></dl>
+        <h3 class="dialog-section-title">口径与限制</h3>
+        <ul class="metadata-warnings" id="metadata-warnings"></ul>
+        <a
+          class="text-link"
+          href="https://github.com/chuxin710-commits/industrial-chain-io-network-workflow/blob/main/research/DATA_CONTRACT.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          >科研代码库数据契约 <i data-lucide="arrow-up-right"></i
+        ></a>
+      </div>
+    </dialog>
+    <dialog class="workspace-dialog" id="cell-dialog" aria-labelledby="cell-title">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">CELL RECORD</p>
+          <h2 id="cell-title">单元格记录</h2>
+        </div>
+        <button
+          class="icon-button"
+          type="button"
+          data-close-dialog
+          aria-label="关闭单元格记录"
+          title="关闭"
+        >
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="dialog-body">
+        <div class="cell-value-block">
+          <span>未按显示精度舍入的数值</span><strong id="cell-exact-value"></strong
+          ><button
+            class="icon-button"
+            type="button"
+            id="copy-cell-value"
+            aria-label="复制数值"
+            title="复制数值"
+          >
+            <i data-lucide="copy"></i>
+          </button>
+        </div>
+        <dl class="metadata-list" id="cell-metadata"></dl>
+      </div>
+    </dialog>
+    <div id="workspace-toast" class="workspace-toast" role="status" hidden></div>
+    <script type="module" src="/src/workspace.js"></script>
+  </body>
+</html>

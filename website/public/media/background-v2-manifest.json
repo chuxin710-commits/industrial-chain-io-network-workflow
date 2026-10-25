@@ -1,0 +1,167 @@
+{
+  "version": 2,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 32,
+  "shotCount": 8,
+  "shots": [
+    {
+      "id": "data-atlas",
+      "name": "DATA ATLAS",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "id": "production-engine",
+      "name": "PRODUCTION ENGINE",
+      "start": 4,
+      "end": 8
+    },
+    {
+      "id": "network-flow",
+      "name": "NETWORK FLOW",
+      "start": 8,
+      "end": 12
+    },
+    {
+      "id": "critical-hubs",
+      "name": "CRITICAL HUBS",
+      "start": 12,
+      "end": 16
+    },
+    {
+      "id": "shock-cascade",
+      "name": "SHOCK CASCADE",
+      "start": 16,
+      "end": 20
+    },
+    {
+      "id": "adaptive-recovery",
+      "name": "ADAPTIVE RECOVERY",
+      "start": 20,
+      "end": 24
+    },
+    {
+      "id": "evidence-pipeline",
+      "name": "EVIDENCE PIPELINE",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "id": "research-connected",
+      "name": "RESEARCH, CONNECTED",
+      "start": 28,
+      "end": 32
+    }
+  ],
+  "typography": false,
+  "visualSource": "Original procedural Three.js multi-scene concept; no empirical values or outcomes are depicted",
+  "videoCodec": "H.264",
+  "audioCodec": "AAC",
+  "audioSampleRate": 48000,
+  "renderedFrames": 960,
+  "bytes": 9904199,
+  "sha256": "58b2494818222fc0d02dcda44ea755b1be2377fc1251b642c94d51f6035da866",
+  "frameChecks": [
+    {
+      "time": 2,
+      "scene": "data-atlas",
+      "mean": 32.64137409960536,
+      "brightPixels": 98877,
+      "changedPixels": 71788
+    },
+    {
+      "time": 6,
+      "scene": "production-engine",
+      "mean": 46.55112654351822,
+      "brightPixels": 136952,
+      "changedPixels": 103554
+    },
+    {
+      "time": 10,
+      "scene": "network-flow",
+      "mean": 25.929082432941296,
+      "brightPixels": 41664,
+      "changedPixels": 65804
+    },
+    {
+      "time": 14,
+      "scene": "critical-hubs",
+      "mean": 38.51973379635179,
+      "brightPixels": 140722,
+      "changedPixels": 92621
+    },
+    {
+      "time": 18,
+      "scene": "shock-cascade",
+      "mean": 45.52033114747218,
+      "brightPixels": 128726,
+      "changedPixels": 101994
+    },
+    {
+      "time": 22,
+      "scene": "adaptive-recovery",
+      "mean": 29.600410236395582,
+      "brightPixels": 52935,
+      "changedPixels": 52727
+    },
+    {
+      "time": 26,
+      "scene": "evidence-pipeline",
+      "mean": 26.142326388685362,
+      "brightPixels": 61140,
+      "changedPixels": 38387
+    },
+    {
+      "time": 30,
+      "scene": "research-connected",
+      "mean": 20.2358667694674,
+      "brightPixels": 18797,
+      "changedPixels": 13033
+    }
+  ],
+  "distinctness": [
+    {
+      "from": 1,
+      "to": 2,
+      "meanDifference": 24.807291666666668
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "meanDifference": 33.78993055555556
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "meanDifference": 28.33101851851852
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "meanDifference": 30.973958333333332
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "meanDifference": 28.580439814814813
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "meanDifference": 19.82060185185185
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "meanDifference": 15.423032407407407
+    }
+  ],
+  "sourceFiles": [
+    "src/film-world.js",
+    "src/film-storyboard.js",
+    "src/film.js",
+    "scripts/compose.mjs"
+  ]
+}

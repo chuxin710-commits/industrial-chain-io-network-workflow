@@ -1,0 +1,212 @@
+{
+  "version": "methods-handbook-v1",
+  "repositoryCommit": "8f239665caa07f45f49901996ec2cd9afd4f8e79",
+  "files": [
+    {
+      "path": "research/DATA_CONTRACT.md",
+      "sha256": "ec27da77746c86dfcb0a8291337515b0e91e6cf1009f824eb0b2fb7ebf3500a2"
+    },
+    {
+      "path": "research/critical_sectors/METHODS.md",
+      "sha256": "cd613b0a55e81e10efef626d9f982edbaacf3defaac938d73b7033408fe5f212"
+    },
+    {
+      "path": "research/critical_sectors/model.py",
+      "sha256": "23746dfca0e3925d5773f8d35edc729515c55fa2991b3e2ec0c6f7b6f01d847e"
+    },
+    {
+      "path": "research/critical_sectors/legacy_sir.py",
+      "sha256": "ba7f40695decc72645784b10ede8e6589b17af50f466db8a0e96116255f30f07"
+    },
+    {
+      "path": "research/critical_sectors/published/config.json",
+      "sha256": "de4ab13cf516f877b848de70831d36d4c3bf3528ab9e74f7b4014ba9fe5dbfa4"
+    },
+    {
+      "path": "research/structure_resilience/METHODS.md",
+      "sha256": "379f42202196b523cd67d6603ecf868ba1d3c411afd154e25b1e9677101fc487"
+    },
+    {
+      "path": "research/structure_resilience/model.py",
+      "sha256": "3b300d0bd19f1a5f6e342d3671b86109b64ce250685269a4db0e16fe36f5d55b"
+    },
+    {
+      "path": "research/structure_resilience/run_experiments.py",
+      "sha256": "3162f03c0bc1b520bce0c5c988297be901696c7610390fa7484ad4a1f7879a52"
+    },
+    {
+      "path": "research/structure_resilience/published/config.json",
+      "sha256": "af32ec9c5b40ca7ea1689990b28b7e25e3b665359a0ba85c30897aa4f8f6ee5c"
+    },
+    {
+      "path": "website/server/topology.py",
+      "sha256": "8b27a43663429ad9ba711a29a1b53beec84a17e986e5207bb6e28e7c051ab80b"
+    }
+  ],
+  "critical": {
+    "version": "v1",
+    "years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "codes": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09",
+      "S10",
+      "S11",
+      "S12",
+      "S13",
+      "S14",
+      "S15",
+      "S16",
+      "S17",
+      "S18",
+      "S19",
+      "S20",
+      "S21",
+      "S22",
+      "S23",
+      "S24",
+      "S25",
+      "S26",
+      "S27",
+      "S28",
+      "S29",
+      "S30",
+      "S31",
+      "S32",
+      "S33",
+      "S34",
+      "S35",
+      "S36",
+      "S37",
+      "S38",
+      "S39",
+      "S40",
+      "S41",
+      "S42"
+    ],
+    "seed": 20261001,
+    "threshold": 0.010733280837600058,
+    "threshold_rule": "2009_mean_offdiagonal_A_strict_greater",
+    "support_rule": "freeze_each_year_baseline_mask_during_shock_and_restoration",
+    "calibration": {
+      "kind": "efficiency",
+      "k_beta": 0.10888034488834175,
+      "k_gamma": 0.1649387178212307,
+      "beta0": 0.3,
+      "gamma0": 0.1
+    },
+    "shock_fraction": 0.5,
+    "equal_amount_rule": "0.5*minimum_incident_offdiagonal_Z_in_year",
+    "intervention_years": [
+      2020,
+      2023
+    ],
+    "selection_lag": 1,
+    "priority_multiplier": 4,
+    "restoration_budget_shares": [
+      0.05,
+      0.1,
+      0.2
+    ],
+    "epsilon": 0.0001,
+    "initial": [
+      0.95,
+      0.03,
+      0.02
+    ],
+    "horizon": 5000,
+    "random_selection_draws": 2000,
+    "threshold_factors": [
+      0,
+      0.5,
+      1,
+      2
+    ],
+    "physical_unit": "unknown",
+    "price_basis": "unknown"
+  },
+  "structure": {
+    "years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "node_level": "national_42_sector_aggregate",
+    "threshold": 0.03121170876198651,
+    "threshold_rule": "2009_mean_offdiagonal_L_strict_greater",
+    "binary_topology": true,
+    "edge_direction": "supplier_row_to_buyer_column",
+    "ode_direction": "incoming_W_transpose",
+    "ode_denominator": "d_i+e_i*u_i+h_i*u_j",
+    "source_formula_sensitivity": "d_i+e_i+h_i*u_j",
+    "normalization": "X_it/X_i_2009",
+    "parameter_window": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "initial_amplitude": 0.2,
+    "trials": 64,
+    "seed": 20261001,
+    "main_terminal_time": 10,
+    "terminal_times": [
+      5,
+      10,
+      20
+    ],
+    "rtol": 1e-7,
+    "atol": 1e-9,
+    "robustness_draws": 200,
+    "removal_nodes": 5,
+    "cascade_tolerance": 0.1,
+    "amount_unit": "unknown",
+    "price_basis": "unknown",
+    "sector_names": "unverified"
+  }
+}

@@ -1,0 +1,55 @@
+.framework-flow-command, .flow-heading, .flow-toolbar, .flow-controls, .flow-actions {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.framework-flow-command { justify-content: space-between; margin-bottom: 28px; font-size: 13px; color: #667b70; }
+.flow-heading { justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.flow-heading h2 { font-size: 24px; margin: 8px 0 12px; font-weight: 550; }
+.flow-heading p:not(.eyebrow) { font-size: 13px; color: #667b70; }
+.flow-empty { min-height: 360px; display: grid; align-content: center; justify-items: center; gap: 20px; border-block: 1px solid #d9e3dd; }
+.flow-empty > svg { width: 46px; height: 46px; color: #72978a; stroke-width: 1; }
+.flow-empty h3 { font-size: 18px; font-weight: 500; color: #526b60; margin: 0; }
+.flow-toolbar { justify-content: space-between; padding: 14px 0; border-top: 1px solid #d5e1d9; }
+.flow-controls { min-width: 0; }
+.flow-controls label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #63796c; min-width: 0; }
+.flow-controls select, .flow-inspector > select { border: 1px solid #ceded4; background: #fff; padding: 9px; border-radius: 3px; font: inherit; font-size: 12px; color: #375b4b; min-width: 0; max-width: 230px; }
+.flow-segments { display: flex; border-bottom: 1px solid #ccdbd2; }
+.flow-segments button { border: 0; background: transparent; color: #6b7d72; padding: 10px; font: inherit; font-size: 12px; cursor: pointer; border-bottom: 2px solid transparent; }
+.flow-segments button[aria-pressed='true'] { border-color: #237462; color: #237462; background: #e7f1eb; }
+.flow-actions { gap: 6px; }
+.flow-actions .icon-button { width: 34px; height: 34px; }
+.flow-layout { display: grid; grid-template-columns: minmax(0, 1fr) 290px; border-block: 1px solid #d5e1d9; }
+.flow-surface { min-width: 0; background: #f7faf9; }
+.flow-legend { display: flex; flex-wrap: wrap; gap: 14px; padding: 16px; min-height: 48px; font-size: 11px; color: #6e8277; }
+.flow-legend span { display: flex; align-items: center; gap: 6px; }
+.flow-legend b { width: 8px; height: 8px; display: inline-block; border-radius: 2px; }
+#flow-canvas { width: 100%; height: 640px; touch-action: none; }
+.flow-foot { display: flex; justify-content: space-between; padding: 12px 16px; color: #73877b; font-size: 11px; }
+.flow-inspector { min-width: 0; border-left: 1px solid #d5e1d9; padding: 20px; max-height: 740px; overflow: auto; background: #fff; }
+.flow-inspector > label { display: block; font-size: 11px; color: #788c7f; margin-bottom: 10px; }
+.flow-inspector > select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
+#flow-detail h3 { font-size: 17px; line-height: 1.65; font-weight: 550; white-space: pre-line; margin: 12px 0; }
+#flow-detail h4, #flow-detail dt { font-size: 12px; margin: 20px 0 6px; font-weight: 550; }
+#flow-detail p, #flow-detail dd, #flow-detail li { font-size: 12px; line-height: 1.85; color: #607568; overflow-wrap: anywhere; }
+#flow-detail dd { margin: 0; white-space: pre-wrap; }
+#flow-detail ol, #flow-detail ul { padding-left: 20px; }
+#flow-detail .eyebrow { margin-top: 24px; }
+.flow-formula { font-family: ui-monospace, monospace; background: #f1f5f2; padding: 10px; }
+.flow-basis { color: #8a713e; font-size: 11px; }
+.flow-citation { display: flex; gap: 6px; font-size: 11px; line-height: 1.8; margin: 10px 0; color: #277663; overflow-wrap: anywhere; }
+.flow-citation svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; }
+.flow-boundary { color: #7a8070; font-size: 12px; line-height: 1.8; margin: 16px 0; }
+@media (max-width: 1100px) {
+  .flow-layout { grid-template-columns: 1fr; }
+  .flow-inspector { border-left: 0; border-top: 1px solid #d5e1d9; max-height: 480px; }
+  #flow-canvas { height: 570px; }
+}
+@media (max-width: 650px) {
+  .flow-heading h2 { font-size: 21px; }
+  .flow-controls { width: 100%; }
+  .flow-controls label { width: 100%; }
+  .flow-controls select { max-width: 100%; }
+  #flow-stage { flex: 1; width: 0; }
+  #flow-canvas { height: 490px; }
+  .flow-legend { gap: 9px; padding: 12px; }
+  .flow-inspector { padding: 16px; }
+}

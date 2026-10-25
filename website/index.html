@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#091114" />
+    <meta
+      name="description"
+      content="链研 CHAINLAB，连接产业链数据、方法与可复现研究的科研工作台。"
+    />
+    <title>链研 CHAINLAB | 产业链科研工作台</title>
+    <link rel="icon" type="image/svg+xml" href="/mark.svg" />
+  </head>
+  <body>
+    <a class="skip-link" href="#research">跳至研究工具链</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="链研首页"
+        ><span class="brand-mark"><i data-lucide="network"></i></span
+        ><span>链研 <b>CHAINLAB</b></span></a
+      >
+      <nav aria-label="主导航">
+        <a href="#research">研究工具链</a><a href="#foundation">研究底座</a>
+        <a href="/briefing.html">产业早报</a>
+      </nav>
+      <a class="header-entry" href="/workspace.html"
+        >进入平台 <i data-lucide="arrow-up-right"></i
+      ></a>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <video
+            id="hero-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            poster="/media/chainlab-background-poster-v2.jpg"
+          >
+            <source src="/media/chainlab-background-v2-1080p30.mp4" type="video/mp4" />
+          </video>
+          <div class="hero-shade"></div>
+        </div>
+        <div class="hero-topline">
+          <span><span class="status-dot"></span> INDUSTRIAL CHAIN RESEARCH</span
+          ><span>数据 · 方法 · 证据</span>
+        </div>
+        <div class="hero-center">
+          <p class="hero-eyebrow">连接产业，也连接研究。</p>
+          <h1 id="hero-title">链研<span>CHAINLAB</span></h1>
+          <p class="hero-subtitle">产业链科研工作台</p>
+          <a class="portal-entry" href="/workspace.html"
+            ><span>进入科研平台<small>ENTER THE WORKSPACE</small></span
+            ><i data-lucide="arrow-up-right"></i
+          ></a>
+          <a class="briefing-hero-entry" href="/briefing.html"
+            >产业与 AI 早报 <span>最近 72 小时</span><i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+        <div class="hero-chapter" aria-hidden="true">
+          <span id="chapter-index">01 / DATA ATLAS</span>
+          <p id="chapter-cn">让数据，立体起来。</p>
+          <small id="chapter-en">DATA BECOMES DIMENSION</small>
+        </div>
+        <div class="hero-bottom">
+          <button class="film-trigger" type="button" id="watch-film">
+            <span class="round-icon"><i data-lucide="play"></i></span
+            ><span>观看概念影片<small>THE CHAIN OF DISCOVERY · 00:32</small></span>
+          </button>
+          <a class="scroll-cue" href="#research" aria-label="向下浏览研究工具链"
+            ><span>向下探索</span><i data-lucide="arrow-down"></i
+          ></a>
+          <div class="hero-tools">
+            <button
+              class="icon-button"
+              id="motion-toggle"
+              type="button"
+              aria-label="暂停背景影片"
+              title="暂停背景影片"
+            >
+              <i data-lucide="pause"></i>
+            </button>
+            <button
+              class="icon-button"
+              id="sound-toggle"
+              type="button"
+              aria-label="开启原创音乐"
+              title="开启原创音乐"
+            >
+              <i data-lucide="volume-x"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+      <div class="process-strip" aria-label="研究流程">
+        <span>一个完整的研究循环</span>
+        <div>
+          <b>DATA</b><i data-lucide="arrow-right"></i><b>METHOD</b><i data-lucide="arrow-right"></i
+          ><b>EXPERIMENT</b><i data-lucide="arrow-right"></i><b>EVIDENCE</b>
+        </div>
+        <span class="strip-end">每一步，都有据可循。</span>
+      </div>
+      <section class="research-section" id="research" aria-labelledby="research-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">01 / RESEARCH, CONNECTED</p>
+            <h2 id="research-title">从一份数据，<br />到一条完整证据链。</h2>
+          </div>
+          <p class="section-description">
+            让数据、文献、方法与实验不再散落。<br />把产业链研究的每一个环节，<br />放回同一条可复现的工作流。
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-top"><i data-lucide="database"></i><span>01</span></div>
+            <h3>高质量数据集</h3>
+            <p>投入产出与产业关联数据，保留来源、口径和版本。</p>
+            <span class="feature-meta">DATA / 数据底座</span>
+          </article>
+          <article class="feature">
+            <div class="feature-top"><i data-lucide="workflow"></i><span>02</span></div>
+            <h3>可复用方法体系</h3>
+            <p>结构诊断、关键行业识别与冲击模拟，在统一定义下比较。</p>
+            <span class="feature-meta">METHOD / 方法体系</span>
+          </article>
+          <article class="feature">
+            <div class="feature-top"><i data-lucide="flask-conical"></i><span>03</span></div>
+            <h3>可复现实验</h3>
+            <p>从参数到结果，为每次运行留下清晰的研究记录。</p>
+            <span class="feature-meta">EXPERIMENT / 实验工作流</span>
+          </article>
+          <article class="feature">
+            <div class="feature-top"><i data-lucide="library-big"></i><span>04</span></div>
+            <h3>团队文献与代码</h3>
+            <p>共享文献知识与研究代码，让课题组经验持续积累。</p>
+            <span class="feature-meta">COLLABORATION / 团队协作</span>
+          </article>
+          <article class="feature">
+            <div class="feature-top"><i data-lucide="scan-line"></i><span>05</span></div>
+            <h3>研究核验</h3>
+            <p>校验数据、公式、实验与解释，让结论经得起回看。</p>
+            <span class="feature-meta">VERIFICATION / 核验机制</span>
+          </article>
+          <article class="feature">
+            <div class="feature-top"><i data-lucide="file-check-2"></i><span>06</span></div>
+            <h3>规范研究交付</h3>
+            <p>项目目录、说明模板与投稿检查，连接研究过程和最终成果。</p>
+            <span class="feature-meta">DELIVERY / 科研规范</span>
+          </article>
+        </div>
+      </section>
+      <section class="foundation-section" id="foundation" aria-labelledby="foundation-title">
+        <div class="foundation-art" data-scene="mechanism">
+          <canvas id="network-canvas" aria-label="三维数据矩阵与分层产业网络概念动画"></canvas>
+          <button
+            class="icon-button scene-motion"
+            type="button"
+            aria-label="暂停产业网络动画"
+            title="暂停产业网络动画"
+            data-name="产业网络"
+          >
+            <i data-lucide="pause"></i>
+          </button>
+          <div class="scene-fallback" hidden>产业网络 · 静态概念图</div>
+          <div class="art-caption">
+            <span>42 / CONNECTED NODES</span><span>CONCEPT NETWORK · 非实证网络</span>
+          </div>
+        </div>
+        <div class="foundation-content">
+          <p class="section-kicker">02 / BUILT ON EVIDENCE</p>
+          <h2 id="foundation-title">研究可以复杂。<br />过程应当清晰。</h2>
+          <p>用共同的数据定义组织方法，用可复算的实验检验判断。让每一个结论，都能回到它的来源。</p>
+          <div class="principles">
+            <div><span>01</span><b>规范</b><small>RIGOR</small></div>
+            <div><span>02</span><b>复现</b><small>REPRODUCE</small></div>
+            <div><span>03</span><b>追溯</b><small>TRACE</small></div>
+          </div>
+          <a class="text-link" href="/workspace.html"
+            >进入科研工作台 <i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+      </section>
+      <section
+        class="network-section research-band"
+        id="industry-network"
+        aria-labelledby="industry-title"
+      >
+        <div class="band-content">
+          <p class="section-kicker">03 / FIND THE CRITICAL CONNECTIONS</p>
+          <h2 id="industry-title">关键行业，<br />不止一个排名。</h2>
+          <p class="band-description">
+            从局部联系到整体结构，辨识连接密集的枢纽、跨群落的桥梁，以及牵动产业链的关键路径。
+          </p>
+          <div class="band-topics">
+            <span>中心性</span><span>群落结构</span><span>关键路径</span>
+          </div>
+          <a class="text-link" href="/workspace.html"
+            >进入科研工作台 <i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+        <div class="research-art" data-scene="network">
+          <div class="scene-heading"><span>STRUCTURAL ATLAS</span><span>01 / NETWORK</span></div>
+          <canvas aria-label="球状复杂网络概念图，展示节点、枢纽与流动连接"></canvas>
+          <button
+            class="icon-button scene-motion"
+            type="button"
+            aria-label="暂停球状网络动画"
+            title="暂停球状网络动画"
+            data-name="球状网络"
+          >
+            <i data-lucide="pause"></i>
+          </button>
+          <div class="scene-fallback" hidden>结构网络 · 静态概念图</div>
+          <div class="art-caption">
+            <span>72 / CONCEPT NODES</span><span>概念演示 · 非实证网络</span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="globe-section research-band"
+        id="regional-links"
+        aria-labelledby="regional-title"
+      >
+        <div class="band-content">
+          <p class="section-kicker">04 / ACROSS REGIONS, ALONG THE CHAIN</p>
+          <h2 id="regional-title">连接有方向。<br />影响会跨越边界。</h2>
+          <p class="band-description">
+            将区域与行业的关联放回空间。沿着投入与产出的方向，观察区域连接、依赖关系与潜在传导路径。
+          </p>
+          <div class="band-topics">
+            <span>区域关联</span><span>流向追踪</span><span>空间比较</span>
+          </div>
+          <a class="text-link" href="/workspace.html"
+            >进入科研工作台 <i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+        <div class="research-art" data-scene="globe">
+          <div class="scene-heading"><span>CONNECTED GEOGRAPHIES</span><span>02 / FLOW</span></div>
+          <canvas aria-label="真实陆地轮廓的地球概念图，箭头沿示意传导路径流动"></canvas>
+          <button
+            class="icon-button scene-motion"
+            type="button"
+            aria-label="暂停地球路径动画"
+            title="暂停地球路径动画"
+            data-name="地球路径"
+          >
+            <i data-lucide="pause"></i>
+          </button>
+          <div class="scene-fallback" hidden>区域关联 · 静态概念图</div>
+          <div class="art-caption">
+            <span>LAND / NATURAL EARTH</span><span>示意路径 · 非真实贸易流</span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="resilience-section research-band"
+        id="shock-recovery"
+        aria-labelledby="resilience-title"
+      >
+        <div class="band-content">
+          <p class="section-kicker">05 / FOLLOW THE SHOCK, FIND THE RESPONSE</p>
+          <h2 id="resilience-title">从一次冲击，<br />看见恢复的可能。</h2>
+          <p class="band-description">
+            观察局部断裂如何沿分支扩散，替代连接如何承压、绕行与重建。在明确假设下，比较冲击中的传递能力与恢复路径。
+          </p>
+          <div class="band-topics">
+            <span>连锁反应</span><span>替代承压</span><span>渐进重建</span>
+          </div>
+          <a class="text-link" href="/workspace.html"
+            >进入科研工作台 <i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+        <div class="research-art" data-scene="resilience">
+          <div class="scene-heading">
+            <span>RESILIENCE IN MOTION</span><span>03 / RESPONSE</span>
+          </div>
+          <canvas
+            aria-label="分支链条网络：局部链环破碎，冲击逐级扩散，备用链维持下游连接，受损链环分段柔和重建"
+          ></canvas>
+          <div class="resilience-legend">
+            <span><i></i>主链连接</span><span><i></i>级联受损</span><span><i></i>替代承压</span>
+          </div>
+          <div class="resilience-timeline" role="group" aria-label="冲击恢复阶段">
+            <button type="button" data-scene-time="1" aria-pressed="true" title="正常连接">
+              稳态
+            </button>
+            <button type="button" data-scene-time="3.35" aria-pressed="false" title="局部链环破裂">
+              破裂
+            </button>
+            <button type="button" data-scene-time="5.4" aria-pressed="false" title="分支连锁扩散">
+              连锁
+            </button>
+            <button type="button" data-scene-time="8" aria-pressed="false" title="替代路径承压绕行">
+              绕行
+            </button>
+            <button
+              type="button"
+              data-scene-time="11.3"
+              aria-pressed="false"
+              title="受损链环逐段重建"
+            >
+              重建
+            </button>
+            <button type="button" data-scene-time="17" aria-pressed="false" title="连接恢复">
+              恢复
+            </button>
+          </div>
+          <button
+            class="icon-button scene-motion"
+            type="button"
+            aria-label="暂停冲击恢复动画"
+            title="暂停冲击恢复动画"
+            data-name="冲击恢复"
+          >
+            <i data-lucide="pause"></i>
+          </button>
+          <div class="scene-fallback" hidden>冲击与恢复 · 静态概念图</div>
+          <div class="art-caption">
+            <span class="scene-phase">01 / CONNECTED</span><span>概念演示 · 非模型计算</span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="evidence-section research-band"
+        id="evidence-chain"
+        aria-labelledby="evidence-title"
+      >
+        <div class="band-content">
+          <p class="section-kicker">06 / EVERY RESULT HAS A HISTORY</p>
+          <h2 id="evidence-title">结论不是终点。<br />证据始终相连。</h2>
+          <p class="band-description">
+            让数据版本、方法参数、运行记录与结果文件形成同一条证据链。研究可以交接，结论可以回溯，实验可以重新开始。
+          </p>
+          <div class="band-topics">
+            <span>版本留痕</span><span>实验核验</span><span>团队复用</span>
+          </div>
+          <a class="text-link" href="/workspace.html"
+            >进入科研工作台 <i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+        <div class="research-art" data-scene="evidence">
+          <div class="scene-heading">
+            <span>THE RESEARCH LINEAGE</span><span>04 / EVIDENCE</span>
+          </div>
+          <canvas aria-label="研究证据树概念图，数据、方法、实验与结果通过分支相连"></canvas>
+          <button
+            class="icon-button scene-motion"
+            type="button"
+            aria-label="暂停研究证据树动画"
+            title="暂停研究证据树动画"
+            data-name="研究证据树"
+          >
+            <i data-lucide="pause"></i>
+          </button>
+          <div class="scene-fallback" hidden>研究证据链 · 静态概念图</div>
+          <div class="art-caption">
+            <span>DATA → METHOD → RUN → EVIDENCE</span><span>研究流程概念演示</span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="briefing-section research-band"
+        id="daily-briefing"
+        aria-labelledby="briefing-title"
+      >
+        <div class="band-content">
+          <p class="section-kicker">07 / FOLLOW THE SIGNALS</p>
+          <h2 id="briefing-title">看见全球变化，<br />找到研究的新问题。</h2>
+          <p class="band-description">
+            最近三天的产业链、供应链与 AI
+            前沿消息。每天更新，保留来源与发布时间，让阅读回到原始报道。
+          </p>
+          <div class="band-topics"><span>产业链</span><span>供应链</span><span>AI 前沿</span></div>
+          <a class="text-link" href="/briefing.html"
+            >阅读产业与 AI 早报 <i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+        <div class="research-art" data-scene="briefing">
+          <div class="scene-heading">
+            <span>THE GLOBAL NEWS DESK</span><span>05 / BRIEFING</span>
+          </div>
+          <canvas aria-label="早报概念动画：全球消息沿三条路径汇集为产业与 AI 早报"></canvas>
+          <button
+            class="icon-button scene-motion"
+            type="button"
+            aria-label="暂停早报动画"
+            title="暂停早报动画"
+            data-name="早报"
+          >
+            <i data-lucide="pause"></i>
+          </button>
+          <div class="scene-fallback" hidden>全球消息汇集为每日早报 · 概念展示</div>
+          <div class="art-caption">
+            <span>72 HOURS / DAILY AT 07:00 CST</span><span>采集流程概念 · 非实时新闻分布</span>
+          </div>
+        </div>
+      </section>
+      <section class="closing-section">
+        <p class="section-kicker">THE NEXT CHAIN STARTS HERE</p>
+        <h2>让研究，连接起来。</h2>
+        <a href="/workspace.html" class="closing-entry"
+          >进入链研 <i data-lucide="arrow-up-right"></i
+        ></a>
+      </section>
+    </main>
+    <footer>
+      <a class="brand" href="/">链研 <b>CHAINLAB</b></a
+      ><span>产业链科研工作台</span><span>© 2026 CHAINLAB</span>
+    </footer>
+    <dialog id="film-dialog" aria-label="链研概念影片">
+      <div class="film-dialog-header">
+        <span>THE CHAIN OF DISCOVERY <small>链研概念影片</small></span
+        ><button
+          class="icon-button"
+          id="close-film"
+          type="button"
+          aria-label="关闭影片"
+          title="关闭影片"
+        >
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <video
+        id="film-player"
+        controls
+        playsinline
+        preload="none"
+        poster="/media/chainlab-poster-v2.jpg"
+      >
+        <source src="/media/chainlab-concept-v2-1080p30.mp4" type="video/mp4" />
+      </video>
+      <div class="film-dialog-footer">
+        <span>原创电子纯音乐 · 3D 概念视觉 · 中英文动态文字</span
+        ><a href="/media/chainlab-concept-v2-1080p30.mp4" download title="下载 1080p 概念影片"
+          ><i data-lucide="download"></i><span>1080P / 30FPS</span></a
+        >
+      </div>
+    </dialog>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

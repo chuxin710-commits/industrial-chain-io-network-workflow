@@ -1,0 +1,48 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 32,
+  "nodes": 42,
+  "edges": 85,
+  "visualSource": "original procedural Three.js concept, not empirical observations",
+  "videoCodec": "H.264",
+  "audioCodec": "AAC",
+  "audioSampleRate": 48000,
+  "renderedFrames": 960,
+  "sha256": "241c4417a2ab39831f563a84893860171412168187d821fb1884117990b5aacd",
+  "bytes": 21610071,
+  "chapters": [
+    "Data foundation",
+    "Network & methods",
+    "Experiment & evidence",
+    "Research, connected"
+  ],
+  "sourceFiles": [
+    "src/network-scene.js",
+    "src/film.js",
+    "scripts/compose.mjs"
+  ],
+  "frameChecks": [
+    {
+      "time": 2,
+      "mean": 21.386821630573824,
+      "brightPixels": 32131
+    },
+    {
+      "time": 10,
+      "mean": 27.372780992618043,
+      "brightPixels": 61454
+    },
+    {
+      "time": 18,
+      "mean": 28.804729295084872,
+      "brightPixels": 63897
+    },
+    {
+      "time": 26,
+      "mean": 22.60254822520106,
+      "brightPixels": 38483
+    }
+  ]
+}
