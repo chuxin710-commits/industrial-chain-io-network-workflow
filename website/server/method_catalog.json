@@ -1,5 +1,5 @@
 {
-  "version": "03631a76d9cd86f4a9729ee7f91834063cc88eeb643adcff4ff3b33c87a39758",
+  "version": "72fad9e91e4a5271abab94d85721af62c08269edd0cbcfb69b1925bcbc3e419f",
   "methods": [
     {
       "id": "contract",
@@ -1130,7 +1130,7 @@
   ],
   "sources": {
     "version": "methods-handbook-v1",
-    "repositoryCommit": "3abb182b46f41bbdce5ce40a70b429c0471bbdc0",
+    "repositoryCommit": "5678140cf4cc8fb4741c43294f4c6d4e81034f2b",
     "files": [
       {
         "path": "research/DATA_CONTRACT.md",

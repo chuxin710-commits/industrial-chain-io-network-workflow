@@ -19,7 +19,7 @@ ProtectSystem=strict
 ProtectHome=true
 ReadOnlyPaths=/opt/chainlab
 ReadWritePaths=/var/lib/chainlab/library
-MemoryMax=512M
+MemoryMax=768M
 TasksMax=64
 LimitNOFILE=2048
 

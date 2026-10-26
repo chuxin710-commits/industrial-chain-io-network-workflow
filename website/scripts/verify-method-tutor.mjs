@@ -57,7 +57,9 @@ try {
   if (!live) { assert.equal(calls[0].method_id, 'direct'); assert.equal(calls[0].formula_index, 0); }
   await page.fill('#tutor-question', '阈值 tau 和图上展示边数上限有什么区别？改变阈值会影响结构指标吗？');
   await page.click('#tutor-send');
-  await page.waitForFunction(() => document.querySelectorAll('.tutor-answer').length === 2, null, { timeout: 420000 });
+  await page.waitForFunction(() => document.querySelectorAll('.tutor-answer').length === 2 || document.querySelector('#tutor-status').textContent.includes('未能'), null, { timeout: 420000 });
+  assert.equal(await page.locator('.tutor-answer').count(), 2, await page.locator('#tutor-status').innerText());
+  if (live) assert.equal(await page.locator('.research-evidence').count(), 2);
   if (!live) assert.equal(calls[1].history.length, 2);
   report.followup = true;
   for (const viewport of [{ width: 1440, height: 1050 }, { width: 390, height: 844 }, { width: 320, height: 568 }]) {

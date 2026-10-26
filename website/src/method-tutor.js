@@ -1,4 +1,5 @@
 import './method-tutor.css';
+import { evidenceHTML } from './research-evidence.js';
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (s) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -75,7 +76,7 @@ export function createMethodTutor({ refreshIcons }) {
     abort = new AbortController();
     busy = true;
     controls();
-    $('#tutor-status').textContent = '正在结合当前方法与公式解释…';
+    $('#tutor-status').textContent = '正在检索文献并结合当前方法与公式解释…';
     try {
       let job = await request('/ai/explain', { method_id: method.id, formula_index: formulaIndex, question, history: history.slice(-4) }, abort.signal);
       const deadline = Date.now() + 420000;
@@ -93,7 +94,9 @@ export function createMethodTutor({ refreshIcons }) {
       article.className = 'tutor-answer';
       article.innerHTML = `<h3>${esc(question)}</h3><p>${esc(result.answer)}</p><h4>直观理解</h4><p>${esc(result.intuition)}</p><h4>逐步拆解</h4><ol>${result.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol><h4>教学示例</h4><p>${esc(result.example)}</p><h4>误区与边界</h4><ul>${result.pitfalls.map((s) => `<li>${esc(s)}</li>`).join('')}</ul><details><summary>理解自检</summary><p>${esc(result.check)}</p></details><small>${esc(result.model)} · 手册版本 ${esc(result.version.slice(0, 10))}</small>`;
       $('#tutor-conversation').append(article);
-      history.push({ role: 'user', content: question }, { role: 'assistant', content: JSON.stringify(result).slice(0, 10000) });
+      article.insertAdjacentHTML('beforeend', evidenceHTML(result.retrieval, result.citations));
+      const dialogue = Object.fromEntries(['answer', 'intuition', 'steps', 'example', 'pitfalls', 'check'].map((key) => [key, result[key]]));
+      history.push({ role: 'user', content: question }, { role: 'assistant', content: JSON.stringify(dialogue).slice(0, 10000) });
       history = history.slice(-4);
       while ($('#tutor-conversation').children.length > 6) $('#tutor-conversation').firstElementChild.remove();
       $('#tutor-question').value = '';

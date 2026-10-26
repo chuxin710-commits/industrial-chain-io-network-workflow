@@ -101,6 +101,13 @@ def handle_library(handler):
             reply(handler,202,engine(handler.server).start(data.get('theme')));return
         if path=='/api/library/ai/explain' and method=='POST':
             reply(handler,202,tutor(handler.server).start(user['id'],data));return
+        if path=='/api/library/ai/topology' and method=='POST':
+            from topology_ai import analyst
+            reply(handler,202,analyst(handler.server).start(user['id'],data));return
+        topology_job=re.fullmatch('/api/library/ai/topology/([a-f0-9]{32})',path)
+        if topology_job and method=='GET':
+            from topology_ai import analyst
+            reply(handler,200,analyst(handler.server).job(user['id'],topology_job[1]));return
         explanation=re.fullmatch('/api/library/ai/explain/([a-f0-9]{32})',path)
         if explanation and method=='GET':
             reply(handler,200,tutor(handler.server).job(user['id'],explanation[1]));return

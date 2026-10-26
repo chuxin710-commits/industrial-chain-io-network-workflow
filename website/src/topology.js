@@ -9,8 +9,10 @@ import {
   ImageDown,
   Braces,
   LoaderCircle,
+  Sparkles,
 } from 'lucide';
 import { layoutInWorker } from './topology-worker-client.js';
+import { createTopologyAI } from './topology-ai.js';
 import './topology.css';
 
 export const topologyIcons = {
@@ -24,6 +26,7 @@ export const topologyIcons = {
   ImageDown,
   Braces,
   LoaderCircle,
+  Sparkles,
 };
 const escape = (value) =>
   String(value ?? '').replace(
@@ -107,6 +110,8 @@ export function createTopologyPanel({ refreshIcons, toast }) {
   const movedNodes = new Set();
   const canvas = $('#topo-canvas'),
     context = canvas.getContext('2d');
+  const ai = createTopologyAI({ section, refreshIcons, stopPlayback: stop,
+    getContext: () => ({ frames, frameIndex, selected }) });
 
   function selections() {
     return [...$('#topo-years').querySelectorAll('input:checked')]
@@ -154,6 +159,7 @@ export function createTopologyPanel({ refreshIcons, toast }) {
     );
   }
   function renderResult() {
+    ai.update();
     const frame = frames[frameIndex],
       m = frame.metrics;
     $('#topo-current-year').textContent = `${frame.year} 年`;
@@ -485,6 +491,7 @@ export function createTopologyPanel({ refreshIcons, toast }) {
       status('请至少选择一个年份。', true);
       return;
     }
+    ai.reset();
     controller?.abort();
     stop();
     controller = new AbortController();
