@@ -51,9 +51,11 @@ try {
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${panel} overflow ${viewport.width}`);
       await page.screenshot({ path: `${output}/${panel.replace('/','-')}-${viewport.width}.png` });
     }
+    const briefingResponse = page.waitForResponse(r => new URL(r.url()).pathname === '/api/briefing');
     await page.goto(`${base}/briefing.html`, { waitUntil: 'domcontentloaded' });
+    assert.ok((await briefingResponse).ok(), 'Briefing data loads successfully');
     await page.locator('.masthead').waitFor();
-    await page.waitForTimeout(500);
+    await page.waitForFunction(() => !document.querySelector('#status').textContent.includes('正在读取'));
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
     await page.screenshot({ path: `${output}/briefing-${viewport.width}.png` });
     report.checks.push({ viewport, hero, noOverflow:true });
