@@ -78,3 +78,13 @@ Use the existing incremental feature deployment, including these six media files
 `research-resilience.jpg`, `research-evidence.jpg`, `research-briefing.jpg`.
 No database migration is required. The preceding server release is
 `/opt/chainlab/releases/20261026T074523Z`.
+
+Published release: `/opt/chainlab/releases/20261027T123302Z`, implementation
+commit `85ef79d`. The archive SHA-256 is
+`0a0da639c0d4a1bed11d0014d9a996b1259a4bef5bf3e3a16e3379d044b0cee6`.
+Server health, 24-year coverage, topology readiness and Nginx validation passed.
+The public visual sweep passed all four viewports with no page errors or
+horizontal overflow. Public deployment acceptance also verified the moving
+1080p video and five interactive scenes at desktop/mobile sizes. These are
+browser-native HTTPS checks from one client environment, not an independent
+multi-region connectivity or physical-device performance test.
