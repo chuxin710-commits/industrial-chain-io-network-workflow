@@ -4,9 +4,9 @@ import { CASCADE_NODES, CASCADE_EDGES, cascadePose } from './research-models.js'
 
 const X = new THREE.Vector3(1, 0, 0);
 const steel = new THREE.Color(0x91a1a6),
-  teal = new THREE.Color(0x378e90);
+  teal = new THREE.Color(0x397edb);
 const damage = new THREE.Color(0xd96b57),
-  lime = new THREE.Color(0x95b641);
+  lime = new THREE.Color(0x168d98);
 const ease = (a, b, t) => THREE.MathUtils.smoothstep(t, a, b);
 
 function arc(start = 0, span = Math.PI * 2, closed = true) {

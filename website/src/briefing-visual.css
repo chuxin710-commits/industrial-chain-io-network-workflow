@@ -1,0 +1,23 @@
+body { background: var(--surface); color: var(--text); font-family: Inter, 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+.site-header { border-bottom: 1px solid var(--border); min-height: 76px; }
+.brand { color: var(--text); }
+.brand span { color: var(--brand); font-weight: 650; }
+.site-header nav { color: var(--text-secondary); }
+.masthead { padding-top: 26px; border-bottom: 2px solid var(--brand); }
+.masthead h1 { color: var(--text); font-weight: 650; font-size: 36px; }
+.eyebrow { color: var(--brand); }
+.subtitle { color: var(--text-muted); }
+.highlight { background: var(--surface-soft); border-color: var(--border); border-top-color: var(--accent); }
+.highlight strong { color: var(--text); }
+.tabs button[aria-selected='true'] { background: var(--brand); color: white; }
+.view-tab[aria-selected='true'] { color: var(--brand); border-color: var(--brand); }
+.story h3 { color: var(--text); }
+.story h3 a:hover { color: var(--brand); }
+.topic.industry { color: var(--brand); }
+.topic.supply { color: var(--accent-ink); }
+.topic.ai { color: var(--text-secondary); }
+@media(max-width:600px) {
+  .masthead { padding-top: 14px; }
+  .masthead h1 { font-size: 28px; }
+  .site-header { min-height: 64px; }
+}

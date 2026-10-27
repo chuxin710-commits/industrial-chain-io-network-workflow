@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { shotAt } from './film-storyboard.js';
 import './styles.css';
+import './home-visual.css';
 
 createIcons({ icons });
 gsap.registerPlugin(ScrollTrigger);
@@ -123,6 +124,8 @@ if (!reduced) {
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
+  const heroCenter = document.querySelector('.hero-center');
+  heroCenter.classList.add('is-entering');
   gsap.from('.hero-center > *', {
     y: 20,
     opacity: 0,
@@ -130,6 +133,8 @@ if (!reduced) {
     stagger: 0.13,
     delay: 0.2,
     ease: 'power3.out',
+    clearProps: 'transform,opacity',
+    onComplete: () => heroCenter.classList.remove('is-entering'),
   });
   gsap.to('.hero-media', {
     scale: 1.09,

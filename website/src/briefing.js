@@ -1,6 +1,7 @@
 import { createIcons, ArrowUpRight, ArrowLeft, ArrowRight, RefreshCw, Search, Newspaper, Bookmark, Check, X, Download, Copy, AlignJustify, RotateCcw } from 'lucide';
 import { topics, normalizeItems, filterItems, cleanPersonal, toMarkdown } from './briefing-model.js';
 import './briefing.css';
+import './briefing-visual.css';
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const icon = (name) => `<i data-lucide="${name}"></i>`;
 const icons = () => createIcons({ icons: { ArrowUpRight, ArrowLeft, ArrowRight, RefreshCw, Search, Newspaper, Bookmark, Check, X, Download, Copy, AlignJustify, RotateCcw } });

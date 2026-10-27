@@ -1,0 +1,26 @@
+:root {
+  color-scheme: light;
+  --brand: #205ecf;
+  --brand-hover: #174aa7;
+  --brand-soft: #edf3ff;
+  --brand-line: #bfd1f2;
+  --accent: #e77932;
+  --accent-ink: #a64b17;
+  --accent-soft: #fff3e9;
+  --accent-line: #f2cfb4;
+  --text: #20242b;
+  --text-secondary: #465166;
+  --text-muted: #69768a;
+  --surface: #ffffff;
+  --surface-soft: #f7f9fc;
+  --border: #e0e6ef;
+  --border-strong: #c6d0df;
+  --focus: #205ecf;
+}
+
+::selection { background: #cfe0ff; color: #20242b; }
+button, a, input, select, textarea { accent-color: var(--brand); }
+:is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}

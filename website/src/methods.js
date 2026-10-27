@@ -153,7 +153,7 @@ export function createMethodsPanel({ refreshIcons, toast }) {
           $('#method-budget-label').textContent = `${share * 100}%`;
           const maximum = Math.max(...frame.efficiency, 1e-12);
           $('#method-demo-values').innerHTML =
-            `<p>受损交易 ${format(frame.loss)} · 恢复预算 ${format(frame.budget)}</p><div class="method-e-bars">${frame.efficiency.map((v, n) => `<div><span>${['基准 C', '受损 C', '恢复 C'][n]}</span><i style="--bar:${(100 * v) / maximum}%;--bar-color:${['#538d80', '#bd8370', '#627da6'][n]}"></i><b>${format(v)}</b></div>`).join('')}</div>`;
+            `<p>受损交易 ${format(frame.loss)} · 恢复预算 ${format(frame.budget)}</p><div class="method-e-bars">${frame.efficiency.map((v, n) => `<div><span>${['基准 C', '受损 C', '恢复 C'][n]}</span><i style="--bar:${(100 * v) / maximum}%;--bar-color:${['#69768a', '#e77932', '#627da6'][n]}"></i><b>${format(v)}</b></div>`).join('')}</div>`;
         } else
           $('#method-demo-values').innerHTML =
             `<p>保留 ${weights.flat().filter((v) => v > 0).length} 条非自环边</p><p>加权效率 C = ${format(frame.efficiency[0])}</p>`;
@@ -182,12 +182,12 @@ export function createMethodsPanel({ refreshIcons, toast }) {
           const cx = (sx + tx) / 2 + nx * 16,
             cy = (sy + ty) / 2 + ny * 16;
           const selected = matrixMode && u === i && v === j;
-          svg += `<path d="M${sx},${sy} Q${cx},${cy} ${tx},${ty}" fill="none" stroke="${selected ? '#bb7643' : '#8ab3a8'}" stroke-width="${selected ? 3 : 1.5}" marker-end="url(#method-arrow)"/><text x="${cx + nx * 10}" y="${cy + ny * 10}" text-anchor="middle" font-size="11" fill="#47685c">${weights[u][v].toFixed(3)}</text>`;
+          svg += `<path d="M${sx},${sy} Q${cx},${cy} ${tx},${ty}" fill="none" stroke="${selected ? '#a64b17' : '#69768a'}" stroke-width="${selected ? 3 : 1.5}" marker-end="url(#method-arrow)"/><text x="${cx + nx * 10}" y="${cy + ny * 10}" text-anchor="middle" font-size="11" fill="#465166">${weights[u][v].toFixed(3)}</text>`;
         }
       svg += pos
         .map(
           ([x, y], n) =>
-            `<circle cx="${x}" cy="${y}" r="21" fill="${n === 1 && kind === 'recovery' ? '#bd8370' : '#2e7b6a'}"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-size="14" fill="white">${demo.labels[n]}</text>`,
+            `<circle cx="${x}" cy="${y}" r="21" fill="${n === 1 && kind === 'recovery' ? '#e77932' : '#205ecf'}"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-size="14" fill="white">${demo.labels[n]}</text>`,
         )
         .join('');
       $('#method-demo-graph').innerHTML = svg;

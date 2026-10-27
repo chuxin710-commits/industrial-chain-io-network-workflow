@@ -12,7 +12,7 @@ export function createResearchFlow(root, { refreshIcons, toast, onEdit }) {
     <div id="flow-content" hidden>
       <div class="flow-toolbar"><div class="flow-controls"><label>阶段<select id="flow-stage"><option value="all">全部阶段</option></select></label><div class="flow-segments" role="group" aria-label="导图层级"><button id="flow-overview" type="button" aria-pressed="true">方案总览</button><button id="flow-steps" type="button" aria-pressed="false">实施步骤</button></div><select id="flow-direction" aria-label="导图方向"><option value="LR">横向</option><option value="TB">纵向</option></select></div>
       <div class="flow-actions">${iconButton('flow-fit', 'maximize', '适应画布')}${iconButton('flow-plus', 'plus', '放大')}${iconButton('flow-minus', 'minus', '缩小')}${iconButton('flow-reset', 'rotate-ccw', '重新布局')}${iconButton('flow-png', 'image', '导出当前导图 PNG')}${iconButton('flow-drawio', 'file-down', '导出可编辑 draw.io 文件')}</div></div>
-      <div class="flow-layout"><div class="flow-surface"><div class="flow-legend"><span><b style="background:#81a79c"></b>研究阶段</span><span><b style="background:#559b8c"></b>所选方案</span><span><b style="background:#7da4b6"></b>数据准备</span><span><b style="background:#c2a361"></b>研究核验</span></div><div id="flow-canvas" role="img" aria-label="所选方案的研究流程思维导图"></div><div class="flow-foot"><span id="flow-count"></span><span id="flow-zoom"></span></div></div>
+      <div class="flow-layout"><div class="flow-surface"><div class="flow-legend"><span><b style="background:#69768a"></b>研究阶段</span><span><b style="background:#205ecf"></b>所选方案</span><span><b style="background:#7da4b6"></b>数据准备</span><span><b style="background:#e77932"></b>研究核验</span></div><div id="flow-canvas" role="img" aria-label="所选方案的研究流程思维导图"></div><div class="flow-foot"><span id="flow-count"></span><span id="flow-zoom"></span></div></div>
       <aside class="flow-inspector"><label for="flow-node">节点详情</label><select id="flow-node" aria-label="选择导图节点"></select><div id="flow-detail"></div></aside></div>
       <p class="flow-boundary">研究草案 · 阶段顺序见编号；同阶段分支为所选候选方案，组合条件仍需核验。步骤来自当前框架，未执行实证计算。</p>
     </div>`;
@@ -64,8 +64,8 @@ export function createResearchFlow(root, { refreshIcons, toast, onEdit }) {
         style: [
           { selector: 'node', style: { shape: 'round-rectangle', width: 'data(width)', height: 'data(height)', label: 'data(label)', 'font-family': 'Arial, sans-serif', 'font-size': 14, 'text-wrap': 'wrap', 'text-overflow-wrap': 'anywhere', 'text-max-width': 220, 'text-valign': 'center', 'text-halign': 'center', 'border-width': 1.5, 'line-height': 1.4 } },
           ...Object.entries(flowPalette).map(([kind, [fill, stroke, color]]) => ({ selector: `node[kind="${kind}"]`, style: { 'background-color': fill, 'border-color': stroke, color } })),
-          { selector: 'node:selected', style: { 'border-width': 3, 'border-color': '#287f6c', 'overlay-opacity': 0.06, 'overlay-color': '#287f6c', 'overlay-padding': 5 } },
-          { selector: 'edge', style: { width: 1.7, 'line-color': '#96afa3', 'target-arrow-color': '#96afa3', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, 'curve-style': 'taxi', 'taxi-direction': model.direction === 'LR' ? 'rightward' : 'downward', 'taxi-turn': '50%', 'taxi-turn-min-distance': 25 } },
+          { selector: 'node:selected', style: { 'border-width': 3, 'border-color': '#205ecf', 'overlay-opacity': 0.06, 'overlay-color': '#205ecf', 'overlay-padding': 5 } },
+          { selector: 'edge', style: { width: 1.7, 'line-color': '#69768a', 'target-arrow-color': '#69768a', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, 'curve-style': 'taxi', 'taxi-direction': model.direction === 'LR' ? 'rightward' : 'downward', 'taxi-turn': '50%', 'taxi-turn-min-distance': 25 } },
         ],
       });
       cy.on('tap', 'node', (event) => selectNode(event.target.id()));
@@ -106,7 +106,7 @@ export function createResearchFlow(root, { refreshIcons, toast, onEdit }) {
   });
   $('#flow-png').addEventListener('click', () => {
     if (!cy || !result) return;
-    download(cy.png({ output: 'blob', bg: '#f7faf9', full: true, maxWidth: 4000, maxHeight: 4000 }), `chainlab-${result.theme}-flow.png`);
+    download(cy.png({ output: 'blob', bg: '#ffffff', full: true, maxWidth: 4000, maxHeight: 4000 }), `chainlab-${result.theme}-flow.png`);
   });
   $('#flow-drawio').addEventListener('click', () => {
     if (!model || !result) return;

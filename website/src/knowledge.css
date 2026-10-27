@@ -3,7 +3,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   padding: 20px 0;
-  border-top: 1px solid var(--line, #dce5df);
+  border-top: 1px solid var(--line, var(--border));
 }
 .kg-filters input,
 .kg-filters select,
@@ -12,10 +12,10 @@
   min-width: 0;
   min-height: 38px;
   padding: 7px 10px;
-  border: 1px solid #cedbd3;
+  border: 1px solid var(--border-strong);
   border-radius: 4px;
   background: #fff;
-  color: #213e36;
+  color: var(--text);
   font: inherit;
 }
 .kg-filters .button {
@@ -30,14 +30,14 @@
   flex-wrap: wrap;
   padding: 13px 0;
   font-size: 12px;
-  color: #557367;
-  border-top: 1px solid #dce5df;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border);
 }
 .kg-workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 290px;
-  border-top: 1px solid #dce5df;
-  border-bottom: 1px solid #dce5df;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 .kg-main {
   min-width: 0;
@@ -48,7 +48,7 @@
   gap: 10px;
   padding: 13px 12px 13px 0;
   flex-wrap: wrap;
-  border-bottom: 1px solid #dce5df;
+  border-bottom: 1px solid var(--border);
 }
 .kg-segments,
 .kg-actions {
@@ -58,7 +58,7 @@
   flex-wrap: wrap;
 }
 .kg-segments {
-  background: #eaf0ec;
+  background: var(--surface-soft);
   border-radius: 4px;
   padding: 3px;
 }
@@ -69,15 +69,15 @@
   border: 0;
   background: transparent;
   padding: 8px 10px;
-  color: #5a7168;
+  color: var(--text-secondary);
   border-radius: 3px;
   font: inherit;
   font-size: 12px;
 }
 .kg-segments button[aria-pressed='true'] {
   background: #fff;
-  color: #194f3f;
-  box-shadow: 0 1px 3px #153d3312;
+  color: var(--brand);
+  box-shadow: 0 1px 3px #20242b12;
 }
 .kg-segments svg,
 .kg-center-chip svg {
@@ -100,8 +100,8 @@
   flex-wrap: wrap;
   padding: 14px 16px;
   font-size: 11px;
-  color: #61776e;
-  background: #f7faf9;
+  color: var(--text-muted);
+  background: var(--surface);
 }
 .kg-legend span {
   display: flex;
@@ -122,12 +122,12 @@
 #kg-canvas {
   height: 560px;
   width: 100%;
-  background: #f7faf9;
+  background: var(--surface);
 }
 .kg-detail {
   min-width: 0;
   padding: 22px 20px;
-  border-left: 1px solid #dce5df;
+  border-left: 1px solid var(--border);
   overflow-wrap: anywhere;
   background: #fff;
   max-height: 740px;
@@ -140,26 +140,26 @@
   font-weight: 550;
 }
 .kg-detail p {
-  color: #647970;
+  color: var(--text-muted);
   font-size: 12px;
   line-height: 1.85;
 }
 .kg-detail .eyebrow {
   font-size: 10px;
-  color: #497762;
+  color: var(--text-secondary);
 }
 .kg-detail dl {
   margin: 20px 0;
 }
 .kg-detail dt {
   font-size: 11px;
-  color: #76857f;
+  color: var(--text-muted);
   margin-top: 14px;
 }
 .kg-detail dd {
   margin: 4px 0 0;
   font-size: 14px;
-  color: #253e34;
+  color: var(--text);
 }
 .kg-values dd {
   font-variant-numeric: tabular-nums;
@@ -177,7 +177,7 @@
   font-size: 12px;
 }
 .kg-evidence-block {
-  border-top: 1px solid #dce5df;
+  border-top: 1px solid var(--border);
   margin-top: 24px;
   padding-top: 16px;
   font-size: 12px;
@@ -192,15 +192,15 @@
   word-break: break-all;
 }
 .kg-formula {
-  border-left: 2px solid #6a9d88;
+  border-left: 2px solid var(--text-muted);
   padding: 12px;
   margin: 18px 0;
-  background: #f2f6f3;
+  background: var(--surface-soft);
   font-family: Georgia, serif;
   font-size: 18px;
 }
 .kg-arrow {
-  color: #ad8656;
+  color: var(--accent-ink);
   margin: 0 7px;
 }
 .kg-branches {
@@ -209,9 +209,9 @@
   padding: 14px 12px 14px 0;
   align-items: center;
   flex-wrap: wrap;
-  border-top: 1px solid #dce5df;
+  border-top: 1px solid var(--border);
   font-size: 11px;
-  color: #657c70;
+  color: var(--text-muted);
 }
 #kg-centers {
   display: flex;
@@ -224,10 +224,10 @@
   align-items: center;
   gap: 7px;
   padding: 6px 8px;
-  background: #eef3ef;
-  border: 1px solid #d6e1d9;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
   border-radius: 4px;
-  color: #345b4b;
+  color: var(--text-secondary);
   font-size: 11px;
 }
 .kg-table-scroll {
@@ -243,11 +243,11 @@
 .kg-table-scroll td {
   padding: 13px 12px;
   text-align: left;
-  border-bottom: 1px solid #e5ebe7;
+  border-bottom: 1px solid var(--border);
 }
 .kg-table-scroll th {
-  color: #65776e;
-  background: #f3f6f4;
+  color: var(--text-muted);
+  background: var(--surface-soft);
   font-weight: 500;
 }
 .kg-table-scroll td:nth-child(2) {
@@ -260,12 +260,12 @@
   gap: 15px;
   padding: 13px;
   font-size: 12px;
-  color: #62776c;
+  color: var(--text-muted);
 }
 .kg-boundaries {
   margin: 22px 0;
   font-size: 12px;
-  color: #63766c;
+  color: var(--text-muted);
 }
 .kg-boundaries summary {
   cursor: pointer;
@@ -296,7 +296,7 @@
   }
   .kg-detail {
     border-left: 0;
-    border-top: 1px solid #dce5df;
+    border-top: 1px solid var(--border);
     max-height: none;
   }
   .kg-detail dl {

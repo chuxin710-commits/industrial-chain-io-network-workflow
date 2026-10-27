@@ -1,0 +1,46 @@
+/* Shared workbench shell; module styles use theme.css semantic tokens. */
+:root { --sidebar-width: 230px; --forest: var(--brand); --line: var(--border); background: var(--surface-soft); color: var(--text); }
+.workspace-sidebar { background: white; color: var(--text); border-right: 1px solid var(--border); padding: 28px 14px 18px; }
+.workspace-brand { color: var(--text); gap: 10px; }
+.workspace-brand b { color: var(--brand); font-weight: 650; }
+.workspace-brand small { color: var(--text-muted); }
+.workspace-mark { background: var(--brand); color: white; width: 37px; height: 40px; border-radius: 6px; }
+.workspace-mark svg { width: 26px; height: 26px; stroke-width: 1.7; }
+.nav-section-label { color: var(--text-muted); margin-top: 38px; }
+.workspace-nav { gap: 5px; }
+.workspace-nav a { color: var(--text-secondary); border-radius: 5px; padding: 13px 14px; }
+.workspace-nav a:hover { background: var(--surface-soft); color: var(--brand); }
+.workspace-nav a.is-active { background: var(--brand-soft); color: var(--brand); }
+.workspace-nav a.is-active::before { content: ''; position: absolute; left: 0; top: 13px; bottom: 13px; width: 3px; background: var(--brand); border-radius: 2px; }
+.nav-dot { background: var(--accent); }
+.sidebar-bottom a { color: var(--text-muted); }
+.sidebar-bottom a:hover { color: var(--brand); }
+.workspace-version { color: var(--text-muted); border-color: var(--border); }
+.workspace-version .status-dot { background: var(--accent); }
+.workspace-topbar { height: 68px; background: #fff; }
+.topbar-path { color: var(--text-muted); }
+.topbar-path strong { color: var(--text); }
+.page-heading { align-items: flex-end; margin-bottom: 26px; }
+.page-heading h1 { color: var(--text); font-size: 28px; font-weight: 650; }
+.page-description { color: var(--text-muted); font-size: 12px; }
+.eyebrow { color: var(--brand); }
+.button-primary { background: var(--brand); }
+.button-dark { background: var(--text); }
+.button-primary:hover:not(:disabled) { background: var(--brand-hover); }
+.button-dark:hover:not(:disabled) { background: #3c4350; }
+.button { border-radius: 5px; }
+.button-outline { border-color: var(--border-strong); }
+.button-outline:hover:not(:disabled) { background: var(--brand-soft); border-color: var(--brand-line); }
+.inline-button { color: var(--brand); }
+.sidebar-close { color: var(--text); }
+.dataset-meta { background: white; }
+input::placeholder, textarea::placeholder { color: var(--text-muted); }
+/* User-selected PDF ink colors and canvases are deliberately not themed. */
+.library-login-brand > svg { color: var(--brand); }
+.library-login-brand h2 { color: var(--text); }
+.library-login-view { border-top: 3px solid var(--brand); padding-top: 28px; }
+.library-login-view .button-primary { min-height: 42px; }
+@media (max-width:700px) {
+  .page-heading h1 { font-size: 24px; }
+  .workspace-topbar { height: 60px; }
+}

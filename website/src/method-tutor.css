@@ -7,43 +7,43 @@
   max-height: none;
   max-width: none;
   padding: 0;
-  border: 1px solid #c9d8d1;
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
-  background: #fbfdfc;
-  color: #213e36;
-  box-shadow: 0 18px 70px #173a3829;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 18px 70px #20242b29;
   overflow: hidden;
 }
 .method-tutor[open] { display: flex; flex-direction: column; }
-.method-tutor::backdrop { background: #18352e4d; }
-.tutor-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; border-bottom: 1px solid #dce5df; }
+.method-tutor::backdrop { background: #20242b4d; }
+.tutor-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--border); }
 .tutor-heading h2 { font-size: 22px; margin: 5px 0 0; }
 .tutor-heading .eyebrow { font-size: 10px; }
 .tutor-body { flex: 1; min-height: 0; overflow-y: auto; padding: 22px 24px; overscroll-behavior: contain; }
 .tutor-context h3 { font-size: 17px; line-height: 1.6; margin: 0 0 12px; }
 #tutor-formula { max-width: 100%; overflow-x: auto; }
-#tutor-formula p { font-size: 13px; color: #577369; line-height: 1.8; }
-.tutor-note { font-size: 12px; line-height: 1.7; color: #916a31; border-left: 2px solid #c69e5c; padding-left: 10px; }
+#tutor-formula p { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+.tutor-note { font-size: 12px; line-height: 1.7; color: var(--accent-ink); border-left: 2px solid var(--accent); padding-left: 10px; }
 #tutor-access { font-size: 13px; line-height: 1.8; margin: 12px 0; }
 #tutor-access:empty { display: none; }
 .tutor-prompts { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
 .tutor-prompts .button { font-size: 12px; min-height: 34px; padding: 7px 11px; }
-.tutor-answer { padding: 20px 0; border-top: 1px solid #dce5df; overflow-wrap: anywhere; }
-.tutor-answer h3 { font-size: 16px; color: #217667; margin: 0 0 14px; line-height: 1.7; }
+.tutor-answer { padding: 20px 0; border-top: 1px solid var(--border); overflow-wrap: anywhere; }
+.tutor-answer h3 { font-size: 16px; color: var(--brand); margin: 0 0 14px; line-height: 1.7; }
 .tutor-answer h4 { font-size: 13px; margin: 22px 0 8px; }
 .tutor-answer p, .tutor-answer li { font-size: 14px; line-height: 1.9; white-space: pre-wrap; }
 .tutor-answer ol, .tutor-answer ul { padding-left: 22px; }
 .tutor-answer li + li { margin-top: 7px; }
 .tutor-answer details { background: #edf3f7; border-left: 2px solid #789db0; padding: 12px; font-size: 13px; margin: 20px 0; }
 .tutor-answer summary { cursor: pointer; }
-.tutor-answer small { font-size: 11px; color: #71877f; }
-#tutor-status { font-size: 13px; line-height: 1.7; min-height: 22px; color: #536e64; }
-#tutor-form { padding: 14px 24px; border-top: 1px solid #dce5df; background: #f4f8f5; }
+.tutor-answer small { font-size: 11px; color: var(--text-muted); }
+#tutor-status { font-size: 13px; line-height: 1.7; min-height: 22px; color: var(--text-secondary); }
+#tutor-form { padding: 14px 24px; border-top: 1px solid var(--border); background: var(--surface-soft); }
 #tutor-form label { display: block; font-size: 12px; margin-bottom: 7px; }
-#tutor-question { width: 100%; box-sizing: border-box; resize: none; border: 1px solid #bdcec5; border-radius: 4px; background: white; padding: 10px; font: inherit; font-size: 14px; line-height: 1.6; color: inherit; }
-#tutor-question:focus { outline: 2px solid #57917d; outline-offset: 1px; }
+#tutor-question { width: 100%; box-sizing: border-box; resize: none; border: 1px solid var(--border-strong); border-radius: 4px; background: white; padding: 10px; font: inherit; font-size: 14px; line-height: 1.6; color: inherit; }
+#tutor-question:focus { outline: 2px solid var(--text-muted); outline-offset: 1px; }
 .tutor-submit-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-#tutor-count { margin-right: auto; font-size: 11px; color: #71877f; }
+#tutor-count { margin-right: auto; font-size: 11px; color: var(--text-muted); }
 .method-formula-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .method-explain { font-size: 12px; margin: 6px 0 14px; }
 .method-formula-actions .method-explain { margin: 0; padding: 6px 9px; min-height: 32px; }

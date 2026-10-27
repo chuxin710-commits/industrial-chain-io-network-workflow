@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { foundationNetwork } from './research-models.js';
 
-const C = { teal: 0x66b7b8, lime: 0xc8f36b, coral: 0xe9a58c, silver: 0xd6e4de };
+const C = { teal: 0x397edb, lime: 0xe77932, coral: 0x8ab7ec, silver: 0xc9d8ed };
 const Y = new THREE.Vector3(0, 1, 0);
 
 function matrixTexture(seed) {
@@ -10,13 +10,13 @@ function matrixTexture(seed) {
   canvas.width = 512;
   canvas.height = 352;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#102b2d';
+  ctx.fillStyle = '#e6effc';
   ctx.fillRect(0, 0, 512, 352);
   for (let row = 0; row < 8; row++)
     for (let column = 0; column < 12; column++) {
       const value = (Math.sin(row * 7.12 + column * 3.31 + seed * 1.4) + 1) / 2;
       ctx.fillStyle =
-        value > 0.92 ? '#e9a58c' : value > 0.75 ? '#c8f36b' : value > 0.4 ? '#67aaa4' : '#294f51';
+        value > 0.92 ? '#e77932' : value > 0.75 ? '#205ecf' : value > 0.4 ? '#79a7e6' : '#c6d7ef';
       ctx.fillRect(16 + column * 40, 16 + row * 40, 31, 31);
     }
   const texture = new THREE.CanvasTexture(canvas);
@@ -40,7 +40,7 @@ function connection(group, start, end, primary = false) {
   const mesh = new THREE.Mesh(
     new THREE.TubeGeometry(curve, 16, primary ? 0.014 : 0.008, 5, false),
     new THREE.MeshBasicMaterial({
-      color: primary ? 0x88b9a7 : 0x488a8b,
+      color: primary ? 0x397edb : 0x92b3df,
       transparent: true,
       opacity: primary ? 0.7 : 0.24,
       depthWrite: false,
@@ -89,12 +89,12 @@ export function buildFoundation(group) {
   const plateGeometry = new THREE.BoxGeometry(2.18, 1.52, 0.07);
   const frameGeometry = new THREE.EdgesGeometry(plateGeometry);
   const plateMaterial = new THREE.MeshStandardMaterial({
-    color: 0x386a6b,
+    color: 0x759bcf,
     metalness: 0.42,
     roughness: 0.36,
   });
   const frameMaterial = new THREE.LineBasicMaterial({
-    color: 0x77a6a0,
+    color: 0x397edb,
     transparent: true,
     opacity: 0.75,
   });

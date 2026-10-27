@@ -35,6 +35,7 @@ import {
   MessageCircle,
 } from 'lucide';
 import './workspace.css';
+import './workbench-visual.css';
 import { createTopologyPanel, topologyIcons } from './topology.js';
 import { createLibraryPanel, libraryIcons } from './library.js';
 import { createKnowledgePanel, knowledgeIcons } from './knowledge.js';
@@ -626,7 +627,7 @@ function renderTable() {
               ? (0.035 + (0.19 * Math.log1p(Math.abs(value))) / maxLog).toFixed(3)
               : 0;
           const tint =
-            value < 0 ? `rgba(185, 92, 76, ${intensity})` : `rgba(33, 122, 91, ${intensity})`;
+            value < 0 ? `rgba(231, 121, 50, ${intensity})` : `rgba(32, 94, 207, ${intensity})`;
           const account = accountParts(column);
           return `<td class="value-cell${value === 0 ? ' value-zero' : ''}${value < 0 ? ' value-negative' : ''}" style="--cell-tint:${tint}"><button type="button" data-cell="${rowIndex},${columnIndex}" tabindex="${rowIndex === 0 && columnIndex === 0 ? '0' : '-1'}" aria-label="${escapeHTML(`${part.province} ${part.sector} 至 ${account.province} ${account.sector}，${valid ? String(value) : '缺失'}`)}" title="${escapeHTML(valid ? String(value) : '缺失数值')}">${escapeHTML(formatValue(value))}</button></td>`;
         })

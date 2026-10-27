@@ -1,0 +1,124 @@
+/* Editorial blue/white identity. The original film remains available unfiltered in its player. */
+:root { --ink: var(--text); --line: var(--border); background: var(--surface); }
+.site-header {
+  height: 84px;
+  color: var(--text);
+  background: #ffffffed;
+  border-bottom: 1px solid var(--border);
+}
+.brand-mark { background: var(--brand); color: white; border-radius: 6px; }
+.brand b { color: var(--brand); font-weight: 650; }
+.site-header nav { color: var(--text-secondary); gap: 32px; }
+.site-header nav a:hover { color: var(--brand); }
+.header-entry { background: var(--brand); color: white; padding: 12px 18px; border-radius: 5px; }
+.hero { background: #f6f9ff; color: var(--text); }
+.hero-media video {
+  filter: grayscale(1) invert(1) sepia(.35) saturate(2.3) hue-rotate(173deg);
+  opacity: .36;
+}
+.hero-shade { background: #f6f9ff38; }
+.hero-topline { color: var(--text-muted); top: 116px; }
+.status-dot { background: var(--accent); }
+.hero-center { top: 46%; }
+.hero-center.is-entering > * { transition: none; }
+.hero-eyebrow { color: var(--brand); font-size: 14px; font-weight: 500; }
+.hero h1 { font-size: 94px; font-weight: 650; text-shadow: none; }
+.hero h1 > span { font-size: 30px; font-weight: 500; color: var(--brand); margin-top: 8px; }
+.hero-subtitle { color: var(--text-secondary); font-size: 18px; margin: 18px 0 30px; }
+.portal-entry { background: var(--brand); border-color: var(--brand); color: white; min-height: 64px; border-radius: 6px; box-shadow: 0 8px 22px #205ecf1a; }
+.portal-entry:hover { background: var(--brand-hover); }
+.briefing-hero-entry { color: var(--text); margin-top: 22px; }
+.briefing-hero-entry > svg:first-child { color: var(--accent-ink); }
+.briefing-hero-entry span { color: var(--text-muted); opacity: 1; }
+.hero-chapter { bottom: 120px; border-left: 2px solid var(--accent); padding-left: 14px; }
+.hero-chapter > span { color: var(--brand); }
+.hero-chapter p { color: var(--text); font-size: 18px; margin: 8px 0; }
+.hero-chapter small, .film-trigger small, .scroll-cue { color: var(--text-muted); }
+.film-trigger { color: var(--text); }
+.round-icon { background: white; color: var(--brand); border-color: var(--border-strong); }
+.film-trigger:hover .round-icon { color: white; background: var(--brand); border-color: var(--brand); }
+.hero-tools .icon-button { background: #ffffffd9; color: var(--text-secondary); border-color: var(--border-strong); }
+.hero-tools .icon-button:hover { background: var(--brand-soft); color: var(--brand); }
+.process-strip { background: white; color: var(--text-muted); border-block: 1px solid var(--border); }
+.process-strip b { color: var(--text-secondary); font-weight: 600; }
+.process-strip svg { color: var(--accent); }
+.research-section { padding-top: 100px; padding-bottom: 100px; }
+.section-heading h2, .foundation-content h2, .band-content h2 { font-weight: 550; }
+.feature { padding: 24px 0 12px; }
+.feature-top > svg { color: var(--brand); }
+.feature:nth-child(3n) .feature-top > svg { color: var(--accent-ink); }
+.feature-top > span { font-variant-numeric: tabular-nums; }
+.feature h3 { margin-top: 22px; }
+.feature-meta { color: var(--text-muted); }
+.foundation-section { background: #f3f7ff; color: var(--text); }
+.foundation-art {
+  --band-bg: #f3f7ff;
+  --band-ink: #20242b;
+  --band-muted: #69768a;
+  --band-line: #c6d0df;
+  --band-accent: #205ecf;
+}
+.foundation-content .section-kicker, .foundation-content .text-link { color: var(--brand); }
+.foundation-content > p:not(.section-kicker) { color: var(--text-secondary); }
+.principles { border-color: var(--border-strong); }
+.principles :is(span,small) { color: var(--text-muted); }
+.principles b { color: var(--text); }
+.research-band {
+  --band-bg: #ffffff;
+  --band-ink: #20242b;
+  --band-muted: #69768a;
+  --band-accent: #205ecf;
+  --band-line: #dbe3ef;
+  border-top: 1px solid var(--border);
+}
+.globe-section { --band-bg: #f3f7ff; }
+.resilience-section { --band-bg: #ffffff; --band-accent: #a64b17; }
+.evidence-section { --band-bg: #f7f9fc; }
+.briefing-section { --band-bg: #ffffff; --band-accent: #205ecf; }
+.resilience-legend { color: var(--text-muted); }
+.resilience-legend span:first-child i { background: var(--brand); }
+.resilience-legend span:nth-child(3) i { background: #168d98; }
+.resilience-timeline button[aria-pressed='true'] { color: var(--brand); border-color: var(--brand); }
+.closing-section { background: var(--brand-soft); border-top: 1px solid var(--brand-line); }
+.closing-section .section-kicker { color: var(--brand); }
+.closing-entry { border-color: var(--brand); color: var(--brand); }
+footer { background: white; border-top: 1px solid var(--border); color: var(--text-muted); }
+footer .brand { color: var(--text); }
+.film-dialog-header, .film-dialog-footer { color: #d6dfed; }
+.film-dialog-footer a { color: #a7c7ff; }
+.film-dialog-header .icon-button { color: white; }
+@media (min-width:1600px) {
+  .hero h1 { font-size: 110px; }
+  .hero h1 > span { font-size: 34px; }
+}
+@media (max-width:700px) {
+  .site-header { height: 72px; }
+  .header-entry { padding: 9px 12px; }
+  .hero-center { top: 43%; }
+  .hero h1 { font-size: 72px; }
+  .hero h1 > span { font-size: 25px; }
+  .hero-subtitle { font-size: 14px; margin: 15px 0 24px; }
+  .hero-topline { top: 100px; }
+  .hero-chapter { bottom: 100px; }
+  .hero-chapter p { font-size: 14px; }
+  .hero-chapter small { font-size: 7px; }
+  .portal-entry { min-height: 60px; }
+  .research-section { padding-block: 64px; }
+}
+@media (max-height:720px) {
+  .hero-center { top: 48%; }
+  .hero h1 { font-size: 64px; }
+  .hero h1 > span { font-size: 22px; }
+  .hero-subtitle { font-size: 13px; margin: 8px 0 18px; }
+  .hero-eyebrow { font-size: 12px; margin-bottom: 14px; }
+  .portal-entry { min-height: 54px; }
+  .briefing-hero-entry { margin-top: 14px; }
+}
+@media (max-height:520px) {
+  .site-header { height: 60px; }
+  .hero h1 { font-size: 42px; margin-bottom: 12px; }
+  .hero h1 > span { font-size: 17px; margin-top: 3px; }
+  .hero-center { top: 51%; }
+  .portal-entry { min-height: 44px; }
+  .briefing-hero-entry { margin-top: 10px; font-size: 11px; }
+}

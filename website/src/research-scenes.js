@@ -13,7 +13,7 @@ import {
   globeRoutes,
 } from './research-models.js';
 
-const C = { teal: 0x369c9b, lime: 0xc8f36b, coral: 0xed8f7c, white: 0xe6efe9 };
+const C = { teal: 0x397edb, lime: 0xe77932, coral: 0x6da9d9, white: 0xd7e2f2 };
 const Y = new THREE.Vector3(0, 1, 0);
 let landPromise;
 
@@ -39,9 +39,9 @@ function landTexture(data) {
   canvas.width = 2048;
   canvas.height = 1024;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#164747';
+  ctx.fillStyle = '#2265b6';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = '#2a6661';
+  ctx.strokeStyle = '#5f96d6';
   ctx.lineWidth = 1;
   for (let x = 0; x <= canvas.width; x += canvas.width / 12) {
     ctx.beginPath();
@@ -55,8 +55,8 @@ function landTexture(data) {
     ctx.lineTo(canvas.width, y);
     ctx.stroke();
   }
-  ctx.fillStyle = '#bad2bc';
-  ctx.strokeStyle = '#d5e5d1';
+  ctx.fillStyle = '#e1ebfa';
+  ctx.strokeStyle = '#f4f8ff';
   for (const feature of data.features) {
     const geometry = feature.geometry;
     const polygons =
@@ -81,7 +81,7 @@ function landTexture(data) {
   return texture;
 }
 
-function label(text, color = '#c9ddd2', width = 1.5) {
+function label(text, color = '#69768a', width = 1.5) {
   const canvas = document.createElement('canvas');
   canvas.width = 384;
   canvas.height = 96;
@@ -155,7 +155,7 @@ function buildNetwork(group) {
   group.add(
     new THREE.LineSegments(
       new THREE.BufferGeometry().setFromPoints(linePoints),
-      new THREE.LineBasicMaterial({ color: 0x458277, transparent: true, opacity: 0.46 }),
+      new THREE.LineBasicMaterial({ color: 0x6295d5, transparent: true, opacity: 0.54 }),
     ),
   );
   const runners = [];
@@ -163,13 +163,13 @@ function buildNetwork(group) {
   hubs.forEach((id, h) => {
     nodes[id].scale.setScalar(2.5);
     nodes[id].material = new THREE.MeshStandardMaterial({
-      color: h === 1 ? C.coral : 0x66872a,
+      color: h === 1 ? C.coral : 0xe77932,
       metalness: 0.35,
       roughness: 0.25,
       emissive: C.lime,
       emissiveIntensity: 0.12,
     });
-    const text = label(`N${String(id + 1).padStart(2, '0')}`, '#34594b', 0.85);
+    const text = label(`N${String(id + 1).padStart(2, '0')}`, '#465166', 0.85);
     text.position.copy(positions[id]).add(new THREE.Vector3(0.25, 0.35, 0));
     group.add(text);
     [5, 15, 28, 40, 58, 65].forEach((j, k) => {
@@ -180,12 +180,12 @@ function buildNetwork(group) {
         end,
       );
       tube(group, curve, h === 1 ? C.coral : C.teal, 0.62);
-      runners.push(flow(group, curve, k + h * 6, h === 1 ? C.coral : 0x507226));
+      runners.push(flow(group, curve, k + h * 6, h === 1 ? C.coral : 0xcf681f));
     });
   });
   const equator = new THREE.Mesh(
     new THREE.TorusGeometry(3.9, 0.012, 5, 128),
-    new THREE.MeshBasicMaterial({ color: 0x679b8a, transparent: true, opacity: 0.32 }),
+    new THREE.MeshBasicMaterial({ color: 0x397edb, transparent: true, opacity: 0.24 }),
   );
   equator.rotation.x = Math.PI / 2;
   group.add(equator);
@@ -229,7 +229,7 @@ function buildGlobe(group, land) {
   const runners = pairs.map(([i, j], k) => {
     const curve = geographicArc(GLOBE_PLACES[i], GLOBE_PLACES[j]);
     const primary = i === 0 || j === 0 || k % 7 === 0;
-    const color = primary ? (k % 3 === 0 ? C.coral : C.lime) : 0x76b9b4;
+    const color = primary ? (k % 3 === 0 ? C.coral : C.lime) : 0x6b99d4;
     tube(group, curve, color, primary ? 0.8 : 0.44, primary ? 0.017 : 0.009);
     return flow(group, curve, k, color, 0.09 + (k % 4) * 0.014, primary ? 0.9 : 0.55);
   });
@@ -252,18 +252,18 @@ function documentFace(text, accent) {
   canvas.width = 256;
   canvas.height = 320;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#e5eee9';
+  ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, 0, 256, 320);
   ctx.fillStyle = accent;
   ctx.fillRect(0, 0, 256, 12);
   ctx.font = 'bold 32px "Segoe UI", sans-serif';
-  ctx.fillStyle = '#284740';
+  ctx.fillStyle = '#20242b';
   ctx.fillText(text, 22, 64);
-  ctx.fillStyle = '#a7beb4';
+  ctx.fillStyle = '#bfd1f2';
   for (let i = 0; i < 5; i++) ctx.fillRect(22, 100 + i * 29, i % 2 ? 145 : 205, 7);
   ctx.fillStyle = accent;
   ctx.fillRect(22, 271, 55, 22);
-  ctx.fillStyle = '#45685b';
+  ctx.fillStyle = '#465166';
   ctx.font = '18px monospace';
   ctx.fillText('v01', 165, 287);
   const texture = new THREE.CanvasTexture(canvas);
@@ -273,11 +273,11 @@ function documentFace(text, accent) {
 
 function buildEvidence(group) {
   const columns = [
-    { x: -4.1, ys: [0], tag: 'DATA', color: '#71baba' },
-    { x: -2, ys: [-2.35, 0, 2.35], tag: 'M', color: '#8caebd' },
-    { x: 0.25, ys: [-3, -1.8, -0.6, 0.6, 1.8, 3], tag: 'R', color: '#eaa18f' },
-    { x: 2.6, ys: [-2.35, 0, 2.35], tag: 'CHECK', color: '#9abd78' },
-    { x: 4.6, ys: [0], tag: 'END', color: '#c8f36b' },
+    { x: -4.1, ys: [0], tag: 'DATA', color: '#397edb' },
+    { x: -2, ys: [-2.35, 0, 2.35], tag: 'M', color: '#7aace6' },
+    { x: 0.25, ys: [-3, -1.8, -0.6, 0.6, 1.8, 3], tag: 'R', color: '#e77932' },
+    { x: 2.6, ys: [-2.35, 0, 2.35], tag: 'CHECK', color: '#92b4df' },
+    { x: 4.6, ys: [0], tag: 'END', color: '#205ecf' },
   ];
   const documents = [],
     byColumn = [];
@@ -364,7 +364,7 @@ export async function createResearchScene(canvas, { type, reduced = false } = {}
     room.dispose();
     pmrem.dispose();
   }
-  scene.add(new THREE.HemisphereLight(0xe6f4ed, 0x35575c, type === 'globe' ? 1.5 : 3));
+  scene.add(new THREE.HemisphereLight(0xf0f5ff, 0x526580, type === 'globe' ? 1.5 : 3));
   const key = new THREE.DirectionalLight(0xffffff, type === 'globe' ? 2.4 : 3);
   key.position.set(-3, 6, 8);
   scene.add(key);

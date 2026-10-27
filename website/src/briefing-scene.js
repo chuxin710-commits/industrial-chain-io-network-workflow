@@ -5,9 +5,9 @@ function newspaperTexture() {
   canvas.width = 768;
   canvas.height = 960;
   const c = canvas.getContext('2d');
-  c.fillStyle = '#f7faf4';
+  c.fillStyle = '#ffffff';
   c.fillRect(0, 0, 768, 960);
-  c.fillStyle = '#214f43';
+  c.fillStyle = '#205ecf';
   c.font = 'bold 64px sans-serif';
   c.fillText('CHAINLAB', 60, 110);
   c.font = '22px sans-serif';
@@ -17,21 +17,21 @@ function newspaperTexture() {
   c.fillText('72', 54, 385);
   c.font = '24px sans-serif';
   c.fillText('HOURS', 320, 315);
-  c.fillStyle = '#7a9386';
+  c.fillStyle = '#69768a';
   c.font = '20px sans-serif';
   c.fillText('GLOBAL SIGNALS', 320, 355);
-  ['#3b9287', '#bc9660', '#9184ae'].forEach((color, i) => {
+  ['#397edb', '#e77932', '#465166'].forEach((color, i) => {
     const y = 460 + i * 148;
     c.fillStyle = color;
     c.fillRect(60, y, 72, 72);
-    c.fillStyle = '#456557';
+    c.fillStyle = '#20242b';
     c.font = 'bold 22px sans-serif';
     c.fillText(['INDUSTRY', 'SUPPLY CHAIN', 'AI FRONTIER'][i], 160, y + 22);
-    c.fillStyle = '#cad6cb';
+    c.fillStyle = '#d9e2f0';
     c.fillRect(160, y + 44, 520, 8);
     c.fillRect(160, y + 64, 400 - i * 50, 8);
   });
-  c.fillStyle = '#9baa9f';
+  c.fillStyle = '#69768a';
   c.font = '16px sans-serif';
   c.fillText('SOURCE / TIME / CONTEXT', 60, 920);
   const map = new THREE.CanvasTexture(canvas);
@@ -44,7 +44,7 @@ export function buildBriefing(group) {
   globe.position.set(-1.25, 0.45, -0.8);
   group.add(globe);
   const radius = 2.7;
-  const wire = new THREE.LineBasicMaterial({ color: 0x8cb9a9, transparent: true, opacity: 0.38 });
+  const wire = new THREE.LineBasicMaterial({ color: 0x729ad3, transparent: true, opacity: 0.5 });
   for (let k = 0; k < 12; k++) {
     const points = [];
     for (let j = 0; j <= 96; j++) {
@@ -78,7 +78,7 @@ export function buildBriefing(group) {
     const dot = new THREE.Mesh(
       new THREE.SphereGeometry(0.065, 12, 8),
       new THREE.MeshStandardMaterial({
-        color: [0x328e7f, 0xc19b68, 0x9586af][i % 3],
+        color: [0x397edb, 0xe77932, 0x465166][i % 3],
         roughness: 0.4,
       }),
     );
@@ -93,7 +93,7 @@ export function buildBriefing(group) {
   for (let i = 2; i >= 0; i--) {
     const sheet = new THREE.Mesh(
       new THREE.BoxGeometry(2.9, 3.65, 0.035),
-      new THREE.MeshStandardMaterial({ color: i ? '#d7e1d6' : '#f7faf4', roughness: 0.8 }),
+      new THREE.MeshStandardMaterial({ color: i ? '#d9e2f0' : '#ffffff', roughness: 0.8 }),
     );
     sheet.position.set(-i * 0.09, -i * 0.07, -i * 0.09);
     sheet.rotation.z = i * 0.025;
@@ -120,7 +120,7 @@ export function buildBriefing(group) {
       end.clone().add(new THREE.Vector3(-1, 0.8, 0.8)),
       end,
     );
-    const color = [0x328e7f, 0xbf9960, 0x9683af][i];
+    const color = [0x397edb, 0xe77932, 0x465166][i];
     group.add(
       new THREE.Mesh(
         new THREE.TubeGeometry(curve, 48, 0.012, 6, false),

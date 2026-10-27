@@ -1,12 +1,12 @@
-.research-evidence { margin-top: 22px; padding-top: 18px; border-top: 1px solid #cbd8d4; font-size: 13px; }
+.research-evidence { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border-strong); font-size: 13px; }
 .research-evidence h4 { margin: 0 0 8px; font-size: 15px; }
-.research-evidence > p, .research-evidence > small { color: #586e69; }
-.research-evidence details { border-bottom: 1px solid #d9e3df; padding: 12px 0; }
+.research-evidence > p, .research-evidence > small { color: var(--text-secondary); }
+.research-evidence details { border-bottom: 1px solid var(--border); padding: 12px 0; }
 .research-evidence summary { cursor: pointer; line-height: 1.7; overflow-wrap: anywhere; }
-.research-evidence summary span { display: block; font-size: 11px; color: #56756b; }
+.research-evidence summary span { display: block; font-size: 11px; color: var(--text-secondary); }
 .research-evidence summary strong { font-size: 13px; font-weight: 500; }
-.research-evidence summary small { margin-left: 10px; color: #657570; }
-.research-evidence blockquote { margin: 12px 0; padding: 0 12px; border-left: 2px solid #97ada3; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
+.research-evidence summary small { margin-left: 10px; color: var(--text-muted); }
+.research-evidence blockquote { margin: 12px 0; padding: 0 12px; border-left: 2px solid var(--text-muted); line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
 .research-evidence details p { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-.research-evidence a { color: #007a73; }
+.research-evidence a { color: var(--brand); }
 .research-evidence small { overflow-wrap: anywhere; }

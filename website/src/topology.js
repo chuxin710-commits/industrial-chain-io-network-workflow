@@ -318,7 +318,7 @@ export function createTopologyPanel({ refreshIcons, toast }) {
     if (!frames.length || !layout || !width) return;
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
     context.clearRect(0, 0, width, height);
-    context.fillStyle = '#fcfdfc';
+    context.fillStyle = '#ffffff';
     context.fillRect(0, 0, width, height);
     const frame = frames[frameIndex],
       focus = selected || hovered;
@@ -362,7 +362,7 @@ export function createTopologyPanel({ refreshIcons, toast }) {
           ey = b.y - uy * (b.r + 5) + ux * offset;
         const weight = Math.log1p((99 * edge.weight) / layout.maxEdge) / Math.log(100);
         context.globalAlpha = alpha * (active ? 0.2 + 0.55 * weight : 0.035);
-        context.strokeStyle = focus && edge.source === focus ? '#b7644f' : '#478b82';
+        context.strokeStyle = focus && edge.source === focus ? '#a64b17' : '#205ecf';
         context.lineWidth = (0.5 + weight * 1.8) * Math.sqrt(view.k);
         context.beginPath();
         context.moveTo(sx, sy);
@@ -400,12 +400,12 @@ export function createTopologyPanel({ refreshIcons, toast }) {
       context.globalAlpha = focus && !neighbors.has(node.id) ? 0.15 : 1;
       context.fillStyle =
         node.id === focus
-          ? '#d3ef9f'
+          ? '#bfd1f2'
           : node.strength === 0
-            ? '#c5ceca'
+            ? '#c6d0df'
             : strongest.has(node.id)
-              ? '#bf7961'
-              : '#236f61';
+              ? '#e77932'
+              : '#205ecf';
       context.beginPath();
       context.arc(node.x, node.y, node.r, 0, Math.PI * 2);
       context.fill();
@@ -457,18 +457,18 @@ export function createTopologyPanel({ refreshIcons, toast }) {
       context.globalAlpha = focus && !neighbors.has(node.id) ? 0.2 : 1;
       context.textAlign = 'center';
       context.lineWidth = 4;
-      context.strokeStyle = '#fcfdfc';
+      context.strokeStyle = '#ffffff';
       context.strokeText(node.label, x, y);
-      context.fillStyle = '#334e45';
+      context.fillStyle = '#465166';
       context.fillText(node.label, x, y);
     }
     context.globalAlpha = 1;
     context.textAlign = 'left';
-    context.fillStyle = '#174a3c';
+    context.fillStyle = '#20242b';
     context.font = '600 36px "Segoe UI",sans-serif';
     context.fillText(String(frame.year), 22, 45);
     context.font = '11px "Microsoft YaHei",sans-serif';
-    context.fillStyle = '#74867c';
+    context.fillStyle = '#69768a';
     context.fillText(
       `${frame.config.weight} · ${frame.metrics.nodes} 节点 · ${frame.edges.length} 展示边`,
       24,
@@ -740,11 +740,11 @@ export function createTopologyPanel({ refreshIcons, toast }) {
       if (row) wrapped.push(row);
     }
     out.height = canvas.height + (wrapped.length * 18 + 28) * dpr;
-    ctx.fillStyle = '#fcfdfc';
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, out.width, out.height);
     ctx.drawImage(canvas, 0, 0);
     ctx.scale(dpr, dpr);
-    ctx.fillStyle = '#334e45';
+    ctx.fillStyle = '#465166';
     ctx.font = '11px "Microsoft YaHei",sans-serif';
     wrapped.forEach((line, i) => ctx.fillText(line, 15, height + 22 + i * 18));
     dpr = screenDpr;

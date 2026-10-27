@@ -1,13 +1,13 @@
 import dagre from '@dagrejs/dagre';
 
 export const flowPalette = {
-  root: ['#174f44', '#174f44', '#ffffff'],
-  stage: ['#e5efec', '#81a79c', '#244e42'],
-  option: ['#ffffff', '#559b8c', '#244e42'],
+  root: ['#205ecf', '#205ecf', '#ffffff'],
+  stage: ['#f7f9fc', '#69768a', '#205ecf'],
+  option: ['#ffffff', '#205ecf', '#205ecf'],
   input: ['#e7f1f6', '#7da4b6', '#284f63'],
-  step: ['#ffffff', '#a3b4ad', '#344d43'],
-  check: ['#fbf1dd', '#c2a361', '#705626'],
-  missing: ['#faeae7', '#c88c80', '#864f43'],
+  step: ['#ffffff', '#69768a', '#465166'],
+  check: ['#fff3e9', '#e77932', '#a64b17'],
+  missing: ['#fff3e9', '#e77932', '#a64b17'],
 };
 const short = (text, limit = 76) => {
   const chars = Array.from(String(text || ''));
@@ -119,7 +119,7 @@ export function drawioXml(currentModel, result, selectedIds, origin, xmlDocument
   };
   const page = (id, title, model) => {
     const diagram = element('diagram', { id, name: title }, file);
-    const graph = element('mxGraphModel', { grid: 1, gridSize: 10, page: 0, background: '#f7faf9' }, diagram);
+    const graph = element('mxGraphModel', { grid: 1, gridSize: 10, page: 0, background: '#ffffff' }, diagram);
     const root = element('root', {}, graph);
     element('mxCell', { id: '0' }, root);
     element('mxCell', { id: '1', parent: '0' }, root);
@@ -137,7 +137,7 @@ export function drawioXml(currentModel, result, selectedIds, origin, xmlDocument
     }
     for (const edge of model.edges) {
       const cell = element('mxCell', { id: edge.id, source: edge.source, target: edge.target, edge: 1, parent: '1',
-        style: 'edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=blockThin;endFill=1;strokeColor=#89a69b;strokeWidth=1.5;' }, root);
+        style: 'edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=blockThin;endFill=1;strokeColor=#69768a;strokeWidth=1.5;' }, root);
       element('mxGeometry', { relative: 1, as: 'geometry' }, cell);
     }
   };
