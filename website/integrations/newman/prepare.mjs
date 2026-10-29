@@ -50,6 +50,41 @@ edit('frontend/index.html', '/src/assets/newman-logo.png', '/src/assets/chainlab
 edit('frontend/src/styles.css', '@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");', '/* System fonts keep the toolbench independent of external font services. */');
 edit('backend/providers/multimodal.py', '        if self.config.type == "mock":', '        if self.config.capabilities.get("supports_images") is False:\n            raise ValueError("当前 DeepSeek 配置未启用视觉识别，请上传可提取文字的文档，或由管理员配置视觉模型。")\n\n        if self.config.type == "mock":');
 edit('plugins/external-kb-retrieval/plugin.yaml', '/root/newman/backend_data', '../../backend_data');
+edit('plugins/external-kb-retrieval/plugin.yaml', 'executable: scripts/external_kb_cli.py', 'executable: scripts/chainlab_kb_cli.py');
+fs.copyFileSync(path.join(here, 'chainlab_kb_cli.py'), path.join(dest, 'plugins/external-kb-retrieval/scripts/chainlab_kb_cli.py'));
+fs.copyFileSync(path.join(here, 'knowledge-SKILL.md'), path.join(dest, 'plugins/external-kb-retrieval/skills/external-kb-retrieval/SKILL.md'));
+edit('backend/api/routes/external_kb.py', 'def _external_kb_capabilities(provider_type: str | None) -> dict[str, Any]:', `def _external_kb_capabilities(provider_type: str | None) -> dict[str, Any]:
+    if provider_type == "chainlab":
+        return {"provider_type": "chainlab", "read_only": True, "retrieve": True,
+                "list_knowledge_bases": True, "list_provider_datasets": True, "health_check": True,
+                "highlights": False, "document_filters": True, "metadata_filters": False,
+                "search_modes": ["hybrid"], "tunable_params": ["top_k", "score_threshold"], "mutations": []}`);
+edit('frontend/src/pages/KnowledgeBasePage.tsx', 'const ragflowWebUrl = resolveRagflowWebUrl(providerStatus?.base_url);', 'const ragflowWebUrl = providerStatus?.provider_type === "chainlab" ? "/workspace.html#literature" : resolveRagflowWebUrl(providerStatus?.base_url);');
+edit('frontend/src/pages/KnowledgeBasePage.tsx', 'useState(0.2)', 'useState(0.06)');
+edit('frontend/src/pages/KnowledgeBasePage.tsx', 'source?: {', 'source?: {\n    uri?: string | null;');
+edit('frontend/src/pages/KnowledgeBasePage.tsx', '<code key={datasetId}>RAGFlow: {datasetId}</code>', '<code key={datasetId}>Dataset: {datasetId}</code>');
+edit('frontend/src/pages/KnowledgeBasePage.tsx', '<p>{resultPreview(result)}</p>', `<p>{resultPreview(result)}</p>
+                        {result.source?.uri?.startsWith("/workspace.html#") && <a className="knowledge-link-button" href={result.source.uri} target="_blank" rel="noopener noreferrer">查看来源</a>}`);
+for (const file of ['backend/api/routes/external_kb.py', 'backend/tools/impl/plugin_cli.py']) {
+  edit(file, 'import json', 'import json\nfrom backend.plugin_runtime.command_argv import plugin_command_argv\nfrom backend.plugin_runtime.chainlab_knowledge import is_chainlab_command, run_chainlab_command');
+}
+edit('backend/api/routes/external_kb.py', 'argv = [command.executable, *command.default_args, *args]', 'if is_chainlab_command(command):\n        return await run_chainlab_command([*command.default_args, *args], stdin_payload)\n    argv = plugin_command_argv(command, args)');
+edit('backend/tools/impl/plugin_cli.py', '        argv = [self.command.executable, *self.command.default_args, *args]', `        if is_chainlab_command(self.command):
+            try:
+                payload = json.loads(stdin_text) if stdin_text else {}
+                if not isinstance(payload, dict):
+                    raise ValueError("Expected JSON object")
+            except (ValueError, TypeError):
+                return ToolExecutionResult(success=False, tool=self.meta.name, action="knowledge retrieval", summary="Invalid JSON input")
+            value = await run_chainlab_command([*self.command.default_args, *args], payload)
+            return ToolExecutionResult(success=bool(value.get("success")), tool=self.meta.name,
+                                       action="chainlab knowledge " + " ".join(args), stdout=json.dumps(value, ensure_ascii=False))
+
+        argv = [self.command.executable, *self.command.default_args, *args]`);
+edit('backend/tools/impl/plugin_cli.py', 'argv = [self.command.executable, *self.command.default_args, *args]', 'argv = plugin_command_argv(self.command, args)');
+fs.copyFileSync(path.join(here, 'command_argv.py'), path.join(dest, 'backend/plugin_runtime/command_argv.py'));
+fs.copyFileSync(path.join(here, 'chainlab_knowledge.py'), path.join(dest, 'backend/plugin_runtime/chainlab_knowledge.py'));
+fs.copyFileSync(path.join(here, 'chainlab_kb_cli.py'), path.join(dest, 'backend/plugin_runtime/chainlab_kb_cli.py'));
 fs.copyFileSync(path.join(here, 'LoginPage.tsx'), path.join(dest, 'frontend/src/pages/LoginPage.tsx'));
 fs.copyFileSync(path.join(here, 'chainlab.css'), path.join(dest, 'frontend/src/chainlab.css'));
 fs.copyFileSync(path.join(here, 'chainlab_app.py'), path.join(dest, 'chainlab_app.py'));

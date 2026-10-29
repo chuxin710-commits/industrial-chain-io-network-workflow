@@ -31,6 +31,10 @@ class Handler(BaseHTTPRequestHandler):
         self.response_started = False
         try:
             parsed = urlsplit(self.path)
+            if parsed.path.startswith('/api/internal/toolbench-kb'):
+                from toolbench_kb import handle
+                handle(self)
+                return
             if parsed.path in ('/api/briefing', '/api/briefing/editions'):
                 from briefing import read_briefing, editions
                 if len(parsed.query) > 100:
@@ -120,6 +124,10 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         self.response_started = False
+        if urlsplit(self.path).path.startswith('/api/internal/toolbench-kb'):
+            from toolbench_kb import handle
+            handle(self)
+            return
         if urlsplit(self.path).path.startswith('/api/library/'):
             from library_http import handle_library
             handle_library(self)

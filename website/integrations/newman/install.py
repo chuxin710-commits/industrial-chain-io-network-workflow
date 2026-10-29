@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import pwd
+import secrets
 import shutil
 import subprocess
 import tarfile
@@ -44,6 +45,25 @@ config.write_text(config.read_text().replace('readable_paths: [workspace, skills
 plugin_manifest = data / 'plugins/external-kb-retrieval/plugin.yaml'
 if plugin_manifest.exists():
     plugin_manifest.write_text(plugin_manifest.read_text().replace('/root/newman/backend_data', '../../backend_data'))
+    text = plugin_manifest.read_text()
+    text = text.replace('executable: scripts/external_kb_cli.py', 'executable: scripts/chainlab_kb_cli.py')
+    text = text.replace('path: skills/external-kb-retrieval/CHAINLAB.md', 'path: skills/external-kb-retrieval/SKILL.md')
+    text = text.replace('      CHAINLAB_KB_BRIDGE_TOKEN: ${CHAINLAB_KB_BRIDGE_TOKEN}\n', '')
+    plugin_manifest.write_text(text)
+    skill = plugin_manifest.parent / 'skills/external-kb-retrieval/SKILL.md'
+    backup = skill.with_name('SKILL.before-chainlab.md')
+    if skill.exists() and not backup.exists():
+        shutil.copy2(skill, backup)
+    for relative in ('scripts/chainlab_kb_cli.py', 'skills/external-kb-retrieval/SKILL.md'):
+        shutil.copy2(release / 'plugins/external-kb-retrieval' / relative, plugin_manifest.parent / relative)
+bridge_env = Path('/etc/chainlab/toolbench-kb.env')
+if not bridge_env.exists():
+    with bridge_env.open('x') as output:
+        output.write('CHAINLAB_KB_BRIDGE_TOKEN=' + secrets.token_urlsafe(48) + '\n')
+bridge_env.chmod(0o600)
+dropin = Path('/etc/systemd/system/chainlab-api.service.d')
+dropin.mkdir(exist_ok=True)
+(dropin / 'toolbench-kb.conf').write_text('[Service]\nEnvironmentFile=/etc/chainlab/toolbench-kb.env\n')
 subprocess.run(['chown', '-R', 'chainlab-tools:chainlab-tools', str(data)], check=True)
 data.chmod(0o700)
 venv = base / 'venv'
@@ -69,6 +89,7 @@ Environment=NEWMAN_RESOURCE_DIR=/opt/chainlab-toolbench/current
 Environment=PYTHONPATH=/opt/chainlab-toolbench/current
 Environment=CHAINLAB_ORIGIN=https://nn.rftf.cc.cd
 EnvironmentFile=/etc/chainlab/deepseek.env
+EnvironmentFile=/etc/chainlab/toolbench-kb.env
 ExecStart=/opt/chainlab-toolbench/venv/bin/python -m uvicorn chainlab_app:app --host 127.0.0.1 --port 8790 --proxy-headers --forwarded-allow-ips=127.0.0.1
 Restart=on-failure
 RestartSec=5
@@ -93,6 +114,7 @@ pending.unlink(missing_ok=True)
 pending.symlink_to(release, target_is_directory=True)
 pending.replace(current)
 subprocess.run(['systemctl', 'daemon-reload'], check=True)
+subprocess.run(['systemctl', 'restart', 'chainlab-api'], check=True)
 subprocess.run(['systemctl', 'enable', '--now', 'chainlab-toolbench'], check=True)
 subprocess.run(['systemctl', 'restart', 'chainlab-toolbench'], check=True)
 try:

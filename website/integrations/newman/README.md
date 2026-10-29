@@ -23,13 +23,17 @@ backend, frontend, skills and plugins are included in the deployed archive.
   approvals, skills/plugins/MCP, memory, subagents, scheduler, audit and usage UI.
 - Deployment-specific changes: PostgreSQL becomes SQLite; agent concurrency is
   reduced for the 2 GB server; unconfigured Feishu/WeCom channels are disabled.
-  External knowledge-base/search/channel providers still need their own valid
-  service configuration. Copying their UI does not provision those services.
+  The knowledge-base plugin now uses the existing private ChainLab literature
+  index. Other search/channel providers still need their own configuration.
 - The current model configuration is text-only. Image interpretation fails with
   an explicit message instead of pretending an uploaded image was understood.
   Text extraction from supported PDF/Office files remains upstream functionality.
 - Fixed an upstream plugin manifest containing `/root/newman/backend_data` so
   it works under the dedicated service account using a relative path.
+- Local Python plugin entrypoints use the backend's Python interpreter in both
+  the knowledge-base API and agent tool runner. Windows-built archives no longer
+  need POSIX execute bits or a Linux-compatible shebang to start these scripts.
+  Native CLI commands and existing sandbox/approval checks are unchanged.
 
 ## Rebuild
 
@@ -75,14 +79,75 @@ The installer saves the prior Nginx site file separately before first exposure.
 
 - `test_boundary.py`: anonymous access, session verification, same-origin writes,
   auth-service failure, bootstrap isolation, and minimal public health response.
+- `test_plugin_startup.py`: non-executable/CRLF Python scripts, JSON stdin, argument
+  boundaries, relative paths, unchanged native commands, agent dispatch, and
+  structured provider errors. Run with the built release on `PYTHONPATH` and its
+  Python environment. Set `CHAINLAB_PLUGIN_SMOKE_ROOT=/var/lib/chainlab-toolbench`
+  on Linux to also exercise the real installed plugin inside bubblewrap as the
+  service user; this smoke test does not require external provider credentials.
 - `scripts/verify-toolbench.mjs --login --model`: accepts credentials only through
   transient stdin; validates real login, desktop/mobile layout, tool/skill lists,
   a real DeepSeek execution with a sandbox calculation and downloadable file,
-  and side-by-side homepage entries. Test artifacts remain ignored.
+  and side-by-side homepage entries. It also checks both external-KB endpoints
+  and waits for the knowledge-base page to finish loading. Provider availability
+  is recorded separately from plugin startup. Test artifacts remain ignored.
 - `scripts/verify-visual-theme.mjs`: regression checks for the existing website.
 
 Do not claim external providers or image understanding are configured until
 their credentials and real end-to-end tests have been completed.
+
+## Current Knowledge Connection
+
+The user selected the existing ChainLab library, not a new RAGFlow deployment.
+`chainlab-literature` exposes original parsed PDF passages, and `chainlab-methods`
+exposes project-authored method notes separately. The current inventory is 88
+indexed PDFs / 9,869 paper chunks plus 8 method notes. These counts describe the
+parsed corpus, not guaranteed full-text coverage of every PDF page.
+
+The bridge reuses `ResearchRAG` TF-IDF + LSA retrieval, source hashes, page links,
+and index version invalidation. It does not copy the corpus into a second index.
+Top-K, similarity threshold, corpus selection and document filters are supported;
+arbitrary metadata filters and standalone semantic search are explicitly rejected.
+Existing topology/method agents retain their original retrieval defaults.
+
+Only the read-only catalog and retrieval operations are exposed on the service
+bridge. A scoped credential is generated on the server under
+`/etc/chainlab/toolbench-kb.env` and loaded by both systemd services. It is never
+passed into the plugin sandbox, model context, browser, or Git. The stock sandbox
+correctly strips secret-like environment variables; instead of weakening that
+rule, the ChainLab binding uses a fixed, trusted backend HTTP transport. Other
+Python plugin commands retain the sandboxed interpreter launcher.
+
+The knowledge page shows document/chunk counts and offers original-page links.
+The management button returns to the existing library, not a localhost RAGFlow
+address. A ChainLab-specific `SKILL.md` replaces the old RAGFlow instructions;
+the installer preserves the previous skill as `SKILL.before-chainlab.md`.
+
+Verification commands:
+
+```text
+python scripts/test_research_rag.py
+node scripts/verify-toolbench.mjs --login --knowledge --knowledge-model
+```
+
+Use the research Python environment for the first command. The second accepts
+login only through transient stdin and makes one real, read-only DeepSeek tool
+call. Linux plugin smoke tests use `test_plugin_startup.py` with
+`CHAINLAB_PLUGIN_SMOKE_ROOT` and the service EnvironmentFile, without printing it.
+
+Current releases: main site `20261029T062100Z`, toolbench `20261029T061753Z`.
+Toolbench archive SHA-256:
+`26bf14bc6ac6ecefbf3908daf90e3dc48d78b4d762ec8ad34d8de875593e8fde`.
+The earlier startup-hotfix findings below are historical; their missing-RAGFlow
+limitation is resolved by this direct library connection, not by adding RAGFlow.
+
+Acceptance: nine research/RAG tests, nine plugin/transport tests and seven auth
+boundary tests passed. Public browser checks passed at 1440/390/320 pixels,
+including live retrieval, original PDF page navigation, denied anonymous bridge
+access, and a real DeepSeek knowledge-tool call with source references. A broad
+topic query can rank references/abstracts highly; retrieval candidates still need
+original-context review and are not evidence of a paper's substantive conclusions.
+The pre-change Git checkpoint is `knowledge-bridge-before-20261029`.
 
 ## Release Verification (2026-10-29)
 
@@ -105,3 +170,24 @@ their credentials and real end-to-end tests have been completed.
 - Artifacts are in ignored `.artifacts/toolbench-qa/` and `.artifacts/visual-theme/`.
   Real-model evidence is separate from layout-only runs. External provider services
   (RAGFlow, search credentials, Feishu/WeCom) were not provisioned or acceptance-tested.
+
+## Plugin Startup Hotfix (2026-10-29)
+
+- Release: `/opt/chainlab-toolbench/releases/20261029T005013Z`.
+- Archive SHA-256:
+  `72cd206478fd95d91f6a6d42761ea359a7e841bb98feaa58869a6a58e839db9e`.
+- Rollback release: `20261028T141113Z`; persistent plugin files and research data
+  were preserved. No new provider, key, dataset, or model was provisioned.
+- Root cause: the persisted `external_kb_cli.py` had mode `0666`, while upstream
+  directly executed it. Authenticated catalog requests returned HTTP 502.
+  The shared interpreter launcher fixes API calls and agent calls without
+  broad chmod changes or weakening sandbox permissions.
+- All eight startup tests passed under `chainlab-tools`, including the real
+  plugin's `doctor` command inside bubblewrap. Seven boundary tests also passed.
+- Public authenticated catalog/provider endpoints now return HTTP 200. Desktop
+  and mobile browser regression passed; the startup-failure banner is absent.
+- External retrieval is **not yet connected**: the default RAGFlow address
+  `http://127.0.0.1:6661` refuses connections, provider credentials are absent,
+  and the catalog is empty. These are correctly surfaced as provider errors,
+  not a plugin startup failure. Existing ChainLab literature/RAG is a separate
+  backend and is not automatically attached by this patch.

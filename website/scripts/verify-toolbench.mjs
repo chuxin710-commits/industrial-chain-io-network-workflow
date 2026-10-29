@@ -67,6 +67,55 @@ try {
     const skills = await request(`${base}/toolbench/api/skills`);
     assert.equal(skills.status(), 200);
     report.checks.push('skills/tools available');
+    for (const endpoint of ['knowledge-bases?refresh=true', 'providers']) {
+      const response = await request(`${base}/toolbench/api/external-kb/${endpoint}`);
+      assert.equal(response.status(), 200, `External KB ${endpoint}: ${await response.text()}`);
+      const payload = await response.json();
+      assert.equal(payload.available, true, 'External KB plugin is installed and starts');
+      if (endpoint.startsWith('knowledge-bases')) {
+        assert.ok(Array.isArray(payload.knowledge_bases));
+        report.externalKnowledgeBase = {
+          available: payload.available, count: payload.knowledge_bases.length,
+          authConfigured: payload.provider_status.auth_configured,
+          health: payload.provider_status.health,
+          errors: payload.errors,
+        };
+      }
+    }
+    report.checks.push('external KB catalog and provider endpoints start without 502');
+    if (process.argv.includes('--knowledge')) {
+      assert.equal(report.externalKnowledgeBase.authConfigured, true);
+      assert.equal(report.externalKnowledgeBase.health.ok, true);
+      assert.equal(report.externalKnowledgeBase.count, 2);
+      const response = await request(`${base}/toolbench/api/external-kb/retrieve/test`, { data: {
+        query: '投入产出网络与产业链韧性', knowledge_base_ids: ['chainlab-literature'],
+        top_k: 3, score_threshold: 0.06, search_mode: 'hybrid',
+      } });
+      assert.equal(response.status(), 200);
+      const result = await response.json();
+      assert.equal(result.success, true, JSON.stringify(result.error));
+      assert.ok(result.total > 0);
+      assert.ok(result.results.every(r => r.metadata.kind === 'paper' && r.source.page > 0 && r.source.uri.startsWith('/workspace.html#literature/read/')));
+      report.knowledgeRetrieval = { total: result.total, sources: result.results.map(r => ({ title: r.document_name, page: r.source.page, href: r.source.uri })) };
+      const internal = await request(`${base}/api/internal/toolbench-kb/catalog`);
+      assert.equal(internal.status(), 403, 'Private bridge rejects public requests');
+      report.checks.push('live library retrieval, original-page links, private bridge denied');
+      if (process.argv.includes('--knowledge-model')) {
+        const session = await (await request(`${base}/toolbench/api/sessions`, { data: { title: '文献知识库接入验收' } })).json();
+        const response = await request(`${base}/toolbench/api/sessions/${session.session_id}/messages`, { data: {
+          content: '做一次只读检索验收。请调用 external_kb_retrieve，args 为 ["retrieve"]，stdin 为 JSON 字符串，查询投入产出网络与产业链韧性，knowledge_base_ids 为 ["chainlab-literature"]，top_k 为 2，score_threshold 为 0.06。不要调用外部搜索或修改文件。根据实际返回结果列出两条文献标题、页码和 source.uri 原文链接，不要推断文献结论。',
+          approval_mode: 'auto_allow',
+        } });
+        assert.equal(response.status(), 200);
+        const stream = await response.text();
+        await writeFile(`${output}/knowledge-model-stream.txt`, stream);
+        const events = stream.split('\n').filter(line => line.startsWith('data: ')).map(line => JSON.parse(line.slice(6)));
+        assert.ok(events.some(e => e.event === 'tool_call_finished' && e.data.tool === 'external_kb_retrieve' && e.data.success));
+        assert.ok(events.some(e => e.event === 'final_response' && ['answered', 'task_completed'].includes(e.data.turn_outcome) && e.data.content.includes('/workspace.html#literature/read/')));
+        report.checks.push('real DeepSeek knowledge tool call and cited library links');
+        report.knowledgeSession = session.session_id;
+      }
+    }
     if (!process.argv.includes('--inspect')) {
       await page.getByRole('button', { name: '打开导航', exact: true }).click();
       await page.getByRole('button', { name: '技能 Skills', exact: true }).click();
@@ -77,6 +126,37 @@ try {
       for (const name of ['定时 Automations', '记忆 Memory', '技能 Skills', '进化 Evolution', '知识库 Knowledge', '对话 Chat']) {
         await page.getByRole('button', { name, exact: true }).click();
         await page.waitForTimeout(450);
+        if (name === '知识库 Knowledge') {
+          await page.getByText('正在加载知识库...', { exact: true }).waitFor({ state: 'hidden', timeout: 60000 });
+          await page.getByRole('button', { name: '刷新', exact: true }).waitFor({ timeout: 60000 });
+          assert.equal(await page.getByText(/外部知识库插件启动失败/).count(), 0);
+          if (process.argv.includes('--knowledge')) {
+            await page.locator('.knowledge-row').filter({ hasText: '课题组文献原文' }).click();
+            await page.getByPlaceholder('输入测试问题', { exact: true }).fill('投入产出网络与产业链韧性');
+            await page.getByRole('button', { name: '测试检索', exact: true }).click();
+            await page.locator('.knowledge-result').first().waitFor({ timeout: 60000 });
+            assert.ok(await page.getByRole('link', { name: '查看来源', exact: true }).count() > 0);
+            const sourceLink = page.getByRole('link', { name: '查看来源', exact: true }).first();
+            const target = await sourceLink.getAttribute('href');
+            const readerPromise = context.waitForEvent('page');
+            await sourceLink.click();
+            const reader = await readerPromise;
+            const number = Number(target.split('/').at(-1));
+            await reader.waitForFunction(n => document.querySelector(`#reader-page-number`)?.value === String(n), number, { timeout: 60000 });
+            await reader.locator(`.reader-page-host[data-page="${number}"] canvas`).waitFor({ timeout: 60000 });
+            await reader.screenshot({ path: `${output}/knowledge-source-reader.png` });
+            await reader.close();
+            report.checks.push('source link opens the cited PDF page');
+            for (const width of [390, 320]) {
+              await page.setViewportSize({ width, height: 844 });
+              await page.waitForTimeout(300);
+              assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `Knowledge page overflow ${width}`);
+              await page.screenshot({ path: `${output}/knowledge-${width}.png` });
+            }
+            await page.setViewportSize({ width: 1440, height: 960 });
+          }
+          await page.screenshot({ path: `${output}/external-knowledge-base.png` });
+        }
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `Navigation overflow: ${name}`);
       }
       report.checks.push('mobile navigation and six desktop sections');

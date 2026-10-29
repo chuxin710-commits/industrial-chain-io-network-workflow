@@ -155,7 +155,7 @@ class ResearchRAG:
                           'matrix': sparse.load_npz(folder / 'lexical.npz')}
             return self.index
 
-    def retrieve(self, query, expected=None):
+    def retrieve(self, query, expected=None, *, kinds=None, top_k=None, document_ids=None, score_threshold=None):
         started = time.perf_counter()
         index = self.ensure()
         if expected and expected != index['version']:
@@ -168,9 +168,17 @@ class ResearchRAG:
         chosen, counts = [], Counter()
         # Keep two project notes and up to five original-paper passages, diversified by paper.
         for kind, limit in [('curated', 2), ('paper', 5)]:
+            if kinds is not None and kind not in kinds:
+                continue
+            if top_k is not None:
+                limit = top_k
             subset = []
             for i in np.argsort(-score, kind='stable'):
                 c = index['chunks'][i]
+                if document_ids and c['document_id'] not in document_ids:
+                    continue
+                if score_threshold is not None and score[i] < score_threshold:
+                    continue
                 if c['kind'] != kind or lexical[i] < .025 or score[i] < .06 or counts[c['document_id']] >= 2:
                     continue
                 # Overlapping windows from the same page add little independent evidence.
@@ -182,6 +190,8 @@ class ResearchRAG:
                 if len(subset) == limit:
                     break
             chosen.extend(subset)
+        if top_k is not None:
+            chosen = sorted(chosen, key=lambda item: -item['score'])[:top_k]
         return {'version': index['version'], 'algorithm': VERSION, 'documents': index['documents'],
                 'chunks': index['chunks_count'], 'dimensions': index['dimensions'],
                 'retrieval_ms': round((time.perf_counter()-started)*1000, 1), 'sources': chosen,

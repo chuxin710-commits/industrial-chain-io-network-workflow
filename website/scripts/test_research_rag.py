@@ -6,12 +6,14 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'server'))
 from library import LibraryStore, LibraryError
 from literature_ai import LiteratureAI
 from research_rag import ResearchRAG, citations
 from method_tutor import MethodTutor
+from toolbench_kb import retrieve as bridge_retrieve, handle as bridge_handle
 
 
 class RAGTests(unittest.TestCase):
@@ -54,6 +56,43 @@ class RAGTests(unittest.TestCase):
         empty = self.rag.retrieve('zzzzqqqqxxxxxxxx')
         self.assertEqual(empty['sources'], [])
         self.assertIn('未检索', empty['notice'])
+
+    def test_toolbench_preserves_source_and_filters_before_ranking(self):
+        payload = {'query': '供应链韧性容量级联失效', 'knowledge_base_ids': ['chainlab-literature'],
+                   'top_k': 3, 'score_threshold': 0.06}
+        result = bridge_retrieve(self.rag, payload)
+        self.assertTrue(result['success'])
+        self.assertGreater(result['total'], 0)
+        self.assertTrue(all(s['metadata']['kind'] == 'paper' for s in result['results']))
+        self.assertTrue(result['results'][0]['source']['uri'].startswith('/workspace.html#literature/read/'))
+        self.assertEqual(result['results'][0]['source']['page'], 1)
+        named = bridge_retrieve(self.rag, {**payload, 'knowledge_base_ids': ['课题组文献原文']})
+        self.assertEqual([s['id'] for s in named['results']], [s['id'] for s in result['results']])
+        filtered = bridge_retrieve(self.rag, {**payload, 'filters': {'document_ids': ['not-present']}})
+        self.assertEqual(filtered['results'], [])
+        notes = bridge_retrieve(self.rag, {**payload, 'query': '投入产出系数', 'knowledge_base_ids': ['chainlab-methods']})
+        self.assertTrue(notes['results'])
+        self.assertTrue(all(s['metadata']['kind'] == 'curated' for s in notes['results']))
+
+    def test_toolbench_rejects_invalid_or_unsupported_options(self):
+        base = {'query': '投入产出', 'knowledge_base_ids': ['chainlab-literature']}
+        for extra in ({'knowledge_base_ids': ['other']}, {'top_k': 0}, {'top_k': True},
+                      {'score_threshold': float('nan')}, {'options': {'search_mode': 'semantic'}},
+                      {'filters': {'metadata': {'author': 'someone'}}}, {'query': ' '}):
+            with self.assertRaises(ValueError):
+                bridge_retrieve(self.rag, {**base, **extra})
+
+    def test_toolbench_bridge_requires_scoped_service_token(self):
+        handler = Mock(client_address=('127.0.0.1', 1000), headers={}, command='GET',
+                       path='/api/internal/toolbench-kb/catalog')
+        with patch.dict('os.environ', {'CHAINLAB_KB_BRIDGE_TOKEN': 'test-service-token'}):
+            bridge_handle(handler)
+        self.assertEqual(handler.json_response.call_args.args[0], 403)
+        handler.headers = {'Authorization': 'Bearer test-service-token'}
+        handler.client_address = ('203.0.113.1', 1000)
+        with patch.dict('os.environ', {'CHAINLAB_KB_BRIDGE_TOKEN': 'test-service-token'}):
+            bridge_handle(handler)
+        self.assertEqual(handler.json_response.call_args.args[0], 403)
 
     def test_stale_deleted_and_modified_pdf_excluded(self):
         original = self.rag.version()
