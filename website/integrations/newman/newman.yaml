@@ -1,0 +1,65 @@
+deployment_profile: none
+server:
+  host: 127.0.0.1
+  port: 8790
+  cors_origins: ["https://nn.rftf.cc.cd"]
+storage:
+  backend: sqlite
+  sqlite_path: backend_data/newman.db
+auth:
+  enabled: false # Mandatory ChainLabBoundary validates the existing group session.
+models:
+  primary:
+    type: openai_compatible
+    model: deepseek-flash
+    endpoint: https://api.deepseek.com
+    context_window: 131072
+    max_tokens: 8192
+    timeout: 180
+  multimodal:
+    type: openai_compatible
+    model: deepseek-flash
+    endpoint: https://api.deepseek.com
+    context_window: 131072
+    max_tokens: 8192
+    timeout: 180
+    capabilities:
+      supports_images: false
+runtime:
+  max_tool_depth: 30
+  provider_max_concurrent_requests: 2
+subagents:
+  max_agents_per_run: 3
+  max_parallel_agents: 2
+sandbox:
+  enabled: true
+  backend: linux_bwrap
+  mode: workspace-write
+  network_access: true
+  allow_automatic_full_access: false
+  allow_partial_enforcement: false
+  require_process_isolation: true
+permissions:
+  readable_paths: [workspace, skills, plugins, /opt/chainlab-toolbench/venv]
+  writable_paths: [workspace, backend_data/memory, skills, plugins]
+  protected_paths: [.env, newman.yaml, backend_data/sessions, backend_data/audit, backend_data/newman.db, backend_data/newman.db-wal, backend_data/newman.db-shm]
+channels:
+  feishu:
+    enabled: false
+  wecom:
+    enabled: false
+paths:
+  workspace: workspace
+  browse_root: workspace
+  output_root: workspace/outputs
+  data_dir: backend_data
+  sessions_dir: backend_data/sessions
+  memory_dir: backend_data/memory
+  audit_dir: backend_data/audit
+  subagents_dir: backend_data/subagents
+  evolution_dir: backend_data/evolution
+  plugins_dir: plugins
+  skills_dir: skills
+  mcp_dir: backend_data/mcp
+  scheduler_dir: backend_data/scheduler
+  channels_dir: backend_data/channels

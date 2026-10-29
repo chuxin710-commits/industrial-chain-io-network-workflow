@@ -1,0 +1,6 @@
+{
+  "repository": "https://github.com/excuse-corp/newman.git",
+  "commit": "2fdfcec7fd80182fca986289e57f2fb01c099855",
+  "license": "MIT",
+  "mount": "/toolbench/"
+}

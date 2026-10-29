@@ -27,6 +27,17 @@
 .hero-subtitle { color: var(--text-secondary); font-size: 18px; margin: 18px 0 30px; }
 .portal-entry { background: var(--brand); border-color: var(--brand); color: white; min-height: 64px; border-radius: 6px; box-shadow: 0 8px 22px #205ecf1a; }
 .portal-entry:hover { background: var(--brand-hover); }
+.hero-entries { display: flex; justify-content: center; gap: 14px; width: min(100%, 520px); margin-inline: auto; }
+.hero-entries .portal-entry { flex: 1; width: auto; min-width: 0; margin-inline: 0; }
+.toolbench-entry { background: white; color: var(--brand); border-color: var(--brand-line); }
+.toolbench-entry:hover { background: var(--brand-soft); }
+@media (max-width: 560px) {
+  .hero-entries { gap: 8px; }
+  .hero-entries .portal-entry { padding: 13px 12px; }
+  .hero-entries .portal-entry > span { font-size: 15px; }
+  .hero-entries .portal-entry small { font-size: 7px; }
+  .hero-entries .portal-entry > svg { width: 16px; flex-shrink: 0; }
+}
 .briefing-hero-entry { color: var(--text); margin-top: 22px; }
 .briefing-hero-entry > svg:first-child { color: var(--accent-ink); }
 .briefing-hero-entry span { color: var(--text-muted); opacity: 1; }
