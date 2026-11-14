@@ -40,8 +40,10 @@ import { createTopologyPanel, topologyIcons } from './topology.js';
 import { createLibraryPanel, libraryIcons } from './library.js';
 import { createKnowledgePanel, knowledgeIcons } from './knowledge.js';
 import { createMethodsPanel } from './methods.js';
+import { createSkillHub, skillhubIcons } from './skillhub.js';
 
 const icons = {
+  ...skillhubIcons,
   ...knowledgeIcons,
   ...libraryIcons,
   ...topologyIcons,
@@ -99,6 +101,7 @@ const PANEL_LABELS = {
   methods: '方法体系',
   projects: '科研项目',
   literature: '团队文献',
+  skills: '技能广场',
   verification: '研究核验',
 };
 const VIEW_INFO = {
@@ -777,6 +780,7 @@ const topology = createTopologyPanel({ refreshIcons, toast });
 const library = createLibraryPanel({ refreshIcons, toast });
 const knowledge = createKnowledgePanel({ refreshIcons, toast });
 createMethodsPanel({ refreshIcons, toast });
+createSkillHub({ refreshIcons, toast });
 restorePreferences();
 refreshIcons();
 setPanel(location.hash.slice(1) || 'database');

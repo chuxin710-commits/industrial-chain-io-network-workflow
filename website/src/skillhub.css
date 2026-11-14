@@ -1,0 +1,64 @@
+.skillhub { --sh-line: #dce4ef; }
+.sh-overview { display: flex; align-items: center; gap: 32px; border-block: 1px solid var(--sh-line); padding: 22px 0; margin-bottom: 25px; }
+.sh-overview > div { display: flex; align-items: center; gap: 10px; }
+.sh-overview svg { width: 22px; height: 22px; color: var(--brand); }
+.sh-overview strong { font-size: 25px; font-weight: 650; }
+.sh-overview span, .sh-caption, .sh-footnote { font-size: 12px; color: var(--text-muted); }
+.sh-overview .sh-account { margin-left: auto; flex-wrap: wrap; }
+.sh-toolbar { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+.sh-tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--sh-line); }
+.sh-tabs button { padding: 10px 0; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary); cursor: pointer; font: inherit; font-size: 13px; }
+.sh-tabs button[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); font-weight: 650; }
+.sh-filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.sh-filters select { border: 1px solid var(--sh-line); background: white; border-radius: 5px; padding: 9px; font-size: 12px; max-width: 100%; }
+.sh-search { display: flex; gap: 7px; align-items: center; padding: 0 10px; border: 1px solid var(--sh-line); border-radius: 5px; background: white; }
+.sh-search svg { width: 15px; height: 15px; color: var(--text-muted); }
+.sh-search input { width: 190px; border: none; background: transparent; min-height: 38px; font-size: 12px; min-width: 0; }
+.sh-caption { display: flex; justify-content: space-between; gap: 12px; margin: 20px 0 15px; flex-wrap: wrap; }
+.sh-status { min-height: 0; color: var(--text-secondary); font-size: 13px; }
+.sh-status:empty { display: none; }
+.sh-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.sh-card { border: 1px solid var(--sh-line); border-radius: 7px; padding: 22px 20px 12px; background: #fff; min-width: 0; display: flex; flex-direction: column; transition: border-color .18s, box-shadow .18s; }
+.sh-card:hover { border-color: #a7c5f5; box-shadow: 0 5px 18px #205ecf0a; }
+.sh-card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.sh-skill-icon { color: var(--brand); background: #eef5ff; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 6px; flex-shrink: 0; }
+.sh-skill-icon svg { width: 21px; height: 21px; }
+.sh-tag { font-size: 11px; color: #54647b; }
+.sh-favorite { margin-left: auto; border: none; color: #8491a3; }
+.sh-favorite.is-on { color: #d76123; background: #fff2e9; }
+.sh-favorite.is-on svg { fill: #d761231c; }
+.sh-card h2 { font-size: 17px; font-weight: 650; line-height: 1.5; margin: 0; }
+.sh-card h2 button { font: inherit; color: inherit; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
+.sh-slug { font-size: 11px; color: #7a8494; overflow-wrap: anywhere; margin: 5px 0 12px; }
+.sh-description { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin: 0 0 24px; overflow-wrap: anywhere; }
+.sh-source { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 11px; color: #718096; margin-top: auto; padding-bottom: 14px; overflow-wrap: anywhere; }
+.sh-source span:last-child { display: flex; align-items: center; gap: 4px; }
+.sh-source svg { width: 13px; height: 13px; color: #c77722; }
+.sh-card-bottom { border-top: 1px solid #edf1f7; display: flex; align-items: center; justify-content: space-between; padding-top: 8px; min-height: 45px; }
+.sh-card-bottom .inline-button { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.sh-card-bottom .inline-button svg { width: 14px; height: 14px; }
+.sh-footnote { line-height: 1.9; margin-top: 26px; }
+.sh-empty { grid-column: 1 / -1; text-align: center; padding: 70px 16px; border-block: 1px solid var(--sh-line); }
+.sh-empty > svg { width: 32px; height: 32px; color: #9baec8; }
+.sh-empty h2 { font-size: 17px; font-weight: 500; margin: 18px 0; }
+.skillhub dialog { width: min(780px, calc(100vw - 32px)); max-height: 88vh; padding: 28px; border-radius: 8px; overflow: auto; }
+.skillhub dialog h2 { font-size: 22px; overflow-wrap: anywhere; }
+.sh-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin: 18px 0 0; }
+.sh-actions .text-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.sh-actions svg { width: 16px; height: 16px; }
+.sh-license { width: 100%; font-size: 12px; color: var(--text-secondary); }.sh-license summary { cursor: pointer; }.sh-license pre { max-height: 220px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 11px; }
+.sh-meta { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 10px; font-size: 11px; padding: 18px 0; margin: 20px 0 0; border-top: 1px solid var(--sh-line); }
+.sh-meta dt { color: var(--text-muted); }.sh-meta dd { margin: 0; overflow-wrap: anywhere; }
+.sh-detail > p { font-size: 13px; color: var(--text-secondary); line-height: 1.8; overflow-wrap: anywhere; }
+#sh-content { margin: 0; padding: 20px; max-height: 42vh; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; background: #f5f8fc; border: 1px solid var(--sh-line); font: 12px/1.8 Consolas, monospace; }
+.sh-dependency-note { font-size: 11px; color: var(--text-muted); }
+.sh-drop { position: relative; display: flex; flex-direction: column; gap: 9px; align-items: center; justify-content: center; padding: 26px 16px; border: 1px dashed #a7bfe3; background: #f4f8ff; cursor: pointer; }
+.sh-drop > svg { width: 25px; height: 25px; color: var(--brand); }
+.sh-drop strong { font-size: 14px; }.sh-drop span { font-size: 11px; color: var(--text-muted); }
+.sh-drop input { position: absolute; inset: 0; opacity: 0; width: 100%; cursor: pointer; }
+.sh-drop:focus-within { outline: 2px solid var(--brand); }
+#sh-upload-content { resize: vertical; min-height: 200px; max-height: 40vh; width: 100%; font: 12px/1.7 Consolas, monospace; padding: 12px; border: 1px solid var(--sh-line); }
+.sh-login .field { margin-bottom: 16px; }.skillhub .sh-login { max-width: 400px; }
+#sh-upload-status, #sh-login-status { color: #b94430; font-size: 12px; line-height: 1.7; }
+@media (max-width: 1200px) { .sh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .sh-grid { grid-template-columns: minmax(0, 1fr); }.skillhub .page-heading { align-items: flex-start; gap: 18px; flex-direction: column; }.sh-overview { gap: 20px; flex-wrap: wrap; }.sh-overview .sh-account { margin-left: 0; width: 100%; }.sh-search { width: 100%; }.sh-search input { width: 100%; }.sh-filters { width: 100%; }.skillhub dialog { padding: 18px; }.sh-meta { grid-template-columns: 54px minmax(0, 1fr); }.sh-tabs { gap: 24px; }.sh-card { padding: 20px 18px 12px; } }

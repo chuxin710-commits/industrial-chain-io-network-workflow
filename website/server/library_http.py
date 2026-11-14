@@ -88,6 +88,10 @@ def handle_library(handler):
         if path in ('/api/library/auth/login','/api/library/auth/register') and method=='POST':
             new_token=store.login(data.get('username',''),data.get('password'),handler.headers.get('X-Real-IP',handler.client_address[0])) if path.endswith('login') else store.register(data)
             reply(handler,200,{'user':store.auth(new_token)},token=new_token);return
+        if path.startswith('/api/library/skills'):
+            from skillhub import route
+            skill_user = store.auth(token) if method == 'GET' else store.require(token, handler.headers.get('X-CSRF-Token',''))
+            route(handler, path, method, skill_user, data);return
         user=store.require(token, handler.headers.get('X-CSRF-Token','') if method not in ('GET','HEAD') else None)
         if path=='/api/library/auth/logout' and method=='POST':
             store.logout(token);reply(handler,200,{'ok':True},token='');return

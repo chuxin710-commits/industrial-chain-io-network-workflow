@@ -80,6 +80,15 @@ class LibraryStore:
                 );
                 CREATE INDEX IF NOT EXISTS events_document ON events(document_id,id);
                 CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS personal_skills(
+                  id TEXT PRIMARY KEY, owner TEXT NOT NULL REFERENCES users(id),
+                  name TEXT NOT NULL, summary TEXT NOT NULL, content TEXT NOT NULL,
+                  sha256 TEXT NOT NULL, updated REAL NOT NULL, UNIQUE(owner,name)
+                );
+                CREATE TABLE IF NOT EXISTS skill_favorites(
+                  owner TEXT NOT NULL REFERENCES users(id), skill_id TEXT NOT NULL,
+                  PRIMARY KEY(owner,skill_id)
+                );
             ''')
             columns={r[1] for r in db.execute('PRAGMA table_info(annotations)')}
             for name in ('byline','last_editor'):

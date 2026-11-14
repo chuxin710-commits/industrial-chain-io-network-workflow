@@ -36,7 +36,7 @@ def main():
             if args.incremental and folder == 'dist' and path.relative_to(root / folder).parts[0] == 'media':
                 if path.relative_to(root / folder / 'media').as_posix() not in args.include_media:
                     continue
-            if folder == 'server' and path.suffix not in {'.py', '.md', '.txt'} and path.name != 'method_catalog.json':
+            if folder == 'server' and path.suffix not in {'.py', '.md', '.txt'} and path.name not in {'method_catalog.json', 'skillhub_catalog.json'}:
                 continue
             relative = Path(target) / path.relative_to(root / folder)
             files.append((path, relative.as_posix()))
