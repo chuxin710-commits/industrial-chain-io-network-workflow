@@ -2,7 +2,7 @@ deployment_profile: none
 server:
   host: 127.0.0.1
   port: 8790
-  cors_origins: ["https://nn.rftf.cc.cd"]
+  cors_origins: ["https://nn.fan-top.xyz"]
 storage:
   backend: sqlite
   sqlite_path: backend_data/newman.db

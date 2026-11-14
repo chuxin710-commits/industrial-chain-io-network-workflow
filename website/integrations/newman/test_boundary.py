@@ -31,7 +31,7 @@ class BoundaryTests(unittest.IsolatedAsyncioTestCase):
         def client_factory(**kwargs):
             return real_client(transport=transport, **kwargs)
         app = module.ChainLabBoundary(inner)
-        async with real_client(transport=httpx.ASGITransport(app=app), base_url='https://nn.rftf.cc.cd') as client:
+        async with real_client(transport=httpx.ASGITransport(app=app), base_url='https://nn.fan-top.xyz') as client:
             with patch.object(module.httpx, 'AsyncClient', client_factory):
                 return await client.request(method, path, headers={'origin': origin} if origin else {})
 
@@ -49,7 +49,7 @@ class BoundaryTests(unittest.IsolatedAsyncioTestCase):
     async def test_write_requires_matching_origin(self):
         for origin in (None, 'https://other.invalid'):
             self.assertEqual((await self.request('/api/sessions', {'id': 'test'}, 'POST', origin)).status_code, 403)
-        self.assertEqual((await self.request('/api/sessions', {'id': 'test'}, 'POST', 'https://nn.rftf.cc.cd')).status_code, 200)
+        self.assertEqual((await self.request('/api/sessions', {'id': 'test'}, 'POST', 'https://nn.fan-top.xyz')).status_code, 200)
 
     async def test_auth_service_failure_is_closed(self):
         self.assertEqual((await self.request('/api/sessions', unavailable=True)).status_code, 503)

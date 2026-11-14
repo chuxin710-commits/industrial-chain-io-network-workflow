@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import readline from 'node:readline/promises';
 import { launchBrowser } from './browser.mjs';
 
-const base = (process.env.TOOLBENCH_BASE || 'https://nn.rftf.cc.cd').replace(/\/$/, '');
+const base = (process.env.TOOLBENCH_BASE || 'https://nn.fan-top.xyz').replace(/\/$/, '');
 const output = '.artifacts/toolbench-qa';
 await mkdir(output, { recursive: true });
 const browser = await launchBrowser();

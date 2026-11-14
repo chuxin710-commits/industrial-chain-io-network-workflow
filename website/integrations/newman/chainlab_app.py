@@ -51,7 +51,7 @@ class ChainLabBoundary:
             await JSONResponse({'detail': '请使用课题组账号登录'}, status_code=401)(scope, receive, send)
             return
         if request.method not in ('GET', 'HEAD', 'OPTIONS'):
-            allowed = os.environ.get('CHAINLAB_ORIGIN', 'https://nn.rftf.cc.cd')
+            allowed = os.environ.get('CHAINLAB_ORIGIN', 'https://nn.fan-top.xyz')
             if request.headers.get('origin') != allowed:
                 await JSONResponse({'detail': '不接受跨站写入'}, status_code=403)(scope, receive, send)
                 return

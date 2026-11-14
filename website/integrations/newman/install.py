@@ -87,7 +87,7 @@ Environment=PATH=/opt/chainlab-toolbench/venv/bin:/usr/local/bin:/usr/bin:/bin
 Environment=NEWMAN_USER_DATA_DIR=/var/lib/chainlab-toolbench
 Environment=NEWMAN_RESOURCE_DIR=/opt/chainlab-toolbench/current
 Environment=PYTHONPATH=/opt/chainlab-toolbench/current
-Environment=CHAINLAB_ORIGIN=https://nn.rftf.cc.cd
+Environment=CHAINLAB_ORIGIN=https://nn.fan-top.xyz
 EnvironmentFile=/etc/chainlab/deepseek.env
 EnvironmentFile=/etc/chainlab/toolbench-kb.env
 ExecStart=/opt/chainlab-toolbench/venv/bin/python -m uvicorn chainlab_app:app --host 127.0.0.1 --port 8790 --proxy-headers --forwarded-allow-ips=127.0.0.1
@@ -162,4 +162,4 @@ except Exception:
     else:
         subprocess.run(['systemctl', 'stop', 'chainlab-toolbench'], check=False)
     raise
-print(json.dumps({'release': str(release), 'previous': str(old) if old else None, 'url': 'https://nn.rftf.cc.cd/toolbench/'}))
+print(json.dumps({'release': str(release), 'previous': str(old) if old else None, 'url': 'https://nn.fan-top.xyz/toolbench/'}))

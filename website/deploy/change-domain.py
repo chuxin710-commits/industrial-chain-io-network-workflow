@@ -85,7 +85,8 @@ def main():
         run('systemctl', 'daemon-reload')
         run('systemctl', 'restart', 'chainlab-toolbench')
         run('systemctl', 'reload', 'nginx')
-        run('curl', '--fail', '--silent', '--show-error', '--retry', '8', '--retry-connrefused',
+        # Nginx reload returns before old workers finish handing over TLS traffic.
+        run('curl', '--fail', '--silent', '--show-error', '--retry', '8', '--retry-all-errors',
             '--retry-delay', '2', '--max-time', '10', '--resolve', args.domain + ':443:127.0.0.1',
             'https://' + args.domain + '/toolbench/healthz')
         run('curl', '--fail', '--silent', '--show-error', '--max-time', '15', '--resolve',
