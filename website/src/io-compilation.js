@@ -81,7 +81,7 @@ export function createCompilation({ refreshIcons }) {
         <div class="io-head"><h2>调平结果</h2><div class="io-actions"><button id="io-csv" class="button button-outline"><i data-lucide="download"></i>表体 CSV</button><button id="io-json" class="button button-outline"><i data-lucide="download"></i>运行报告 JSON</button></div></div>
         <p class="io-note" id="io-verification"></p><p class="io-note">结果仅通过会计平衡检验，尚无独立验证或发布审批；不输出国内乘数。</p>
         <label class="field io-block-select"><span>查看矩阵块</span><select id="io-block"><option value="z">调平后 Z</option><option value="z0">调平前 Z⁰</option><option value="delta">调整量 ΔZ</option><option value="y">最终使用 Y</option><option value="va">增加值 VA</option><option value="xm">总产出 x 与进口 m</option></select></label>
-        <div class="io-table-scroll" tabindex="0" aria-label="调平结果表"><table id="io-table"></table></div>
+        <div class="io-table-scroll" tabindex="0" aria-label="调平结果表"><table id="io-compiled-table"></table></div>
         <p class="io-hash">结果 SHA-256 <code id="io-hash"></code></p>
       </div>
     </div>`;
@@ -141,7 +141,7 @@ export function createCompilation({ refreshIcons }) {
     const headings = block === 'y' ? i.final_uses : block === 'xm' ? ['国内总产出 x', '进口 m'] : i.sectors;
     const rows = block === 'va' ? i.value_added : i.sectors;
     const matrix = block === 'xm' ? t.x.map((x, j) => [x, t.m[j]]) : block === 'z0' ? i.z0 : block === 'delta' ? t.z.map((r, j) => r.map((v, k) => v - i.z0[j][k])) : t[block];
-    $('#io-table').innerHTML = `<caption>${safe(i.region)} · ${i.year} 年 · ${safe(i.unit)}</caption><thead><tr><th scope="col">行 / 列</th>${headings.map(h => `<th scope="col">${safe(h)}</th>`).join('')}</tr></thead><tbody>${matrix.map((row, j) => `<tr><th scope="row">${safe(rows[j])}</th>${row.map(v => `<td>${amount(v)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+    $('#io-compiled-table').innerHTML = `<caption>${safe(i.region)} · ${i.year} 年 · ${safe(i.unit)}</caption><thead><tr><th scope="col">行 / 列</th>${headings.map(h => `<th scope="col">${safe(h)}</th>`).join('')}</tr></thead><tbody>${matrix.map((row, j) => `<tr><th scope="row">${safe(rows[j])}</th>${row.map(v => `<td>${amount(v)}</td>`).join('')}</tr>`).join('')}</tbody>`;
   }
   $('#io-evidence').addEventListener('input', e => {
     const { state, note } = e.target.dataset;

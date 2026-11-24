@@ -64,9 +64,11 @@ try {
   await page.locator('#io-approval').check();
   await page.locator('#io-run').click();
   await page.locator('#io-result').waitFor();
-  assert.deepEqual(await page.locator('#io-table td').allTextContents(), ['18', '14', '18', '14']);
+  assert.equal(await page.locator('#io-table').count(), 1);
+  assert.equal(await page.locator('#io-compiled-table').count(), 1);
+  assert.deepEqual(await page.locator('#io-compiled-table td').allTextContents(), ['18', '14', '18', '14']);
   await page.locator('#io-block').selectOption('delta');
-  assert.deepEqual(await page.locator('#io-table td').allTextContents(), ['8', '4', '8', '4']);
+  assert.deepEqual(await page.locator('#io-compiled-table td').allTextContents(), ['8', '4', '8', '4']);
   const jsonDownload = page.waitForEvent('download');
   await page.locator('#io-json').click();
   const report = JSON.parse(await readFile(await (await jsonDownload).path(), 'utf8'));
