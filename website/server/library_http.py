@@ -93,6 +93,9 @@ def handle_library(handler):
             skill_user = store.auth(token) if method == 'GET' else store.require(token, handler.headers.get('X-CSRF-Token',''))
             route(handler, path, method, skill_user, data);return
         user=store.require(token, handler.headers.get('X-CSRF-Token','') if method not in ('GET','HEAD') else None)
+        if path.startswith('/api/library/io-compilation/'):
+            from io_compilation import route
+            route(handler, path, method, data);return
         if path=='/api/library/auth/logout' and method=='POST':
             store.logout(token);reply(handler,200,{'ok':True},token='');return
         if path=='/api/library/auth/password' and method=='POST':
